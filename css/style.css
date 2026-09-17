@@ -345,7 +345,7 @@ button {
 }
 
 .hero-logo {
-  width: clamp(220px, 30vw, 420px);
+  width: clamp(110px, 15vw, 210px);
   height: auto;
 }
 
