@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vec | 효과를 만드는 디자인 스튜디오</title>
-<meta name="description" content="Vec는 보기 좋은 디자인이 아니라 효과를 만드는 디자인 스튜디오입니다. 브랜드 아이덴티티, 웹 디자인, 전시 아이덴티티, 편집 디자인을 제공합니다.">
-<link rel="icon" href="data:,">
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<title>Studio Vec | 보기 좋은 디자인이 아니라 효과를 만드는 디자인</title>
+<meta name="description" content="우리는 단순히 멋진 결과물을 만드는 것이 아니라 브랜드와 고객 사이의 경험을 설계하는 디자인을 합니다. Studio Vec — 브랜드 아이덴티티, 웹 디자인, 전시 아이덴티티, 편집 디자인.">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Inter+Tight:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -16,25 +17,27 @@
 
 <header class="site-header" id="site-header">
   <div class="container header-inner">
-    <a class="logo" href="#top" aria-label="Vec 홈으로">
-      <span class="logo-mark" aria-hidden="true">V</span>
-      <span class="logo-text">Vec</span>
+    <a class="logo" href="#top" aria-label="Studio Vec 홈으로">
+      <img class="logo-mark" src="assets/img/logo.png" alt="Vec">
       <span class="logo-divider" aria-hidden="true"></span>
-      <span class="logo-tagline">그래픽 디자인 스튜디오</span>
+      <span class="logo-text-group">
+        <span class="logo-text">Studio <b>Vec</b></span>
+        <span class="logo-tagline">스튜디오 벡</span>
+      </span>
     </a>
 
     <nav class="main-nav" id="main-nav">
       <ul>
-        <li><a href="#about">회사소개</a></li>
-        <li><a href="#services">서비스</a></li>
-        <li><a href="#works">포트폴리오</a></li>
-        <li><a href="#partners">파트너십</a></li>
-        <li><a href="#contact">Contact Us</a></li>
+        <li><a href="#top">Studio.Vec</a></li>
+        <li><a href="#about">소개</a></li>
+        <li><a href="#works">작업물</a></li>
+        <li><a href="http://pf.kakao.com/_xipUhX/friend" target="_blank" rel="noopener">상담하기</a></li>
+        <li><a href="#contact">상세정보</a></li>
       </ul>
     </nav>
 
     <div class="header-actions">
-      <a class="btn btn-primary btn-sm" href="#contact">시작하기</a>
+      <div class="lang-select" aria-hidden="true">Korean <span class="lang-arrow">▾</span></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="main-nav">
         <span></span><span></span><span></span>
       </button>
@@ -45,92 +48,105 @@
 <main id="main">
 
   <section class="hero" id="top">
+    <div class="hero-grid" aria-hidden="true"></div>
     <div class="container hero-inner">
-      <p class="hero-eyebrow reveal">STUDIO VEC</p>
-      <h1 class="hero-logo reveal">Vec</h1>
-      <p class="hero-tagline reveal">브랜드의 진짜 가치를 발견하고, 완성하는 디자인 스튜디오</p>
+      <img class="hero-logo" src="assets/img/logo.png" alt="Vec">
     </div>
   </section>
 
   <section class="section headline-section" id="about">
     <div class="container">
-      <h2 class="headline reveal">
+      <h1 class="headline reveal">
         보기 좋은 디자인이 아니라<br>
-        <span class="highlight">효과를 만드는 디자인</span>
-      </h2>
+        <span class="highlight highlight-lime">효과를 만드는 디자인</span>
+      </h1>
       <p class="lead reveal">
-        우리는 단순히 눈에 좋은 결과물을 만드는 것이 아니라, 브랜드와 고객 사이의
-        진짜 경험을 설계하는 디자인을 만듭니다. 클라이언트의 목표와 데이터를 바탕으로
-        명확한 방향을 제안하고, 그 방향이 실제 성과로 이어지도록 끝까지 책임집니다.
+        우리는 단순히 멋진 결과물을 만드는 것이 아니라<br>
+        브랜드와 고객 사이의 경험을 설계하는 디자인을 합니다.
+      </p>
+      <p class="lead reveal">
+        클라이언트의 요청을 그대로 구현하는 것이 아니라<br>
+        디자이너의 관점과 고민을 담아 더 나은 방향을 제안합니다.
       </p>
       <div class="button-row reveal">
-        <a class="btn btn-primary" href="#contact">프로젝트 상담하기</a>
-        <a class="btn btn-outline" href="#works">포트폴리오 보기</a>
+        <a class="btn btn-primary" href="http://pf.kakao.com/_xipUhX/friend" target="_blank" rel="noopener">프로젝트 상담하기</a>
+        <a class="btn btn-outline" href="http://pf.kakao.com/_xipUhX/friend" target="_blank" rel="noopener">포트폴리오 보기</a>
       </div>
     </div>
   </section>
 
   <section class="section problems-section">
     <div class="container">
-      <p class="eyebrow reveal">CHECK YOUR SITUATION</p>
       <h2 class="section-title reveal">이런 경험 있으셨나요?</h2>
 
       <div class="grid problems-grid reveal">
         <div class="card problem-card">
-          <span class="badge">Q</span>
-          <h3>예산은 한정적인데<br>결과물은 확실해야 하고</h3>
-          <p>적은 예산으로도 완성도 높은 결과물을 원하지만, 어디서부터 시작해야 할지 막막하셨나요?</p>
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 15 13.5 L 14.99 13.5 M 16 8.5 L 15.99 8.5 M 12 4.5 L 11.99 4.5 M 7 4.5 L 6.99 4.5 M 4 8.5 L 3.99 8.5 M 20 10 C 20 17.5 12 21.5 10 20 C 8 18.5 10.761 16.761 8 14 C 5.239 11.239 0 15.523 0 10 C 0 4.477 4.477 0 10 0 C 15.523 0 20 4.477 20 10 Z" transform="translate(2 2)"/></svg>
+          </span>
+          <h3>목적 없이<br>만들어진 결과물</h3>
         </div>
         <div class="card problem-card">
-          <span class="badge">?</span>
-          <h3>디자인은 예쁜데<br>실제 효과는 없고</h3>
-          <p>예쁘게 만들었다는 말은 듣는데, 정작 전환이나 매출로는 이어지지 않는 경험이 있으셨나요?</p>
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 4 12.001 L 0 16.001 M 0 16.001 L 4 20.001 M 0 16.001 L 13 16.001 C 14.657 16.001 16 14.657 16 13.001 L 16 10 M 12 8 L 16 4 M 16 4 L 12 0 M 16 4 L 3 4 C 1.343 4 0 5.343 0 7 L 0 10" transform="translate(4 2)"/></svg>
+          </span>
+          <h3>브랜드 성격을<br>고려하지 않은<br>단순 템플릿의 반복</h3>
         </div>
         <div class="card problem-card">
-          <span class="badge">!</span>
-          <h3>일정은 촉박한데<br>퀄리티는 포기 못하고</h3>
-          <p>빠듯한 일정 속에서도 퀄리티를 타협하고 싶지 않아 계속 고민만 늘어나고 있진 않으신가요?</p>
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 5 21 L 11 21 M 4 18 L 12 18 M 13.07 15 C 13.35 14.023 14.007 13.241 14.666 12.468 C 14.788 12.326 14.901 12.171 15 12 C 15.681 10.823 16 9.457 16 8 C 16 3.582 12.418 0 8 0 C 3.582 0 0 3.582 0 8 C 0 9.457 0.319 10.823 1 12 C 1.091 12.157 1.194 12.301 1.305 12.434 C 1.978 13.242 2.697 14.017 3.07 15" transform="translate(4 2)"/></svg>
+          </span>
+          <h3>좋은데<br>결정권자에게<br>설명할 수 없는 디자인</h3>
         </div>
         <div class="card problem-card">
-          <span class="badge">A</span>
-          <h3>소통은 계속 어긋나고<br>방향은 자꾸 바뀌고</h3>
-          <p>담당자마다 다른 피드백, 자꾸 바뀌는 방향성 때문에 지쳐본 경험이 있으신가요?</p>
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 0 18 L 0 14 C 0 12.895 0.895 12 2 12 L 12 12 C 13.105 12 14 12.895 14 14 L 14 18 M 14 0 C 14.86 0.22 15.623 0.721 16.168 1.422 C 16.712 2.124 17.008 2.987 17.008 3.875 C 17.008 4.763 16.712 5.626 16.168 6.328 C 15.623 7.029 14.86 7.53 14 7.75 M 17 12 L 18 12 C 19.105 12 20 12.895 20 14 L 20 18 M 11 4 C 11 6.209 9.209 8 7 8 C 4.791 8 3 6.209 3 4 C 3 1.791 4.791 0 7 0 C 9.209 0 11 1.791 11 4 Z" transform="translate(2 3)"/></svg>
+          </span>
+          <h3>사용자 반응을<br>고려하지 않은 디자인</h3>
         </div>
       </div>
 
-      <p class="section-foot reveal">다양한 이유로 어려움을 겪고 계신가요? 저희 Vec가 명확한 기준으로 해결해드립니다.</p>
+      <p class="section-foot reveal">디자인은 단순한 결과물이 아니라<br>사람이 경험하는 하나의 과정 입니다.</p>
     </div>
   </section>
 
   <section class="section philosophy-section">
     <div class="container">
-      <p class="eyebrow eyebrow-light reveal">HOW WE WORK</p>
-      <h2 class="section-title light reveal">
+      <h2 class="section-title reveal">
         우리는 디자인을<br>
-        사람에게 <span class="highlight">경험을 선물</span>하는 일이라고<br>
+        사람에게 <span class="highlight highlight-dark">경험을 선물</span>하는 일이라고<br>
         생각합니다.
       </h2>
-      <p class="lead light reveal">
-        클라이언트와 디자이너가 만나는 순간부터 결과물이 세상에 나오는 순간까지,
-        그 모든 과정에서 신뢰를 지키는 것을 원칙으로 삼습니다.
+      <p class="lead reveal">
+        클라이언트는 디자인을 의뢰하지만<br>
+        실제로 디자인을 경험하는 사람은 그 브랜드의 고객입니다.
       </p>
+      <p class="lead strong reveal">그래서 우리는 항상 질문합니다.</p>
 
       <div class="grid philosophy-grid reveal">
         <div class="card dark-card">
-          <span class="num">01</span>
-          <p>고객과의 소통을 최우선으로 생각합니다</p>
+          <span class="icon-badge icon-badge-lime">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 15 13.5 L 14.99 13.5 M 16 8.5 L 15.99 8.5 M 12 4.5 L 11.99 4.5 M 7 4.5 L 6.99 4.5 M 4 8.5 L 3.99 8.5 M 20 10 C 20 17.5 12 21.5 10 20 C 8 18.5 10.761 16.761 8 14 C 5.239 11.239 0 15.523 0 10 C 0 4.477 4.477 0 10 0 C 15.523 0 20 4.477 20 10 Z" transform="translate(2 2)"/></svg>
+          </span>
+          <h3>이 디자인은<br>누구에게 전달되는가</h3>
         </div>
         <div class="card dark-card">
-          <span class="num">02</span>
-          <p>데이터에 기반한 전략을 세웁니다</p>
+          <span class="icon-badge icon-badge-lime">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 4 12.001 L 0 16.001 M 0 16.001 L 4 20.001 M 0 16.001 L 13 16.001 C 14.657 16.001 16 14.657 16 13.001 L 16 10 M 12 8 L 16 4 M 16 4 L 12 0 M 16 4 L 3 4 C 1.343 4 0 5.343 0 7 L 0 10" transform="translate(4 2)"/></svg>
+          </span>
+          <h3>이 브랜드만의 이야기를<br>어떻게 전달할 것인가</h3>
         </div>
         <div class="card dark-card">
-          <span class="num">03</span>
-          <p>트렌드보다 본질에 집중합니다</p>
+          <span class="icon-badge icon-badge-lime">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 5 21 L 11 21 M 4 18 L 12 18 M 13.07 15 C 13.35 14.023 14.007 13.241 14.666 12.468 C 14.788 12.326 14.901 12.171 15 12 C 15.681 10.823 16 9.457 16 8 C 16 3.582 12.418 0 8 0 C 3.582 0 0 3.582 0 8 C 0 9.457 0.319 10.823 1 12 C 1.091 12.157 1.194 12.301 1.305 12.434 C 1.978 13.242 2.697 14.017 3.07 15" transform="translate(4 2)"/></svg>
+          </span>
+          <h3>어떤 논리로<br>디자인되었는가</h3>
         </div>
         <div class="card dark-card">
-          <span class="num">04</span>
-          <p>결과로 증명하는 디자인을 만듭니다</p>
+          <span class="icon-badge icon-badge-lime">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 0 18 L 0 14 C 0 12.895 0.895 12 2 12 L 12 12 C 13.105 12 14 12.895 14 14 L 14 18 M 14 0 C 14.86 0.22 15.623 0.721 16.168 1.422 C 16.712 2.124 17.008 2.987 17.008 3.875 C 17.008 4.763 16.712 5.626 16.168 6.328 C 15.623 7.029 14.86 7.53 14 7.75 M 17 12 L 18 12 C 19.105 12 20 12.895 20 14 L 20 18 M 11 4 C 11 6.209 9.209 8 7 8 C 4.791 8 3 6.209 3 4 C 3 1.791 4.791 0 7 0 C 9.209 0 11 1.791 11 4 Z" transform="translate(2 3)"/></svg>
+          </span>
+          <h3>어떤 경험을<br>만들 것인가</h3>
         </div>
       </div>
     </div>
@@ -140,71 +156,48 @@
     <div class="container panels">
 
       <article class="panel reveal">
-        <div class="panel-inner">
+        <div class="panel-bar" aria-hidden="true"></div>
+        <div class="panel-title-box">
           <span class="panel-label">Vec. 1</span>
-          <h3 class="panel-title">
-            단발적인 결과물을 넘어<br>브랜드 전체의 맥락과 질서 설계
-          </h3>
-          <p class="panel-quote">“승패를 가르는 건 결국 일관된 디자인이다”</p>
-          <p class="panel-body">
-            하나의 로고, 하나의 페이지가 아니라 브랜드가 마주하는 모든 접점에서
-            같은 언어로 말할 수 있도록 시스템을 설계합니다. 그 결과 브랜드는 어디서
-            만나도 낯설지 않은 하나의 인상을 남깁니다.
-          </p>
+          <h3 class="panel-title">단편적인 결과물을 넘어<br>브랜드 전체의 맥락과 질서 설계</h3>
         </div>
-        <span class="handle handle-tl" aria-hidden="true"></span>
-        <span class="handle handle-tc" aria-hidden="true"></span>
-        <span class="handle handle-tr" aria-hidden="true"></span>
-        <span class="handle handle-ml" aria-hidden="true"></span>
-        <span class="handle handle-mr" aria-hidden="true"></span>
-        <span class="handle handle-bl" aria-hidden="true"></span>
-        <span class="handle handle-bc" aria-hidden="true"></span>
-        <span class="handle handle-br" aria-hidden="true"></span>
+        <p class="panel-quote">"단순히 예쁜 시안 말고,<br>&nbsp;&nbsp;&nbsp;우리 브랜드 전체의 중심을 잡아줄 '체계'가 있을까요?"</p>
+        <p class="panel-body">
+          우리는 단편적인 결과물보다 브랜드가 가진 고유의 맥락을 먼저 읽어냅니다. 브랜드의 철학을 시각적 시스템으로 정리하여, 어떤 환경에서도 흔들리지 않는 일관된 브랜드 경험을 구축합니다.
+        </p>
+        <p class="panel-body">
+          AI로 시장의 흐름을 분석하고 전공자의 직관으로 디테일을 완성합니다. 모든 요소에는 설계 근거가 준비되어 있어, 시간이 지나도 가치가 변하지 않는 단단한 브랜드의 토대를 만듭니다.
+        </p>
       </article>
 
       <article class="panel reveal">
-        <div class="panel-inner">
+        <div class="panel-bar" aria-hidden="true"></div>
+        <div class="panel-title-box">
           <span class="panel-label">Vec. 2</span>
-          <h3 class="panel-title">
-            복잡한 보고와 행정 절차를 간소화하는<br>체계적인 결과물
-          </h3>
-          <p class="panel-quote">“설득력 있는 결과물에는 명확한 논리가 필요하다”</p>
-          <p class="panel-body">
-            보고와 검토, 수정 과정에서 담당자가 겪는 번거로움까지 고려해 문서와
-            산출물을 체계적으로 정리합니다. 복잡한 절차 속에서도 의사결정이
-            빨라지도록 돕습니다.
-          </p>
+          <h3 class="panel-title">복잡한 보고와 행정 절차를 간소화하는<br>체계적인 결과물</h3>
         </div>
-        <span class="handle handle-tl" aria-hidden="true"></span>
-        <span class="handle handle-tc" aria-hidden="true"></span>
-        <span class="handle handle-tr" aria-hidden="true"></span>
-        <span class="handle handle-ml" aria-hidden="true"></span>
-        <span class="handle handle-mr" aria-hidden="true"></span>
-        <span class="handle handle-bl" aria-hidden="true"></span>
-        <span class="handle handle-bc" aria-hidden="true"></span>
-        <span class="handle handle-br" aria-hidden="true"></span>
+        <p class="panel-quote">"결재권자를 설득할 논리가 중요한데,<br>&nbsp;&nbsp;&nbsp;보고서에 바로 쓸 수 있는 수준인가요?"</p>
+        <p class="panel-body">
+          의사결정권자를 설득할 수 있는 명확한 기획 의도와 시각적 근거를 함께 드립니다. 별도의 가공 없이 즉시 보고에 활용할 수 있도록, 모든 산출물을 체계적이고 규격화된 문서 형태로 제공합니다.
+        </p>
+        <p class="panel-body">
+          AI 프로세스로 속도를 높여 긴급한 피드백에 대응하고, 저작권 규정을 철저히 준수하여 행정적 리스크를 없앱니다. 실무자의 업무 부담은 줄이고 프로젝트의 완성도는 높이는 안정적인 파트너가 되겠습니다.
+        </p>
       </article>
 
       <article class="panel reveal">
-        <div class="panel-inner">
+        <div class="panel-bar" aria-hidden="true"></div>
+        <div class="panel-title-box">
           <span class="panel-label">Vec. 3</span>
-          <h3 class="panel-title">
-            본질에 집중하여 비즈니스의<br>실질적 성장을 견인하는 브랜딩
-          </h3>
-          <p class="panel-quote">“비즈니스 성장에 실질적인 도움이 필요하다”</p>
-          <p class="panel-body">
-            보여주기 위한 디자인이 아니라 비즈니스 성장에 기여하는 브랜딩 사례를
-            연구하고 적용합니다. 겉모습이 아닌 결과로 증명하는 것을 목표로 합니다.
-          </p>
+          <h3 class="panel-title">본질에 집중하여 비즈니스의<br>실질적 성장을 견인하는 브랜딩</h3>
         </div>
-        <span class="handle handle-tl" aria-hidden="true"></span>
-        <span class="handle handle-tc" aria-hidden="true"></span>
-        <span class="handle handle-tr" aria-hidden="true"></span>
-        <span class="handle handle-ml" aria-hidden="true"></span>
-        <span class="handle handle-mr" aria-hidden="true"></span>
-        <span class="handle handle-bl" aria-hidden="true"></span>
-        <span class="handle handle-bc" aria-hidden="true"></span>
-        <span class="handle handle-br" aria-hidden="true"></span>
+        <p class="panel-quote">"예산과 시간은 한정적인데,<br>비즈니스 성장에 실질적인 도움이 될까요?"</p>
+        <p class="panel-body">
+          제한된 자원을 낭비하지 않도록 불필요한 공정은 걷어내고 성과로 이어지는 핵심에 집중합니다. 우리는 디자인을 단순한 비용이 아닌, 비즈니스 성장을 위한 전략적인 투자로 정의합니다.
+        </p>
+        <p class="panel-body">
+          AI를 활용해 제작 단가는 낮추되 전문가의 설계 역량을 더해 시장을 압도하는 퀄리티를 구현합니다. 빠른 소통과 강력한 실행력으로, 당신의 비즈니스가 시장에 성공적으로 안착하도록 돕습니다.
+        </p>
       </article>
 
     </div>
@@ -212,162 +205,139 @@
 
   <section class="section process-section">
     <div class="container">
-      <h2 class="section-title center reveal">작업 프로세스</h2>
+      <h2 class="section-title center reveal"><span class="highlight highlight-lime">작업 프로세스</span></h2>
 
       <div class="grid process-grid reveal">
         <div class="process-step">
-          <span class="step-num">01</span>
+          <span class="step-num">1</span>
           <h3>상담</h3>
-          <p>고객의 요구사항과 목표를 파악합니다</p>
+          <p>프로젝트의<br>목적과 상황을<br>이해합니다.</p>
         </div>
         <div class="process-step">
-          <span class="step-num">02</span>
+          <span class="step-num">2</span>
           <h3>방향 설정</h3>
-          <p>컨셉과 방향성을 설정합니다</p>
+          <p>브랜드와 사용자<br>관점에서 디자인<br>방향을 설정합니다.</p>
         </div>
         <div class="process-step">
-          <span class="step-num">03</span>
+          <span class="step-num">3</span>
           <h3>디자인 제작</h3>
-          <p>다각적인 결과물을 제작합니다</p>
+          <p>여러 가능성을<br>탐색하며 디자인을<br>완성합니다.</p>
         </div>
         <div class="process-step">
-          <span class="step-num">04</span>
+          <span class="step-num">4</span>
           <h3>수정 및 완성</h3>
-          <p>피드백을 반영해 완성합니다</p>
+          <p>피드백을 반영해<br>최종 결과물을<br>완성합니다.</p>
         </div>
       </div>
 
       <p class="section-foot center reveal">
-        궁금한 점이 있으신가요? 언제든지 편하게 <a href="#contact">상담하기</a>를 이용해주세요.
+        작업 프로세스 및 기간은 프로젝트에 따라 상이하며,<br>
+        자세한 내용은 '상담하기'를 통해 문의 바랍니다.
       </p>
     </div>
   </section>
 
-  <section class="section services-section" id="services">
+  <section class="section services-section">
     <div class="container">
       <h2 class="section-title center reveal">제공 서비스</h2>
 
       <div class="grid services-grid reveal">
         <div class="service-card">
           <h3>Brand Identity</h3>
-          <p class="service-desc">브랜드 정체성을 만드는 작업</p>
+          <p class="service-desc">브랜드의 방향성과<br>시각적 언어를 설계하는 작업</p>
           <ul>
             <li>로고 디자인</li>
+            <li>컬러 시스템</li>
+            <li>타이포그래피</li>
             <li>브랜드 가이드라인</li>
-            <li>네이밍</li>
-            <li>CI / BI 개발</li>
+            <li>브랜드 응용 디자인(명함,패키지 등)</li>
           </ul>
         </div>
         <div class="service-card">
           <h3>Web Design</h3>
-          <p class="service-desc">온라인 접점을 완성하는 작업</p>
+          <p class="service-desc">브랜드와 프로젝트를 위한<br>웹 기반 디자인</p>
           <ul>
-            <li>웹사이트 디자인</li>
-            <li>UI / UX 디자인</li>
-            <li>반응형 디자인</li>
-            <li>웹 퍼블리싱</li>
+            <li>모바일 초대장</li>
+            <li>웹사이트 UI 디자인</li>
+            <li>반응형 웹 디자인</li>
+            <li>디자인 시스템 및 스타일 가이드</li>
+            <li>랜딩 페이지 디자인</li>
           </ul>
         </div>
         <div class="service-card">
           <h3>Exhibition Identity</h3>
-          <p class="service-desc">공간에서 완성되는 브랜드 경험</p>
+          <p class="service-desc">전시나 프로젝트의<br>전체 시각 콘셉트를 설계</p>
           <ul>
-            <li>전시 공간 디자인</li>
-            <li>사이니지 디자인</li>
-            <li>부스 디자인</li>
-            <li>환경 그래픽</li>
+            <li>전시 키비주얼 디자인</li>
+            <li>포스터 및 홍보물 디자인</li>
+            <li>전시 그래픽 시스템</li>
+            <li>공간 적용 그래픽</li>
+            <li>기념품 디자인</li>
           </ul>
         </div>
         <div class="service-card">
           <h3>Editorial Design</h3>
-          <p class="service-desc">인쇄물로 남기는 브랜드 기록</p>
+          <p class="service-desc">인쇄 기반 콘텐츠의<br>레이아웃과 시각 구성</p>
           <ul>
-            <li>브로슈어</li>
-            <li>카탈로그</li>
-            <li>편집 디자인</li>
-            <li>인쇄물 디자인</li>
+            <li>포토북 디자인</li>
+            <li>도록 및 책자 디자인</li>
+            <li>초대장</li>
+            <li>리플렛</li>
+            <li>브로슈어 / 카탈로그</li>
           </ul>
         </div>
       </div>
 
       <p class="section-foot center reveal">
-        프로젝트 특성에 맞는 최적의 서비스를 제공합니다. 더 궁금한 점은 언제든 문의해주세요.
+        로고 하나를 만드는 것이 아니라 브랜드가 오래 사용될 수 있는 시각 언어를 설계합니다.<br>
+        디자이너의 역할은 단순 제작이 아니라 브랜드의 맥락을 읽고 가장 적절한 방향을 제안하는 것입니다.
       </p>
     </div>
   </section>
 
   <section class="section works-section" id="works">
     <div class="container">
-      <h2 class="section-title light center reveal">Works</h2>
+      <h2 class="section-title light reveal">Works</h2>
 
       <div class="grid works-grid reveal">
-        <a class="work-card" href="#works">
-          <div class="work-thumb">
-            <svg viewBox="0 0 64 64" class="work-icon" aria-hidden="true"><path d="M32 4 L38 22 L58 22 L42 33 L48 52 L32 40 L16 52 L22 33 L6 22 L26 22 Z" fill="currentColor"/></svg>
-          </div>
-          <p class="work-tag">Brand Identity</p>
-          <p class="work-sub">#브랜드 #아이덴티티</p>
+        <a class="work-card" href="https://studiovec.framer.website/p01-kaleido" target="_blank" rel="noopener">
+          <img src="assets/img/work-01.jpg" alt="Brand Identity — Kaleido" loading="lazy">
         </a>
-        <a class="work-card" href="#works">
-          <div class="work-thumb">
-            <svg viewBox="0 0 64 64" class="work-icon" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="currentColor"/></svg>
-          </div>
-          <p class="work-tag">Exhibition Identity</p>
-          <p class="work-sub">#전시 #공간디자인</p>
+        <a class="work-card" href="https://studiovec.framer.website/p02-voyeur" target="_blank" rel="noopener">
+          <img src="assets/img/work-02.jpg" alt="Exhibition Identity — Voyeur" loading="lazy">
         </a>
-        <a class="work-card" href="#works">
-          <div class="work-thumb">
-            <span class="work-glyph">요품</span>
-          </div>
-          <p class="work-tag">UI / UX</p>
-          <p class="work-sub">Mobile · Web · Cooperation</p>
+        <a class="work-card" href="https://studiovec.framer.website/p03-starry" target="_blank" rel="noopener">
+          <img src="assets/img/work-03.jpg" alt="UI/UX — Starry" loading="lazy">
         </a>
-        <a class="work-card" href="#works">
-          <div class="work-thumb">
-            <span class="work-glyph">A</span>
-          </div>
-          <p class="work-tag">Brand Identity</p>
-          <p class="work-sub">#캐릭터 #브랜딩</p>
+        <a class="work-card" href="https://studiovec.framer.website/p04-flant" target="_blank" rel="noopener">
+          <img src="assets/img/work-04.jpg" alt="Brand Identity — Flant" loading="lazy">
         </a>
-        <a class="work-card" href="#works">
-          <div class="work-thumb">
-            <svg viewBox="0 0 64 64" class="work-icon" aria-hidden="true">
-              <path d="M4 22 Q16 10 28 22 T52 22" stroke="currentColor" stroke-width="5" fill="none"/>
-              <path d="M4 34 Q16 22 28 34 T52 34" stroke="currentColor" stroke-width="5" fill="none"/>
-              <path d="M4 46 Q16 34 28 46 T52 46" stroke="currentColor" stroke-width="5" fill="none"/>
-            </svg>
-          </div>
-          <p class="work-tag">Exhibition Identity</p>
-          <p class="work-sub">#패턴 #전시</p>
+        <a class="work-card" href="https://studiovec.framer.website/p05-unfortune" target="_blank" rel="noopener">
+          <img src="assets/img/work-05.jpg" alt="Exhibition Identity — Unfortune" loading="lazy">
         </a>
-        <a class="work-card" href="#works">
-          <div class="work-thumb">
-            <span class="work-glyph">🐼</span>
-          </div>
-          <p class="work-tag">Character Design</p>
-          <p class="work-sub">#캐릭터 #일러스트</p>
+        <a class="work-card" href="https://studiovec.framer.website/p06-shit-chat" target="_blank" rel="noopener">
+          <img src="assets/img/work-06.jpg" alt="Character Design" loading="lazy">
         </a>
       </div>
     </div>
   </section>
 
-  <section class="section partners-section" id="partners">
+  <section class="section partners-section">
     <div class="container">
       <h2 class="section-title center reveal">Partners</h2>
 
       <div class="partner-card reveal">
-        <div class="partner-photo" aria-hidden="true">
-          <span>JH</span>
+        <div class="partner-photo">
+          <img src="assets/img/partner.png" alt="김태희">
         </div>
         <div class="partner-info">
-          <h3>김지혜</h3>
-          <p class="partner-role">Graphic Designer</p>
-          <ul class="partner-skills">
-            <li>Illustrator · After Effects · Figma</li>
-            <li>Founder, Fenny Fusion 240 · Blender</li>
-            <li>AI 기반 CG · Sketchbook</li>
-          </ul>
-          <a class="text-link" href="#contact">More ›</a>
+          <h3>김태희</h3>
+          <p class="partner-role">Graphic Desinger</p>
+          <div class="partner-skills">
+            <p><span>Main skills</span>illustrator, After Effects, Figma</p>
+            <p><span>Sub Skills</span>Indesign, Framer, Fusion 360, Blender,<br>AI(Claude, Grok, Nano Banana0</p>
+          </div>
+          <a class="text-link" href="#contact">More +</a>
         </div>
       </div>
     </div>
@@ -376,47 +346,57 @@
 </main>
 
 <footer class="site-footer" id="contact">
-  <div class="container footer-inner">
-    <div class="footer-brand">
-      <a class="logo logo-footer" href="#top">
-        <span class="logo-mark" aria-hidden="true">V</span>
-        <span class="logo-text">Studio Vec</span>
-      </a>
-      <p>
-        서울특별시 강남구 테헤란로 000, 0층<br>
-        Studio Vec Co., Ltd.
-      </p>
-      <p class="footer-email">hello@studiovec.com</p>
+  <div class="container">
+    <h2 class="section-title light reveal">Contact</h2>
+
+    <div class="footer-grid reveal">
+      <div class="footer-brand">
+        <img class="footer-logo" src="assets/img/badge-01.png" alt="Studio.Vec">
+        <p class="footer-name">Studio. Vec</p>
+        <p>서울특별시 중구 신당동 414-8</p>
+        <p>010-3294-3077</p>
+        <p>taehuikim0409@gmail.com</p>
+      </div>
+
+      <div class="footer-resume">
+        <div class="resume-block">
+          <h4>학력</h4>
+          <p>세종대학교 디자인이노베이션학과 시각디자인전공 졸업</p>
+        </div>
+        <div class="resume-block">
+          <h4>경력</h4>
+          <p>십시일밥(비영리단체) 디자인팀</p>
+          <p>투영 2,3호(독립잡지) 디자인팀 팀장</p>
+          <p>매일경제 세계지식포럼 / 국민보고대회 지식부 디자이너</p>
+        </div>
+        <div class="resume-block">
+          <h4>수상</h4>
+          <p>New Talent Award 2025 Honorable Mention Graphis (2건)</p>
+          <p>Asia Design Prize Winner Asia Design Prize</p>
+          <p>제 59회 대한민국 디자인 전람회 입선 한국디자인진흥원</p>
+          <p>LG 산학 프로젝트 서비스 제안 우수상 세종대학교</p>
+          <p>웰컴 키트 디자인 공모전 우수상 세종대학교</p>
+          <p>제7회 SW.AI 융합 경시대회 장려상 세종대학교</p>
+        </div>
+        <div class="resume-block">
+          <h4>전시</h4>
+          <p>SIDO전 - MOV</p>
+          <p>디자인이노베이션 졸업 전시</p>
+          <p>Project X 온라인 전시</p>
+        </div>
+      </div>
     </div>
 
-    <div class="footer-col">
-      <h4>운영 시간</h4>
-      <p>평일 10:00 – 19:00</p>
-      <p>주말 / 공휴일 휴무</p>
+    <div class="footer-badges reveal">
+      <img src="assets/img/badge-02.png" alt="Graphis">
+      <img src="assets/img/badge-03.png" alt="Asia Design Prize">
+      <img src="assets/img/badge-04.png" alt="대한민국디자인전람회 Korea International Design Award">
     </div>
 
-    <div class="footer-col">
-      <h4>프로젝트 문의</h4>
-      <p>contact@studiovec.com</p>
-      <p>+82 2-0000-0000</p>
+    <div class="footer-bottom">
+      <p>© 2025 Taehui Kim. All rights reserved.</p>
+      <p>Unauthorized use, reproduction, redistribution, and AI training are prohibited.</p>
     </div>
-
-    <div class="footer-col footer-social">
-      <h4>Follow</h4>
-      <p><a href="#top">Instagram</a></p>
-      <p><a href="#top">Behance</a></p>
-    </div>
-  </div>
-
-  <div class="container footer-badges">
-    <span>Graphis</span>
-    <span>Good Design Award</span>
-    <span>Best Portfolio</span>
-  </div>
-
-  <div class="container footer-bottom">
-    <p>© 2026 Studio Vec. All rights reserved.</p>
-    <p>사업자등록번호 000-00-00000 · 통신판매업신고 제0000-서울강남-00000호</p>
   </div>
 </footer>
 
