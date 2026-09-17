@@ -48,7 +48,16 @@
 <main id="main">
 
   <section class="hero" id="top">
-    <div class="hero-grid" aria-hidden="true"></div>
+    <svg class="hero-canvas" id="hero-canvas" aria-hidden="true">
+      <defs>
+        <pattern id="hero-grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5" opacity="0.04"></path>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hero-grid-pattern)"></rect>
+      <path id="hero-canvas-path" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"></path>
+      <g id="hero-canvas-points"></g>
+    </svg>
     <div class="container hero-inner">
       <img class="hero-logo" src="assets/img/logo.png" alt="Vec">
     </div>
