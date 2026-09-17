@@ -202,6 +202,35 @@
     });
   }
 
+  var filterChips = document.querySelectorAll('.filter-chip');
+  var workCards = document.querySelectorAll('#works-grid .work-card');
+  var worksEmpty = document.getElementById('works-empty');
+
+  if (filterChips.length && workCards.length) {
+    filterChips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        filterChips.forEach(function (c) {
+          c.classList.remove('is-active');
+          c.setAttribute('aria-selected', 'false');
+        });
+        chip.classList.add('is-active');
+        chip.setAttribute('aria-selected', 'true');
+
+        var filter = chip.getAttribute('data-filter');
+        var visibleCount = 0;
+
+        workCards.forEach(function (card) {
+          var categories = (card.getAttribute('data-category') || '').split(' ');
+          var show = filter === 'all' || categories.indexOf(filter) !== -1;
+          card.hidden = !show;
+          if (show) visibleCount++;
+        });
+
+        if (worksEmpty) worksEmpty.hidden = visibleCount > 0;
+      });
+    });
+  }
+
   var revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {
     var observer = new IntersectionObserver(

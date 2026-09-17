@@ -324,32 +324,41 @@
     <div class="container">
       <h2 class="section-title light reveal">Works</h2>
 
-      <div class="grid works-grid reveal">
-        <a class="work-card" href="p01-kaleido.html">
+      <div class="works-filter reveal" role="tablist" aria-label="작업물 필터">
+        <button type="button" class="filter-chip is-active" data-filter="all" role="tab" aria-selected="true">전체보기</button>
+        <button type="button" class="filter-chip" data-filter="branding" role="tab" aria-selected="false">브랜딩</button>
+        <button type="button" class="filter-chip" data-filter="graphic" role="tab" aria-selected="false">그래픽</button>
+        <button type="button" class="filter-chip" data-filter="ai" role="tab" aria-selected="false">AI</button>
+        <button type="button" class="filter-chip" data-filter="planning" role="tab" aria-selected="false">기획</button>
+      </div>
+
+      <div class="grid works-grid reveal" id="works-grid">
+        <a class="work-card" href="p01-kaleido.html" data-category="branding">
           <img class="work-img work-img-default" src="assets/img/work-01.jpg" alt="Brand Identity — Kaleido" loading="lazy">
           <img class="work-img work-img-hover" src="assets/img/work-01-hover.jpg" alt="" loading="lazy">
         </a>
-        <a class="work-card" href="p02-voyeur.html">
+        <a class="work-card" href="p02-voyeur.html" data-category="graphic">
           <img class="work-img work-img-default" src="assets/img/work-02.jpg" alt="Exhibition Identity — Voyeur" loading="lazy">
           <img class="work-img work-img-hover" src="assets/img/work-02-hover.jpg" alt="" loading="lazy">
         </a>
-        <a class="work-card" href="p03-starry.html">
+        <a class="work-card" href="p03-starry.html" data-category="planning graphic">
           <img class="work-img work-img-default" src="assets/img/work-03.jpg" alt="UI/UX — Starry" loading="lazy">
           <img class="work-img work-img-hover" src="assets/img/work-03-hover.jpg" alt="" loading="lazy">
         </a>
-        <a class="work-card" href="p04-flant.html">
+        <a class="work-card" href="p04-flant.html" data-category="branding ai">
           <img class="work-img work-img-default" src="assets/img/work-04.jpg" alt="Brand Identity — Flant" loading="lazy">
           <img class="work-img work-img-hover" src="assets/img/work-04-hover.jpg" alt="" loading="lazy">
         </a>
-        <a class="work-card" href="p05-unfortune.html">
+        <a class="work-card" href="p05-unfortune.html" data-category="graphic planning">
           <img class="work-img work-img-default" src="assets/img/work-05.jpg" alt="Exhibition Identity — Unfortune" loading="lazy">
           <img class="work-img work-img-hover" src="assets/img/work-05-hover.jpg" alt="" loading="lazy">
         </a>
-        <a class="work-card" href="p06-shit-chat.html">
+        <a class="work-card" href="p06-shit-chat.html" data-category="ai graphic">
           <img class="work-img work-img-default" src="assets/img/work-06.jpg" alt="Character Design" loading="lazy">
           <img class="work-img work-img-hover" src="assets/img/work-06-hover.png" alt="" loading="lazy">
         </a>
       </div>
+      <p class="works-empty" id="works-empty" hidden>해당 카테고리의 작업물이 아직 없습니다.</p>
     </div>
   </section>
 
