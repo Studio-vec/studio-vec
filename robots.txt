@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://studio-vec.github.io/studio-vec/sitemap.xml
+Sitemap: https://studiovec.com/sitemap.xml
