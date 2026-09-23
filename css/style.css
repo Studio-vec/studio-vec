@@ -1289,17 +1289,19 @@ button {
     position: fixed;
     inset: 0 0 auto 0;
     top: var(--header-h, 76px);
-    background: var(--black);
+    background: transparent;
     border-bottom: 1px solid transparent;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.35s var(--ease), border-color 0.35s var(--ease);
+    transition: max-height 0.35s var(--ease), background 0s linear 0.35s, border-color 0.35s var(--ease);
     z-index: 80;
   }
 
   .main-nav.is-open {
     max-height: 420px;
+    background: var(--black);
     border-bottom-color: #2a2a2d;
+    transition: max-height 0.35s var(--ease), background 0s linear, border-color 0.35s var(--ease);
   }
 
   .main-nav ul {
