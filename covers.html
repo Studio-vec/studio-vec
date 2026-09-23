@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kim Taehui — Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Newsreader:opsz,wght@6..72,400&family=Noto+Serif+KR:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   GRID SYSTEM  (reference artboard 838 × 587)
+   margin  L/R 26  → 3.1vw      top/bottom 24 → 4.1vh
+   7 columns × ~100, gutter 14 → 1.67vw
+   ─ header labels : col 1 / col 3 / col 5
+   ─ symbol        : col 1 – 4
+   ─ title band    : col 5 – 7 (two horizontal guides)
+   ─ footer        : col 1–2 (team) / col 3–6 (explanation)
+   ========================================================= */
+:root{
+  --paper:#f2f4f7;
+  --ink:#111;
+  --sub:#8a8d94;
+  --guide:#7d86f5;
+  --guide-strong:#4f6ef0;
+  --margin-line:#e070c0;
+  --path-sel:#3b82e6;
+  --yellow:#e2e400;
+  --m:clamp(16px,3.1vw,48px);
+  --mt:clamp(16px,4.1vh,40px);
+  --g:clamp(8px,1.67vw,24px);
+  --label:clamp(10px,.95vw,13px);
+  --title:min(5.8vw,8.6vh);
+  --ease:cubic-bezier(.77,0,.18,1);
+  --stroke:var(--ink);
+  --anchor:var(--ink);
+}
+*{box-sizing:border-box}
+html{scroll-snap-type:y proximity}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font-family:"Newsreader","Noto Serif KR",serif;-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden}
+.ko{font-family:"Noto Serif KR",serif}
+
+/* scroll track : one viewport per project */
+.track > div{height:100vh;scroll-snap-align:start}
+
+/* ================= COVER STAGE ================= */
+.stage{
+  position:fixed;inset:0;overflow:hidden;
+  transition:transform 1s var(--ease);
+  cursor:pointer;
+}
+body.detail-open .stage{transform:translateX(-100%)}
+.frame-grid{
+  position:absolute;inset:var(--mt) var(--m);
+  display:grid;grid-template-columns:repeat(7,1fr);column-gap:var(--g);
+  grid-template-rows:auto 1fr auto;
+}
+
+/* labels */
+.lbl{font-size:var(--label);line-height:1.35;position:relative;align-self:start}
+.slot{overflow:hidden;height:calc(var(--label)*1.35);position:relative}
+.slot.l3{height:calc(var(--label)*1.6*3)}
+.reel{will-change:transform}
+.reel > div{height:calc(var(--label)*1.35);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slot.l3 .reel > div{height:calc(var(--label)*1.6*3);white-space:normal;line-height:1.6}
+.top .lbl{grid-row:1}
+.bot{grid-row:3;align-self:start}
+.l-field{grid-column:1/2}
+.l-name{grid-column:3/4}
+.l-tools{grid-column:5/7}
+.l-team{grid-column:1/3}
+.l-desc{grid-column:3/7}
+.l-count{grid-column:7/8}
+.l-desc .reel > div{font-family:"Noto Serif KR",serif;font-size:calc(var(--label)*.96)}
+.l-name .reel > div{font-family:"Noto Serif KR","Newsreader",serif}
+
+/* symbol */
+.sym-wrap{grid-column:1/5;grid-row:2;position:relative;align-self:stretch;min-height:0}
+.sym-wrap svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sym path.shape{fill:none;stroke:var(--stroke);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:miter;transition:stroke .3s}
+.sym rect.anc{fill:var(--anchor);transition:fill .3s}
+.sym rect.sel{fill:var(--yellow);stroke:var(--anchor);stroke-width:1;vector-effect:non-scaling-stroke}
+.sym .bbox rect.box{fill:none;stroke:var(--guide-strong);stroke-width:1;vector-effect:non-scaling-stroke}
+.sym .bbox rect.h{fill:#fff;stroke:var(--guide-strong);stroke-width:1;vector-effect:non-scaling-stroke}
+.sym .bbox text{font:10px "Newsreader",serif;fill:#fff}
+.sym .bbox rect.tag{fill:var(--guide-strong)}
+
+/* title band */
+.title-band{
+  grid-column:5/8;grid-row:2;align-self:center;
+  height:calc(var(--title)*2.25);overflow:hidden;position:relative;
+  margin-right:calc(var(--m)*-1);padding-right:var(--m);
+}
+.title-band .reel > div{
+  height:calc(var(--title)*2.25);display:flex;flex-direction:column;justify-content:center;
+  font-family:"Instrument Serif",serif;font-weight:400;font-size:var(--title);line-height:1.04;letter-spacing:-.01em;
+}
+.title-band .reel span{display:block;white-space:nowrap}
+
+/* left-middle : back to the first intro page (shown on every project cover) */
+.stageBack{position:absolute;left:calc(var(--m) - 16px);top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:8px;background:none;border:0;padding:16px;cursor:pointer;font-family:"Newsreader","Noto Serif KR",serif;font-size:var(--label);letter-spacing:.06em;color:var(--sub);z-index:5}
+.stageBack:hover{color:var(--ink)}
+.stageBack svg{width:14px;height:14px;display:block;transition:transform .3s var(--ease)}
+.stageBack:hover svg{transform:translateX(-3px)}
+
+/* corner markers (selection-box icons) */
+.corner{position:absolute;right:calc(var(--m) - 12px);width:22px;height:22px;cursor:pointer;background:none;border:0;padding:0}
+.corner.tr{top:calc(var(--mt) - 12px)}
+.corner.br{bottom:calc(var(--mt) - 12px)}
+.corner svg{width:22px;height:22px;display:block}
+
+/* ================= GUIDES (Ctrl+; / G) ================= */
+.guides{position:absolute;inset:var(--mt) var(--m);pointer-events:none;opacity:0;transition:opacity .5s}
+.guides .cols{position:absolute;inset:0;display:grid;grid-template-columns:repeat(7,1fr);column-gap:var(--g)}
+.guides .cols i{border-left:1px solid var(--guide);border-right:1px solid var(--guide)}
+.guides .page{position:absolute;inset:0;border:1px solid var(--guide);border-top-color:var(--margin-line)}
+.guides .page::before{content:"";position:absolute;top:-1px;left:calc(var(--m)*-1);right:calc(var(--m)*-1);border-top:1px solid var(--margin-line)}
+body.show-guides .guides{opacity:1}
+.fr{outline:1px solid transparent;outline-offset:0;transition:outline-color .5s}
+body.show-guides .fr{outline-color:var(--guide)}
+body.show-guides{--stroke:var(--path-sel);--anchor:#10205a}
+
+/* cursor tag (smart-guide label) */
+.ctag{
+  position:fixed;left:0;top:0;pointer-events:none;z-index:40;
+  font:11px/1 "Newsreader",serif;letter-spacing:.02em;color:#fff;background:var(--guide-strong);
+  padding:4px 6px 3px;opacity:0;transition:opacity .2s;white-space:nowrap
+}
+.ctag.on{opacity:1}
+
+/* ================= DETAIL PAGE ================= */
+.detail{
+  position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;background:var(--paper);
+  transform:translateX(100%);transition:transform 1s var(--ease);z-index:20;
+  border-left:1px solid var(--guide);
+  overscroll-behavior:contain;
+}
+body.detail-open .detail{transform:translateX(0)}
+.detail.no-anim{transition:none}
+.detail.swap-out{transform:translateX(-100%)!important}
+.detail.swap-in{transform:translateX(100%)!important;transition:none}
+/* two panes on the 7-col grid : info (col 1–2, sticky) | gallery (col 3–7, scrolls) */
+.d-wrap{display:grid;grid-template-columns:repeat(7,1fr);column-gap:var(--g);padding:0 var(--m);align-items:start}
+.d-aside{
+  grid-column:1/3;position:sticky;top:0;height:100vh;overflow-y:auto;scrollbar-width:none;
+  display:flex;flex-direction:column;padding:var(--mt) calc(var(--g)*.5) var(--mt) 0;
+  border-right:1px solid rgba(125,134,245,.45);margin-right:calc(var(--g)*-.5);
+  font-size:var(--label);line-height:1.4
+}
+.d-aside::-webkit-scrollbar{display:none}
+.d-top{display:flex;justify-content:space-between}
+.d-top button{all:unset;cursor:pointer}
+.d-top button:hover,.d-nextbtn:hover{color:var(--guide-strong)}
+.dsym{position:relative;height:clamp(130px,25vh,250px);margin:3vh 0 2.4vh}
+.dsym svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.dtitle{margin:0;font-weight:400;font-family:"Instrument Serif",serif;font-size:clamp(28px,3.2vw,54px);line-height:1.04;letter-spacing:-.01em}
+.dtitle span{display:block;white-space:nowrap}
+.d-ko{font-family:"Noto Serif KR",serif;color:var(--sub);margin-top:.9em}
+.d-desc{font-family:"Noto Serif KR",serif;font-size:calc(var(--label)*1.08);line-height:1.75;margin:1.6em 0 2em}
+.d-info{display:grid;grid-template-columns:minmax(64px,.8fr) 2fr}
+.d-info .k,.d-info .v{padding:8px 0;border-top:1px solid rgba(17,17,17,.12)}
+.d-info .k{color:var(--sub);padding-right:10px}
+.d-info .v{font-family:"Noto Serif KR",serif;line-height:1.65}
+.d-nextbtn{all:unset;cursor:pointer;margin-top:auto;padding-top:3vh;display:block}
+.d-nextbtn b{display:block;margin-top:.4em;font-weight:400;font-family:"Instrument Serif",serif;font-size:calc(var(--label)*1.9);line-height:1.1}
+
+/* gallery : tight masonry */
+.d-gallery{grid-column:3/8;padding:var(--mt) 0 var(--mt);columns:2;column-gap:8px}
+.fig{margin:0 0 8px;position:relative;break-inside:avoid;background:#e6e8ec}
+.fig.wide{column-span:all}
+.fig.wide:not(.board) img{max-height:calc(100vh - var(--mt)*2);object-fit:cover}
+.fig.board{background:#fff;padding:clamp(20px,7%,64px)}
+.fig.board img{width:100%;height:auto;max-height:56vh;object-fit:contain}
+.fig.board.wide img{max-height:40vh}
+.fig.board:not(.wide) img{max-height:34vh}
+.strip{display:grid;grid-template-columns:repeat(8,1fr);gap:clamp(6px,1.4vw,20px)}
+.d-empty{font-family:"Noto Serif KR",serif;font-size:var(--label);color:var(--sub);padding:var(--mt) 0}
+.strip img{image-rendering:pixelated}
+.fig img{display:block;width:100%;height:auto}
+.fig figcaption{
+  position:absolute;left:0;top:0;z-index:2;opacity:0;transition:opacity .2s;
+  font:11px/1 "Newsreader",serif;color:#fff;background:var(--guide-strong);padding:4px 6px 3px;display:flex;gap:.8em
+}
+.fig::after{content:"";position:absolute;inset:0;outline:1px solid var(--guide-strong);outline-offset:-1px;opacity:0;transition:opacity .2s;pointer-events:none}
+.fig .hd{position:absolute;width:7px;height:7px;background:#fff;border:1px solid var(--guide-strong);opacity:0;transition:opacity .2s;z-index:1}
+.fig .hd.a{left:-3px;top:-3px}.fig .hd.b{right:-3px;top:-3px}.fig .hd.c{left:-3px;bottom:-3px}.fig .hd.d{right:-3px;bottom:-3px}
+.fig:hover::after,.fig:hover .hd,.fig:hover figcaption{opacity:1}
+
+/* ================= INTRO — 2 pages shown before the cover stage ================= */
+body.intro-open{overflow:hidden}
+.intro{position:fixed;inset:0;z-index:30;overflow:hidden;background:var(--paper);transition:transform 1s var(--ease)}
+body:not(.intro-open) .intro{transform:translateX(-100%);pointer-events:none}
+.intro-track{position:absolute;inset:0;width:200%;display:flex;transition:transform 1s var(--ease)}
+body.intro-page2 .intro-track{transform:translateX(-50%)}
+.intro-page{width:50%;height:100%;position:relative;flex:none}
+.intro-grid{position:absolute;inset:var(--mt) var(--m);display:grid;grid-template-columns:repeat(7,1fr);column-gap:var(--g);grid-template-rows:auto 1fr auto;height:calc(100% - var(--mt)*2)}
+.intro .lbl{font-size:var(--label);line-height:1.35}
+.i-field{grid-column:1/3;grid-row:1}
+.i-name{grid-column:3/5;grid-row:1;text-align:center}
+.i-tools{grid-column:5/8;grid-row:1;text-align:right}
+.i-edu{grid-column:1/3;grid-row:3;align-self:start}
+.i-awd{grid-column:3/7;grid-row:3;align-self:start;font-family:"Noto Serif KR",serif;font-size:calc(var(--label)*.96);line-height:1.55}
+.i-count{grid-column:7/8;grid-row:3;align-self:start;text-align:right;justify-self:end}
+.i-count-btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:var(--label);color:var(--ink)}
+.i-count-btn svg{width:11px;height:11px;transition:transform .3s var(--ease)}
+.i-count-btn:hover svg{transform:translateY(2px)}
+.i-title{grid-column:5/8;grid-row:2;align-self:center;position:relative}
+.i-title h1{margin:0;font-family:"Instrument Serif",serif;font-weight:400;font-size:var(--title);line-height:1.02;letter-spacing:-.01em}
+.i-title h1 span{display:block;white-space:nowrap}
+.i-title h1 span.hl{background-image:linear-gradient(var(--yellow),var(--yellow));background-repeat:no-repeat;background-size:100% .26em;background-position:0 92%}
+.i-symzone{grid-column:1/5;grid-row:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:calc(var(--g)*.7)}
+.i-padcap{display:flex;justify-content:space-between;width:100%;max-width:560px}
+
+.drawpad{position:relative;width:min(44vw,560px);aspect-ratio:10/7;background:var(--yellow)}
+.drawpad .dots{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,var(--ink) 1px,transparent 1.4px);background-size:10% 14.29%;background-position:5% 7.14%;opacity:.3}
+.dp-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(7,1fr)}
+.dp-cell{border:0;background:transparent;padding:0;cursor:pointer;position:relative}
+.dp-cell::after{content:"";position:absolute;left:50%;top:50%;width:56%;height:56%;background:var(--ink);opacity:0;border-radius:50%;transform:translate(-50%,-50%) scale(.6);transition:opacity .12s,transform .12s}
+.dp-cell[data-shape]::after{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.dp-cell[data-shape="square"]::after{border-radius:0}
+.drawpad[data-tool="square"] .dp-cell:not([data-shape]):hover::after{border-radius:0}
+.dp-cell:not([data-shape]):hover::after{opacity:.25;transform:translate(-50%,-50%) scale(.7)}
+.dp-toolbar{position:absolute;left:10px;bottom:10px;display:flex;gap:6px;z-index:2}
+.dp-tool{all:unset;cursor:pointer;width:26px;height:26px;box-sizing:border-box;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;background:transparent;color:var(--ink)}
+.dp-tool.active{background:var(--ink);color:var(--yellow)}
+.dp-tool svg{width:12px;height:12px;display:block}
+.dp-clear{all:unset;cursor:pointer;position:absolute;right:10px;bottom:10px;z-index:2;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.dp-clear:hover{opacity:.6}
+
+.intro .navlink{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:10px;font-family:"Instrument Serif",serif;font-size:calc(var(--label)*1.9);color:var(--ink)}
+.intro .navlink svg{width:15px;height:15px;transition:transform .3s var(--ease)}
+.intro .navlink.down:hover svg{transform:translateY(3px)}
+.intro .navlink.right:hover svg{transform:translateX(3px)}
+.intro .backlink{all:unset;cursor:pointer;font-size:var(--label);letter-spacing:.06em;color:var(--sub)}
+.intro .backlink:hover{color:var(--ink)}
+.intro .foot{position:absolute;left:var(--m);right:var(--m);bottom:var(--mt);display:flex;justify-content:space-between;align-items:center}
+.intro .dlmini{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-size:var(--label);color:var(--sub)}
+.intro .dlmini:hover{color:var(--ink)}
+.intro .dlmini svg{width:13px;height:13px}
+
+.works-list{grid-column:1/8;grid-row:2;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.work-row{display:grid;grid-template-columns:44px 1.5fr 190px 2fr;column-gap:20px;align-items:baseline;padding:calc(var(--mt)*.32) 0;border-top:1px solid rgba(17,17,17,.12);text-decoration:none;color:var(--ink);cursor:pointer;background:none}
+.work-row:hover{color:var(--guide-strong)}
+.work-row .idx{font-family:"Newsreader",serif;font-style:italic;font-size:var(--label);color:var(--sub)}
+.work-row:hover .idx{color:var(--guide-strong)}
+.work-row .nm b{font-family:"Instrument Serif",serif;font-weight:400;font-size:calc(var(--label)*1.9)}
+.work-row .nm i{font-family:"Noto Serif KR",serif;font-style:normal;font-size:calc(var(--label)*.9);color:var(--sub);margin-left:10px}
+.work-row .fd{font-family:"Noto Serif KR",serif;font-size:calc(var(--label)*.92);color:var(--sub)}
+.work-row .ds{font-family:"Noto Serif KR",serif;font-size:calc(var(--label)*.96);line-height:1.5}
+
+@media (max-width:760px){
+  .i-symzone{grid-column:1/8;grid-row:2}
+  .i-title{grid-column:1/8;grid-row:3}
+  .i-edu{grid-row:4;grid-column:1/4}
+  .i-awd{grid-row:4;grid-column:4/8}
+  .i-count{grid-row:5;grid-column:1/8;text-align:left;justify-self:start;margin-top:10px}
+  .intro-grid{grid-template-rows:auto 1fr auto auto auto}
+  .drawpad{width:80vw}
+  .work-row{grid-template-columns:32px 1fr;row-gap:4px}
+  .work-row .fd,.work-row .ds{grid-column:2/3}
+}
+
+/* ================= SMALL SCREENS ================= */
+@media (max-width:760px){
+  :root{--title:11vw;--label:11px}
+  .l-name{grid-column:4/8}
+  .l-tools{display:none}
+  .l-team{grid-column:1/4}
+  .l-desc{grid-column:4/8}
+  .l-count{display:none}
+  .slot.l3,.slot.l3 .reel > div{height:calc(var(--label)*1.6*5)}
+  .sym-wrap{grid-column:1/8;height:38vh;align-self:center}
+  .frame-grid{grid-template-rows:auto 1fr auto auto 1fr auto}
+  .top .lbl{grid-row:1}
+  .sym-wrap{grid-row:2}
+  .title-band{grid-column:1/8;grid-row:3;margin-right:0;padding-right:0}
+  .bot{grid-row:6}
+}
+@media (max-width:900px){
+  .d-aside{grid-column:1/8;position:static;height:auto;overflow:visible;border-right:0;margin-right:0;padding-right:0}
+  .d-gallery{grid-column:1/8;columns:1;padding-top:0}
+  .d-nextbtn{margin-top:4vh}
+  .fig{background:none}
+  .fig figcaption{opacity:1;position:static;background:none;color:var(--sub);padding:6px 0 0}
+}
+@media (prefers-reduced-motion:reduce){
+  .stage,.detail{transition:none}
+}
+</style>
+</head>
+<body class="intro-open">
+
+<div class="track" id="track"></div>
+
+<!-- ============ INTRO — shown before the project cover stage ============ -->
+<div class="intro" id="intro">
+  <div class="intro-track" id="introTrack">
+
+    <section class="intro-page" id="introPage1">
+      <div class="intro-grid">
+        <span class="lbl ko i-field">Portfolio</span>
+        <span class="lbl ko i-name">김태희</span>
+        <span class="lbl i-tools">Illustrator · Photoshop · Figma · After Effects</span>
+
+        <div class="i-symzone">
+          <div class="drawpad" id="drawpad" data-tool="circle">
+            <div class="dots"></div>
+            <div class="dp-grid" id="dpGrid"></div>
+            <div class="dp-toolbar">
+              <button class="dp-tool active" data-tool="circle" aria-label="Circle" title="Circle"><svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="currentColor"/></svg></button>
+              <button class="dp-tool" data-tool="square" aria-label="Square" title="Square"><svg viewBox="0 0 14 14"><rect x="1" y="1" width="12" height="12" fill="currentColor"/></svg></button>
+            </div>
+            <button class="dp-clear" id="dpClear">Clear</button>
+          </div>
+          <div class="i-padcap">
+            <span class="lbl ko">그려보세요 — 도형으로 남기는 자국</span>
+            <span class="lbl">Draw</span>
+          </div>
+        </div>
+
+        <div class="i-title"><h1><span>KIM</span><span class="hl">TAEHUI</span></h1></div>
+
+        <span class="lbl ko i-edu">Sejong University<br>디자인이노베이션학과</span>
+        <span class="lbl ko i-awd">Asia Design Prize · Graphis New Talent Award<br>제59회 대한민국 디자인 전람회 입선 외 수상 6건</span>
+        <button class="lbl i-count i-count-btn" id="introToWorks"><span id="introCount">Works</span>
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5V16" stroke="currentColor" stroke-width="1"/><path d="M4 10.5L10 16.5L16 10.5" stroke="currentColor" stroke-width="1"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section class="intro-page" id="introPage2">
+      <div class="intro-grid">
+        <span class="lbl ko i-field">Selected Works</span>
+        <span class="lbl i-tools" id="introWorksHead" style="grid-column:5/8">Projects · 2022 — 2026</span>
+        <div class="works-list" id="worksList"></div>
+      </div>
+      <div class="foot">
+        <button class="backlink" id="introBack">← Intro</button>
+        <a class="dlmini" href="#" id="introDl" title="PDF 다운로드 — 준비중">Portfolio PDF
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5V13" stroke="currentColor" stroke-width="1"/><path d="M5.2 9L10 13.5L14.8 9" stroke="currentColor" stroke-width="1"/><path d="M3 17H17" stroke="currentColor" stroke-width="1"/></svg>
+        </a>
+        <button class="navlink right" id="introEnter">Enter Works
+          <svg viewBox="0 0 20 20" fill="none"><path d="M2.5 10H16" stroke="currentColor" stroke-width="1"/><path d="M10.5 4L16.5 10L10.5 16" stroke="currentColor" stroke-width="1"/></svg>
+        </button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ============ COVER ============ -->
+<main class="stage" id="stage" aria-label="Project index">
+  <div class="guides" aria-hidden="true"><div class="page"></div><div class="cols"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+
+  <div class="frame-grid">
+    <div class="lbl top l-field fr"><div class="slot"><div class="reel" data-key="field"></div></div></div>
+    <div class="lbl top l-name fr"><div class="slot"><div class="reel" data-key="nameKo"></div></div></div>
+    <div class="lbl top l-tools fr"><div class="slot"><div class="reel" data-key="tools"></div></div></div>
+
+    <div class="sym-wrap" id="symWrap"><svg class="sym" id="sym" viewBox="0 0 440 300" preserveAspectRatio="xMidYMid meet"></svg></div>
+
+    <div class="title-band fr"><div class="reel" data-key="title"></div></div>
+
+    <div class="lbl bot l-team fr"><div class="slot"><div class="reel" data-key="team"></div></div></div>
+    <div class="lbl bot l-desc fr"><div class="slot l3"><div class="reel" data-key="desc"></div></div></div>
+    <div class="lbl bot l-count"><div class="slot"><div class="reel" data-key="count"></div></div></div>
+  </div>
+
+  <button class="stageBack" id="stageBackBtn" title="Back to intro" aria-label="Back to intro">
+    <svg viewBox="0 0 20 20" fill="none"><path d="M16 10H4" stroke="currentColor" stroke-width="1"/><path d="M9.5 4L3.5 10L9.5 16" stroke="currentColor" stroke-width="1"/></svg>
+    Intro
+  </button>
+  <button class="corner tr" id="guideBtn" title="Show / hide guides (G)" aria-label="Toggle guides">
+    <svg viewBox="0 0 22 22"><rect x="4" y="5" width="13" height="13" fill="none" stroke="#111"/><rect x="2.5" y="3.5" width="3" height="3" fill="#111"/><rect x="2.5" y="16.5" width="3" height="3" fill="#111"/><rect x="15.5" y="16.5" width="3" height="3" fill="#111"/><rect x="14" y="1" width="6" height="6" fill="#e2e400" stroke="#111"/></svg>
+  </button>
+  <button class="corner br" id="nextBtn" title="Next project" aria-label="Next project">
+    <svg viewBox="0 0 22 22"><rect x="5" y="4" width="13" height="13" fill="none" stroke="#111"/><rect x="3.5" y="2.5" width="3" height="3" fill="#111"/><rect x="16.5" y="2.5" width="3" height="3" fill="#111"/><rect x="3.5" y="15.5" width="3" height="3" fill="#111"/><rect x="15" y="15" width="6" height="6" fill="#e2e400" stroke="#111"/></svg>
+  </button>
+</main>
+
+<!-- ============ DETAIL ============ -->
+<article class="detail" id="detail" aria-live="polite"></article>
+
+<div class="ctag" id="ctag">open →</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><path id="sampler"/></svg>
+
+<script>
+/* =========================================================
+   PROJECT DATA
+   field  : 분야          tools : 사용 프로그램
+   team   : 팀/개인 (기여도) desc  : 표지용 한 줄 설명
+   ※ TODO 표시된 값은 폴더 구조에서 추정한 값 — 확인 후 수정
+   ========================================================= */
+/* gallery — curated by _tools/build-gallery.py (w: full width · b: white artboard) */
+const GALLERY = {"voyeur":[{"src":"_web/voyeur/01_관음전시_4posters.webp","cap":"Poster series","f":"w"},{"src":"_web/voyeur/02_관음전시_poster.webp","cap":"Main poster","f":""},{"src":"_web/voyeur/03_관음전시_poster2.webp","cap":"Poster — in hand","f":""},{"src":"_web/voyeur/04_관음전시_Office Glass.webp","cap":"Glass signage","f":"w"},{"src":"_web/voyeur/05_관음전시_book and cover1.webp","cap":"Catalogue — cover","f":""},{"src":"_web/voyeur/06_관음전시_Small book.webp","cap":"Catalogue — spread","f":""},{"src":"_web/voyeur/07_관음전시_poster.webp","cap":"Poster — wall","f":""},{"src":"_web/voyeur/08_관음전시_plastic bag.webp","cap":"Plastic bag","f":""}],"flant":[{"src":"FLANT/2_logos/Logo_Primary.svg","cap":"Primary logo","f":"wb"},{"src":"FLANT/2_logos/Logo_symbol.svg","cap":"Symbol","f":"b"},{"src":"FLANT/2_logos/Logo_combination.svg","cap":"Combination","f":"b"},{"src":"FLANT/1_Color palletes.svg","cap":"Colour palette","f":"wb"},{"src":"_web/flant/05_Main_Poster.webp","cap":"Main poster","f":""},{"src":"FLANT/3_Posters/Sub_Poster_Poester1.svg","cap":"Poster 01","f":""},{"src":"FLANT/3_Posters/Sub_Poster_Poester2.svg","cap":"Poster 02","f":""},{"src":"FLANT/3_Posters/Sub_Poster_Poester4.svg","cap":"Poster 03","f":""},{"src":"FLANT/4_Packages/Boxes_1.svg","cap":"Package dieline — A","f":"b"},{"src":"FLANT/4_Packages/Boxes_3.svg","cap":"Package dieline — B","f":"b"},{"src":"FLANT/6_Graphic elements/Graphic_Hand.svg","cap":"Graphic — hand","f":"b"},{"src":"FLANT/6_Graphic elements/Graphic_Root.svg","cap":"Graphic — root","f":"b"},{"src":"_web/flant/13_flanny.webp","cap":"Character Flanny — turnaround","f":"wb"},{"src":"FLANT/5_Character/Flanny_Standard.svg","cap":"Flanny — flat","f":"b"}],"kalido":[{"src":"Kalido/2_logos/Primary_dark.svg","cap":"Primary logo","f":"wb"},{"src":"Kalido/2_logos/Logo Variability_logic.svg","cap":"Logo variability logic","f":"w"},{"src":"Kalido/2_logos/dark_3.svg","cap":"Signature — burst","f":"b"},{"src":"Kalido/2_logos/Signiture_1.svg","cap":"Signature — ring","f":"b"},{"src":"Kalido/1_Color palletes.svg","cap":"Colour palette","f":"wb"},{"src":"_web/kalido/06_Poster1.webp","cap":"Poster — Beyond Color","f":""},{"src":"_web/kalido/07_Poster2.webp","cap":"Poster — Beyond Limit","f":""},{"src":"Kalido/4_Graphic elements/bussiness card_Back.svg","cap":"Business card — back","f":"b"},{"src":"Kalido/4_Graphic elements/bussiness card_Front.svg","cap":"Business card — front","f":"b"},{"src":"Kalido/4_Graphic elements/tags-30.svg","cap":"Hang tag","f":"b"},{"src":"Kalido/4_Graphic elements/tags-29.svg","cap":"Hang tag — level","f":"b"},{"src":"Kalido/4_Graphic elements/white_app.svg","cap":"App icon","f":"b"},{"src":"Kalido/4_Graphic elements/dark_web.svg","cap":"Web tab","f":"b"},{"src":"_web/kalido/14_Typo (1).webp","cap":"Lettering","f":""},{"src":"_web/kalido/15_main_holds (2).webp","cap":"Hold set","f":""},{"src":"_web/kalido/16_tag.webp","cap":"Woven label","f":""}],"starry":[{"src":"_web/starry/01_S_12_BI.webp","cap":"Brand identity","f":"w"},{"src":"STARRY/1_Logo/Logo_Primary-02.svg","cap":"Wordmark","f":"b"},{"src":"STARRY/1_Logo/Logo_Symbol-04.svg","cap":"Symbol","f":"b"},{"src":"_web/starry/04_S_1_thumb.webp","cap":"Service key visual","f":"w"},{"src":"_web/starry/05_S_5_problem.webp","cap":"Problem → solution","f":""},{"src":"_web/starry/06_S_6_Userflow.webp","cap":"User flow","f":""},{"src":"_web/starry/07_S_7_Preview.webp","cap":"Screen preview","f":""},{"src":"_web/starry/08_S_10_image.webp","cap":"Campaign","f":"w"},{"src":"_web/starry/09_S_13_image.webp","cap":"App & goods","f":"w"},{"src":"_web/starry/10_Tary (1).webp","cap":"Character Tary — line","f":"b"},{"src":"_web/starry/11_Gemini_Generated_Image_dmt1sfdmt1sfdmt1.webp","cap":"Character Tary — colour","f":"b"},{"src":"_web/starry/12_Clicker.webp","cap":"Keycap keyring","f":"b"},{"src":"_web/starry/13_S_15_thx.webp","cap":"Business card","f":"w"}],"seolred":[{"src":"SeolRed/2_logo/Primary.svg","cap":"Primary logo","f":"wb"},{"src":"SeolRed/2_logo/Symbol type-00.svg","cap":"Symbol — colour","f":"b"},{"src":"SeolRed/2_logo/Symbol type-02.svg","cap":"Symbol — line","f":"b"},{"src":"SeolRed/1_Color paleltes.svg","cap":"Colour palette","f":"wb"},{"src":"_web/seolred/05_Poster.webp","cap":"Poster","f":"w"},{"src":"_web/seolred/06_paperbag.webp","cap":"Shopping bag","f":""},{"src":"_web/seolred/07_boxes.webp","cap":"Gift box","f":""},{"src":"_web/seolred/08_Ice cream.webp","cap":"Ice cream cup","f":""},{"src":"_web/seolred/09_2 Coffee Bottle.webp","cap":"Bottle label","f":""},{"src":"_web/seolred/10_Business_Card.webp","cap":"Business card","f":""},{"src":"_web/seolred/11_hang tag mockup.webp","cap":"Hang tag","f":""},{"src":"_web/seolred/12_calendar.webp","cap":"Calendar","f":""},{"src":"_web/seolred/13_Billboard.webp","cap":"Pop-up billboard","f":"w"}],"yomyom":[{"src":"_web/yomyom/01_프로젝트 소개-01.webp","cap":"Key art","f":""},{"src":"_web/yomyom/02_카드 (1).webp","cap":"MagSafe card wallet","f":""},{"src":["YomYom/2_Motions/breath_f1.svg","YomYom/2_Motions/walk_f1.svg","YomYom/2_Motions/sleep_f1.svg","YomYom/2_Motions/eat_f1.svg","YomYom/2_Motions/poop_f1.svg","YomYom/2_Motions/hold_f1.svg","YomYom/2_Motions/angry_f1.svg","YomYom/2_Motions/heart_f1.svg"],"cap":"Character motion — 8 states","f":"wb"},{"src":"_web/yomyom/04_다꾸 (2).webp","cap":"Sticker & tape set","f":""},{"src":"_web/yomyom/05_카드 (5).webp","cap":"Card wallet — detail","f":""},{"src":"_web/yomyom/06_다꾸 (4).webp","cap":"Card sticker","f":""},{"src":"_web/yomyom/07_렌티큘러 (1).webp","cap":"Lenticular keyring","f":""},{"src":"_web/yomyom/08_다꾸 (6).webp","cap":"Masking tape","f":""},{"src":"_web/yomyom/09_다꾸 (1).webp","cap":"Pencil","f":""},{"src":"_web/yomyom/10_프로젝트 소개-04.webp","cap":"Funding page — features","f":""},{"src":"_web/yomyom/11_프로젝트 소개-07.webp","cap":"Funding page — plans","f":""}],"misfortune":[{"src":"_web/misfortune/01_Board.webp","cap":"Exhibition board","f":"w"},{"src":"_web/misfortune/02_Basic (1).webp","cap":"Flyer 01 — front","f":""},{"src":"_web/misfortune/03_Second (1).webp","cap":"Flyer 02 — front","f":""},{"src":"_web/misfortune/04_Third (1).webp","cap":"Flyer 03 — front","f":""},{"src":"_web/misfortune/05_Sixth (2).webp","cap":"Flyer 06 — back","f":""},{"src":"_web/misfortune/06_fifth (2).webp","cap":"Flyer 05 — back","f":""},{"src":"_web/misfortune/07_Basic (2).webp","cap":"Flyer 01 — back","f":""},{"src":"_web/misfortune/08_flyers (1).webp","cap":"Flyer system","f":"w"},{"src":"_web/misfortune/09_Stand.webp","cap":"Standing banner","f":""},{"src":"_web/misfortune/10_Poster (2).webp","cap":"Poster","f":""},{"src":"_web/misfortune/11_mailbox.webp","cap":"Mailbox card","f":""},{"src":"_web/misfortune/12_Thread.webp","cap":"Thread package","f":""},{"src":"_web/misfortune/13_name tag.webp","cap":"Staff name tag","f":""},{"src":"_web/misfortune/14_Survey2.webp","cap":"Survey sheet","f":""}],"sipsi":[{"src":"_web/sipsi/01_sipsi_bappol.webp","cap":"밥풀이 — main character","f":"wb"},{"src":"_web/sipsi/02_sipsi_faces.webp","cap":"밥풀이 — emotions","f":"wb"},{"src":"_web/sipsi/03_sipsi_hankong.webp","cap":"한콩이 — turnaround","f":"wb"},{"src":"_web/sipsi/04_sipsi_dukong.webp","cap":"두콩이 — turnaround","f":"wb"},{"src":"_web/sipsi/05_한콩두콩_lean on.webp","cap":"한콩이 & 두콩이","f":"b"},{"src":"_web/sipsi/06_bappol-31.webp","cap":"밥풀이 — volunteer","f":"b"},{"src":"_web/sipsi/07_Sipsi_07_sns_grid.webp","cap":"SNS card news","f":""},{"src":"_web/sipsi/08_Sipsi_12_sticker_macro.webp","cap":"Sticker","f":""}]};
+const PROJECTS = [
+  {
+    id:'voyeur', title:['VOYEUR','EXHIBITION'], nameKo:'관음전시',
+    field:'Exhibition Branding', tools:'Illustrator · Photoshop · InDesign', /* TODO 확인 */
+    team:'Team (30%)',
+    desc:'보는 행위 자체를 전시로 만드는 ‘관음’ 전시 브랜딩. 구멍 너머의 시선을 포스터·도록·AR 필터·렌티큘러 티켓으로 확장.',
+    role:'전시 아이덴티티 · 포스터 · 어플리케이션', /* TODO 확인 */
+    overview:'관람객이 작품을 보는 동시에 스스로가 ‘보여지는’ 구조를 시각 언어로 설계했다. 타공 패널과 눈의 형상을 핵심 모티프로 삼아, 포스터부터 공간 사인·도록·AR 필터까지 하나의 시선 체계로 연결했다.'
+  },
+  {
+    id:'flant', title:['FLANT'], nameKo:'플랜트',
+    field:'Branding', tools:'Illustrator · Photoshop', /* TODO 확인 */
+    team:'Individual (100%)', /* TODO 확인 */
+    desc:'뿌리에서 필라멘트로 — 3D 프린팅 화분 브랜드. 로고·포스터·패키지와 캐릭터 ‘플래니’까지 아이덴티티 전반을 설계.',
+    role:'BI · 포스터 · 패키지 · 캐릭터',
+    overview:'식물과 3D 프린팅 필라멘트의 층(layer line)을 하나의 형태 논리로 묶었다. 컬러 팔레트, 로고 시스템, 포스터 시리즈, 패키지, 캐릭터 Flanny와 굿즈로 브랜드 경험을 확장했다.'
+  },
+  {
+    id:'kalido', title:['KALEIDO'], nameKo:'칼레이도',
+    field:'Branding · UI', tools:'Illustrator · Photoshop · Figma', /* TODO 확인 */
+    team:'Individual (100%)', /* TODO 확인 */
+    desc:'레벨별 클라이밍 홀드 세트 브랜드. 가변 로고 시스템을 중심으로 패키지·짐 사인·앱 UI까지 확장.',
+    role:'BI · 가변 로고 · 패키지 · UI',
+    overview:'홀드의 형태와 난이도를 가변 로고 로직으로 치환했다. 레벨별 홀드 세트, 태그, 명함, 카톤 패키지, 암장 사인, 앱/웹 UI까지 하나의 시스템으로 운영되도록 설계했다.'
+  },
+  {
+    id:'starry', title:['STARRY'], nameKo:'스태리',
+    field:'Service Design · UX/UI', tools:'Figma · Illustrator · Photoshop',
+    team:'Team — Designer', /* TODO 기여도(%) 입력 */
+    desc:'나를 아는 사람들의 답변이 별이 되어 나만의 별자리를 완성하는 소셜 자기탐색 웹앱. 실제 런칭 완료.',
+    role:'서비스 기획 · UX/UI · IP 확장 · 마케팅 콘텐츠',
+    overview:'MBTI 같은 자기평가 테스트의 편향에서 출발했다. 결과를 레이블이 아닌 반짝이는 별로 보여주도록 감정을 먼저 설계했고, 개발자와 구현을 검토하고 런칭 후 마케터와 콘텐츠를 협업했다.'
+  },
+  {
+    id:'seolred', title:['SEOL','RED'], nameKo:'설레드',
+    field:'Branding · Packaging', tools:'Illustrator · Photoshop', /* TODO 확인 */
+    team:'Individual (100%)', /* TODO 확인 */
+    desc:'사과 가공품(잼·주스·아이스크림) 브랜드. 껍질이 이어지는 나선을 그래픽 요소로 삼아 패키지와 굿즈로 전개.',
+    role:'BI · 그래픽 요소 · 패키지 · 목업',
+    overview:'사과를 깎을 때 끊기지 않고 이어지는 껍질의 나선을 브랜드의 형태 언어로 가져왔다. 심볼 타입 3종과 작은 도형 요소로 잼·주스·아이스크림 패키지와 쇼핑백, 행택, 캘린더까지 확장했다.'
+  },
+  {
+    id:'yomyom', title:['YOMYOM'], nameKo:'욤욤',
+    field:'Service · BI/BX · UI/UX', tools:'Illustrator · After Effects · Claude',
+    team:'Individual (100%)',
+    desc:'친칠라가 텍스트를 먹고 배달하는, 데스크톱 위의 우편배달부 메신저. PC 투명 오버레이 소셜 앱.',
+    role:'기획 · 세계관 설계 · BI/BX · UI/UX · 프로토타입 개발',
+    overview:'메신저의 “보내기”는 너무 기능적이다. .txt 파일을 친구의 친칠라에게 먹이면 친구 화면에 똥 아이콘으로 배달되는 세계관을 만들고, 8종 캐릭터 모션과 Windows 95 UI로 실제 작동 데모까지 1인이 전담했다.'
+  },
+  {
+    id:'misfortune', title:['MISFORTUNE','INHERITANCE'], nameKo:'불행상속',
+    field:'Campaign · Exhibition', tools:'Illustrator · Photoshop · InDesign', /* TODO 확인 */
+    team:'Individual (100%)', /* TODO 확인 */
+    desc:'대물림되는 불행을 주제로 한 전시 캠페인. 6종 플라이어 카드와 포스터, 설문, 우체통 설치물로 구성.',
+    role:'캠페인 아이덴티티 · 플라이어 · 공간 그래픽',
+    overview:'손에서 손으로 건네지는 카드를 ‘상속’의 매개로 설정했다. 6종 플라이어 카드, 포스터, 설문지, 명찰, 우체통과 전시 배너까지 부식된 금속의 질감과 사선 구도로 통일했다.'
+  },
+  {
+    id:'sipsi', title:['SIPSI','ILBAP'], nameKo:'십시일밥',
+    field:'Character Rebranding', tools:'Illustrator · Photoshop',
+    team:'Team — 디자인 부팀장',
+    desc:'청년 식사 지원 봉사단체 캐릭터 리브랜딩. 작은 화면에서도 식별되는 메인 캐릭터와 서브 캐릭터 한콩이·두콩이를 설계.',
+    role:'캐릭터 리디자인 · 감정 베리에이션 · 홍보물',
+    overview:'기존 손그림 캐릭터가 작은 화면에서 식별이 어려운 문제를 해결했다. 봉사자·수혜자의 관계를 표현하는 서브 캐릭터와 감정 베리에이션을 만들고, 비전공자도 꾸준히 활용할 수 있도록 설계해 임기 종료 후에도 사용 중이다.'
+  },
+  {
+    /* TODO — 아래 필드를 실제 프로젝트 정보로 채워주세요 */
+    id:'gimpick', title:['GIMPICK'], nameKo:'TODO',
+    field:'TODO', tools:'TODO',
+    team:'TODO',
+    desc:'TODO — 표지에 보일 한 줄 소개.',
+    role:'TODO',
+    overview:'TODO — 상세페이지 개요 문단.'
+  },
+  {
+    /* TODO — 아래 필드를 실제 프로젝트 정보로 채워주세요 */
+    id:'hardcopy', title:['HARDCOPY'], nameKo:'TODO',
+    field:'TODO', tools:'TODO',
+    team:'TODO',
+    desc:'TODO — 표지에 보일 한 줄 소개.',
+    role:'TODO',
+    overview:'TODO — 상세페이지 개요 문단.'
+  },
+  {
+    /* TODO — 아래 필드를 실제 프로젝트 정보로 채워주세요 */
+    id:'puffnote', title:['PUFFNOTE'], nameKo:'TODO',
+    field:'TODO', tools:'TODO',
+    team:'TODO',
+    desc:'TODO — 표지에 보일 한 줄 소개.',
+    role:'TODO',
+    overview:'TODO — 상세페이지 개요 문단.'
+  }
+];
+
+/* =========================================================
+   SYMBOLS — real project vectors shown in outline mode
+   · FLANT / KALEIDO / STARRY / SEOLRED / YOMYOM : original logo & character SVGs
+   · VOYEUR : reference eye   · MISFORTUNE / SIPSI : redrawn from flyer & character art
+   Normalised into a 440 × 300 box (grid col 1–4) by build-symbols.js
+   ========================================================= */
+const SYMBOLS = {"voyeur":{"shapes":[{"d":"M56,151L255,204L374,175L374,198L255,233L56,174Z","f":[0.29169,0.46517,0.49775,0.67343,0.96742]},{"d":"M56,105L255,68L374,96L374,119L255,92L56,130Z","f":[0.29029,0.46561,0.49859,0.6736,0.96415]},{"d":"M255,98C283.72,98 307,121.28 307,150C307,178.72 283.72,202 255,202C226.28,202 203,178.72 203,150C203,121.28 226.28,98 255,98Z","f":[0.25,0.5,0.75]},{"d":"M267,127C284.12,127 298,140.88 298,158C298,175.12 284.12,189 267,189C249.88,189 236,175.12 236,158C236,140.88 249.88,127 267,127Z","f":[0.25,0.5,0.75]},{"d":"M267,136C279.15,136 289,145.85 289,158C289,170.15 279.15,180 267,180C254.85,180 245,170.15 245,158C245,145.85 254.85,136 267,136Z","f":[0.25,0.5,0.75]}],"anchors":[[56,105],[255,68],[374,96],[255,92],[56,130],[56,151],[255,204],[374,175],[374,198],[255,233],[255,98],[307,150],[255,202],[236,158],[298,158],[267,127],[267,189],[245,158],[267,136]],"sel":[[374,119],[56,174],[203,150],[289,158],[267,180]]},"flant":{"shapes":[{"d":"M81.29,81L93.46,81C90.86,81 88.67,83.18 88.67,85.78L88.67,122.22C88.67,124.82 90.86,127 93.46,127L105.63,127C103.03,127 100.84,129.18 100.84,131.78L100.84,168.22C100.84,170.82 103.03,173 105.63,173L117.8,173C115.2,173 113.02,175.18 113.02,177.78L113.02,214.22C113.02,216.82 115.2,219 117.8,219L129.97,219C127.37,219 125.19,221.18 125.19,223.78L125.19,260.22C125.19,262.82 127.37,265 129.97,265L166.4,265C169.01,265 171.19,262.82 171.19,260.22L171.19,249.05C171.19,250.81 172.61,252.24 174.38,252.24L214,252.24C215.76,252.24 217.19,250.81 217.19,249.05L217.19,235.03C217.19,233.27 215.76,231.84 214,231.84L174.38,231.84C172.61,231.84 171.19,233.27 171.19,235.03L171.19,223.87C171.19,221.27 169.01,219.08 166.4,219.08L154.23,219.08C156.83,219.08 159.02,216.9 159.02,214.3L159.02,177.87C159.02,175.27 156.83,173.08 154.23,173.08L142.06,173.08C144.66,173.08 146.84,170.9 146.84,168.3L146.84,131.87C146.84,129.27 144.66,127.08 142.06,127.08L129.89,127.08C132.49,127.08 134.67,124.9 134.67,122.3L134.67,85.87C134.67,83.27 132.49,81.08 129.89,81.08L117.72,81.08C120.32,81.08 122.5,78.9 122.5,76.3L122.5,39.78C122.5,37.18 120.32,35 117.72,35L81.29,35C78.68,35 76.5,37.18 76.5,39.78L76.5,76.22C76.5,78.82 78.68,81 81.29,81Z","f":[0.01553,0.0251,0.07158,0.08114,0.09667,0.10624,0.15272,0.16229,0.17781,0.18738,0.23386,0.24343,0.25896,0.26852,0.315,0.32457,0.37105,0.38062,0.39486,0.40125,0.4518,0.4582,0.47608,0.48248,0.53302,0.53942,0.55366,0.56323,0.57876,0.58833,0.6348,0.64437,0.6599,0.66947,0.71595,0.72551,0.74104,0.75061,0.79709,0.80666,0.82219,0.83175,0.87834,0.88791,0.93439,0.94395,0.99043]},{"d":"M268.81,234.95C268.81,233.19 267.39,231.76 265.62,231.76L226,231.76C224.24,231.76 222.81,233.19 222.81,234.95L222.81,248.97C222.81,250.73 224.24,252.16 226,252.16L265.62,252.16C267.39,252.16 268.81,250.73 268.81,248.97L268.81,260.13C268.81,262.73 270.99,264.92 273.6,264.92L310.03,264.92C312.63,264.92 314.81,262.73 314.81,260.13L314.81,223.7C314.81,221.1 312.63,218.92 310.03,218.92L322.2,218.92C324.8,218.92 326.98,216.73 326.98,214.13L326.98,177.7C326.98,175.1 324.8,172.92 322.2,172.92L334.37,172.92C336.97,172.92 339.16,170.73 339.16,168.13L339.16,131.7C339.16,129.1 336.97,126.92 334.37,126.92L346.54,126.92C349.14,126.92 351.33,124.73 351.33,122.13L351.33,85.7C351.33,83.1 349.14,80.92 346.54,80.92L358.71,80.92C361.32,80.92 363.5,78.73 363.5,76.13L363.5,39.78C363.5,37.18 361.32,35 358.71,35L322.28,35C319.68,35 317.5,37.18 317.5,39.78L317.5,76.22C317.5,78.82 319.68,81 322.28,81L310.11,81C307.51,81 305.33,83.18 305.33,85.78L305.33,122.22C305.33,124.82 307.51,127 310.11,127L297.94,127C295.34,127 293.16,129.18 293.16,131.78L293.16,168.22C293.16,170.82 295.34,173 297.94,173L285.77,173C283.17,173 280.98,175.18 280.98,177.78L280.98,214.22C280.98,216.82 283.17,219 285.77,219L273.6,219C270.99,219 268.81,221.18 268.81,223.78L268.81,234.95Z","f":[0.00639,0.05695,0.06335,0.08124,0.08763,0.13819,0.14459,0.15884,0.1684,0.21489,0.22446,0.27095,0.28052,0.29605,0.30562,0.35211,0.36168,0.37721,0.38678,0.43327,0.44284,0.45837,0.46794,0.51443,0.524,0.53953,0.5491,0.59549,0.60505,0.65154,0.66111,0.7076,0.71717,0.7327,0.74227,0.78876,0.79833,0.81386,0.82343,0.86992,0.87949,0.89502,0.90459,0.95108,0.96065,0.97618,0.98575]},{"d":"M220.04,183.16C247.41,183.16 269.74,160.83 269.74,133.46C269.74,106.1 247.41,83.77 220.04,83.77C192.68,83.77 170.35,106.1 170.35,133.46C170.35,160.83 192.68,183.16 220.04,183.16Z","f":[0.25,0.5,0.75]},{"d":"M220.04,89.98C244.05,89.98 263.52,109.46 263.52,133.46C263.52,157.47 244.05,176.95 220.04,176.95C196.03,176.95 176.56,157.47 176.56,133.46C176.56,109.46 196.03,89.98 220.04,89.98Z","f":[0.25,0.5,0.75]},{"d":"M210.81,141.1L231.12,141.1L236.58,155.96L244.72,155.96L225.67,104.17L216.18,104.17L197.88,155.96L205.52,155.96L210.81,141.1Z","f":[0.10846,0.19297,0.23644,0.53109,0.58173,0.87501,0.9158]},{"d":"M220.71,110.21L220.71,110.21C221.89,114.32 224.49,121.46 229.19,134.55L212.66,134.55C216.43,123.39 219.37,114.74 220.63,110.21Z","f":[0.37902,0.62213,0.99877]}],"anchors":[[81.29,81],[93.46,81],[88.67,85.78],[88.67,122.22],[105.63,127],[100.84,131.78],[100.84,168.22],[105.63,173],[113.02,177.78],[113.02,214.22],[117.8,219],[125.19,223.78],[125.19,260.22],[129.97,265],[166.4,265],[171.19,249.05],[174.38,252.24],[214,252.24],[217.19,235.03],[214,231.84],[174.38,231.84],[171.19,235.03],[166.4,219.08],[154.23,219.08],[159.02,214.3],[159.02,177.87],[142.06,173.08],[146.84,168.3],[146.84,131.87],[129.89,127.08],[134.67,122.3],[134.67,85.87],[129.89,81.08],[122.5,76.3],[122.5,39.78],[117.72,35],[76.5,39.78],[76.5,76.22],[268.81,234.95],[265.62,231.76],[222.81,234.95],[222.81,248.97],[226,252.16],[265.62,252.16],[268.81,260.13],[273.6,264.92],[310.03,264.92],[314.81,223.7],[310.03,218.92],[322.2,218.92],[326.98,214.13],[322.2,172.92],[334.37,172.92],[339.16,168.13],[334.37,126.92],[346.54,126.92],[351.33,122.13],[351.33,85.7],[358.71,80.92],[363.5,76.13],[363.5,39.78],[358.71,35],[317.5,39.78],[317.5,76.22],[322.28,81],[305.33,85.78],[305.33,122.22],[310.11,127],[297.94,127],[293.16,168.22],[297.94,173],[285.77,173],[280.98,214.22],[285.77,219],[273.6,219],[268.81,223.78],[231.12,141.1],[236.58,155.96],[244.72,155.96],[225.67,104.17],[197.88,155.96],[205.52,155.96],[220.71,110.21],[212.66,134.55],[220.04,183.16],[269.74,133.46],[220.04,83.77],[220.04,89.98],[263.52,133.46],[220.04,176.95]],"sel":[[76.5,76.22],[358.71,35],[363.5,39.78],[129.97,265]]},"kalido":{"shapes":[{"d":"M289.11,149.98C289.11,153.69 249.11,154.11 248.18,157.55C247.25,160.99 268.71,174 266.9,177.11C265.09,180.22 243.16,168.05 240.6,170.65C238.05,173.21 257.7,208.05 254.54,209.86C251.43,211.68 231.13,177.25 227.55,178.18C223.97,179.11 223.74,204.2 219.98,204.2C216.21,204.2 215.84,179.11 212.4,178.18C208.83,177.25 188.52,211.63 185.41,209.86C182.25,208.05 201.9,173.21 199.35,170.65C196.79,168.1 174.86,180.31 173.05,177.11C171.24,174 192.75,161.13 191.78,157.55C190.8,153.97 150.84,153.74 150.84,149.98C150.84,146.21 190.85,145.84 191.78,142.4C192.7,138.97 171.24,125.96 173.05,122.84C174.86,119.73 196.79,131.9 199.35,129.3C201.9,126.75 182.25,91.9 185.41,90.09C188.57,88.28 208.87,122.7 212.4,121.73C215.93,120.75 216.21,95.71 219.98,95.71C223.74,95.71 224.11,120.8 227.55,121.73C230.99,122.66 251.43,88.28 254.54,90.09C257.66,91.9 238.05,126.75 240.6,129.3C243.16,131.86 265.09,119.64 266.9,122.84C268.71,125.96 247.2,138.83 248.18,142.4C249.15,145.98 289.11,146.21 289.11,149.98Z","f":[0.05029,0.08331,0.11635,0.16662,0.21691,0.25001,0.28309,0.33336,0.38364,0.41669,0.44973,0.50005,0.55034,0.58337,0.61641,0.66668,0.71693,0.75002,0.7831,0.83333,0.88359,0.91664,0.94969]},{"d":"M345,150.02C345,196.3 319.87,236.67 282.51,258.27L345,150.02Z","f":[0.51153]},{"d":"M282.56,41.77L345.05,150.02C345.05,103.75 319.91,63.38 282.56,41.77Z","f":[0.48847]},{"d":"M345,150.02C345,196.3 319.87,236.67 282.51,258.27L345,150.02Z","f":[0.51153]},{"d":"M157.44,41.77L94.95,150.02C94.95,103.75 120.09,63.38 157.44,41.77Z","f":[0.48847]},{"d":"M282.56,41.77L345.05,150.02C345.05,103.75 319.91,63.38 282.56,41.77Z","f":[0.48847]},{"d":"M95,150.02L157.49,258.27C120.13,236.67 95,196.3 95,150.02Z","f":[0.48847]},{"d":"M157.49,41.77L95,150.02C95,103.75 120.13,63.38 157.49,41.77Z","f":[0.48847]},{"d":"M94.95,150.02L157.44,258.27C120.09,236.67 94.95,196.3 94.95,150.02Z","f":[0.48847]},{"d":"M111.73,150.02L165.85,243.78C133.52,225.1 111.73,190.07 111.73,150.02Z","f":[0.48847]},{"d":"M328.27,150.02C328.27,190.07 306.48,225.06 274.15,243.78L328.27,150.02Z","f":[0.51151]},{"d":"M165.85,56.27L111.73,150.02C111.73,109.97 133.52,74.99 165.85,56.27Z","f":[0.48849]},{"d":"M274.2,56.27L328.32,150.02C328.32,109.97 306.53,74.99 274.2,56.27Z","f":[0.48849]},{"d":"M157.49,258.27L282.51,258.27C264.11,268.96 242.79,275 220.02,275C197.26,275 175.93,268.91 157.53,258.27Z","f":[0.48846,0.74415,0.99982]},{"d":"M157.49,258.27L282.51,258.27C264.11,268.96 242.79,275 220.02,275C197.26,275 175.93,268.91 157.53,258.27Z","f":[0.48846,0.74415,0.99982]},{"d":"M157.49,41.73L282.51,41.73C264.11,31.09 242.79,25 219.98,25C197.21,25 175.89,31.09 157.49,41.73Z","f":[0.48848,0.74433]},{"d":"M157.49,41.73L282.51,41.73C264.11,31.09 242.74,25 219.98,25C197.21,25 175.89,31.09 157.49,41.73Z","f":[0.48848,0.74433]},{"d":"M165.85,56.27L274.1,56.27C258.17,47.02 239.68,41.77 219.98,41.77C200.28,41.77 181.79,47.02 165.85,56.27Z","f":[0.48845,0.74422]},{"d":"M165.85,243.78L274.1,243.78C258.17,253.02 239.68,258.27 219.98,258.27C200.28,258.27 181.79,253.02 165.85,243.78Z","f":[0.48845,0.74422]}],"anchors":[[95,150.02],[157.49,258.27],[345,150.02],[282.51,258.27],[157.49,41.77],[282.56,41.77],[220.02,275],[157.49,41.73],[282.51,41.73],[219.98,25],[111.73,150.02],[165.85,243.78],[328.27,150.02],[274.15,243.78],[165.85,56.27],[274.2,56.27],[219.98,258.27],[219.98,41.77],[289.11,149.98],[248.18,157.55],[266.9,177.11],[240.6,170.65],[254.54,209.86],[227.55,178.18],[219.98,204.2],[212.4,178.18],[185.41,209.86],[199.35,170.65],[173.05,177.11],[191.78,157.55],[150.84,149.98],[191.78,142.4],[173.05,122.84],[199.35,129.3],[185.41,90.09],[212.4,121.73],[219.98,95.71],[227.55,121.73],[254.54,90.09],[240.6,129.3],[266.9,122.84],[248.18,142.4]],"sel":[[95,150.02],[219.98,25],[345,150.02],[220.02,275]]},"starry":{"shapes":[{"d":"M276.67,86.68L227.42,89.76L247.19,113.88L223.07,94.11L220,143.36L216.91,94.11L192.79,113.88L212.56,89.76L163.31,86.68L212.56,83.6L192.79,59.48L216.91,79.25L220,30L223.07,79.25L247.19,59.48L227.42,83.6L276.67,86.68Z","f":[0.07659,0.125,0.17341,0.25,0.32659,0.375,0.42341,0.5,0.57659,0.625,0.67341,0.75,0.82659,0.875,0.92341]},{"d":"M215.18,143.36L126.9,143.36C91.06,143.36 80.09,164.82 90.57,183.35C108.03,214.21 160.3,205.29 188.85,186.28C219.14,166.11 215.18,143.36 215.18,143.36Z","f":[0.27803,0.49156,0.83368]},{"d":"M251.11,186.28C279.64,205.3 331.91,214.21 349.38,183.35C359.86,164.82 348.9,143.36 313.05,143.36C291.34,143.36 224.78,143.36 224.78,143.36C224.78,143.36 220.83,166.11 251.11,186.28Z","f":[0.34212,0.55565,0.83368]},{"d":"M366.31,257.48C366.31,257.48 360.62,257.48 358.83,257.48C357.05,257.48 350.38,256.67 350.38,248.06C350.38,239.44 350.38,234.89 350.38,230.34C350.38,225.79 352.09,208.23 325.03,208.23C297.96,208.23 260.33,207.01 236.27,234.56C223.66,249.01 222.94,270 222.94,270L302.92,270C302.92,270 302.92,257.32 302.92,257.32L244.4,257.32C244.4,257.32 249.6,235.86 277.56,225.46C305.53,215.06 316.58,223.83 316.58,235.86C316.58,247.89 316.58,246.26 316.58,249.84C316.58,253.42 312.03,270 331.86,270C351.7,270 360.8,270 360.8,270L366.33,257.48Z","f":[0.01368,0.03976,0.07217,0.1435,0.31877,0.38917,0.53545,0.55864,0.66567,0.75273,0.84093,0.8665,0.92201,0.97494,0.99997]},{"d":"M73.67,257.48L81.15,257.48C82.93,257.48 89.6,256.67 89.6,248.06L89.6,230.34C89.6,225.79 87.89,208.23 114.96,208.23C142.02,208.23 179.65,207.01 203.72,234.56C216.32,249.01 217.05,270 217.05,270L137.06,270L137.06,257.32L195.59,257.32C195.59,244.64 190.39,235.86 162.42,225.46C134.46,215.06 123.4,223.83 123.4,235.86L123.4,249.84C123.4,253.42 127.95,270 108.12,270L79.2,270L73.67,257.48Z","f":[0.01363,0.03962,0.07191,0.143,0.31764,0.3878,0.53356,0.55666,0.66331,0.75367,0.84156,0.86704,0.92235,0.97506]},{"d":"M241.42,156.04C241.42,145.98 281.43,156.04 294.48,156.04C310.96,156.04 322.66,165.86 315.97,176.9C308.9,188.57 271.17,182.74 258.26,175.48C240.38,165.41 241.43,156.04 241.43,156.04Z","f":[0.30773,0.51337,0.85115]},{"d":"M181.69,175.48C168.78,182.74 131.06,188.57 123.99,176.9C117.3,165.87 128.98,156.04 145.48,156.04L198.53,156.04C198.53,156.04 199.58,165.41 181.7,175.48Z","f":[0.34214,0.55043,0.84925]}],"anchors":[[215.18,143.36],[126.9,143.36],[90.57,183.35],[188.85,186.28],[181.69,175.48],[123.99,176.9],[145.48,156.04],[198.53,156.04],[73.67,257.48],[81.15,257.48],[89.6,248.06],[89.6,230.34],[114.96,208.23],[203.72,234.56],[217.05,270],[137.06,270],[137.06,257.32],[195.59,257.32],[162.42,225.46],[123.4,235.86],[123.4,249.84],[108.12,270],[79.2,270],[366.31,257.48],[358.83,257.48],[350.38,248.06],[350.38,230.34],[325.03,208.23],[236.27,234.56],[222.94,270],[302.92,270],[302.92,257.32],[244.4,257.32],[277.56,225.46],[316.58,235.86],[316.58,249.84],[331.86,270],[360.8,270],[251.11,186.28],[349.38,183.35],[313.05,143.36],[224.78,143.36],[241.42,156.04],[294.48,156.04],[315.97,176.9],[258.26,175.48],[276.67,86.68],[227.42,89.76],[247.19,113.88],[223.07,94.11],[220,143.36],[216.91,94.11],[192.79,113.88],[212.56,89.76],[163.31,86.68],[212.56,83.6],[192.79,59.48],[216.91,79.25],[220,30],[223.07,79.25],[247.19,59.48],[227.42,83.6]],"sel":[[73.67,257.48],[220,30],[366.31,257.48],[79.2,270]]},"seolred":{"shapes":[{"d":"M328.29,132.09C319.68,93.83 289.37,63.51 251.11,54.88C222.13,48.34 194.54,53.9 172.41,67.48L172.23,67.69C171.5,68.51 171.73,69.41 171.88,69.75C172,70.09 172.43,70.89 173.54,71.02L199.75,73.8C202.45,74.09 204.42,76.27 204.42,78.98C204.42,81.7 202.45,83.88 199.75,84.17L173.54,86.95C172.45,87.08 172.02,87.88 171.88,88.22C171.75,88.56 171.52,89.46 172.23,90.28L217.23,147.21L160.3,102.22C159.92,101.88 159.47,101.72 159.01,101.72C158.28,101.72 157.13,102.2 156.99,103.52L154.2,129.74C153.92,132.43 151.74,134.4 149.02,134.4C146.3,134.4 144.12,132.43 143.84,129.74L141.05,103.52C140.91,102.2 139.76,101.72 139.03,101.72C138.6,101.72 138.21,101.88 137.85,102.16C124.32,124.3 118.82,151.86 125.41,180.81C134.12,219.05 164.46,249.3 202.74,257.88C279.02,275 345.52,208.4 328.35,132.13Z","f":[0.12719,0.21751,0.21782,0.22025,0.22269,0.25181,0.26027,0.26873,0.29786,0.30029,0.30271,0.38289,0.46306,0.46462,0.46791,0.49703,0.50549,0.51395,0.54308,0.54636,0.54778,0.63801,0.76519,0.99993]},{"d":"M169.37,92.74C166.28,89.22 168.45,83.67 173.11,83.17L199.32,80.38C201.04,80.2 201.04,77.72 199.32,77.52L173.11,74.73C170.43,74.45 168.62,72.48 168.12,70.21C167.75,68.53 168.07,66.67 169.39,65.17L202.56,27.39C203.47,26.34 202.56,25 201.47,25C201.17,25 200.83,25.11 200.52,25.38L162.74,58.56C161.62,59.56 160.28,60.01 158.96,60.01C156.17,60.01 153.51,57.99 153.18,54.82L150.4,28.61C150.31,27.75 149.65,27.32 148.97,27.32C148.29,27.32 147.63,27.75 147.54,28.61L144.75,54.82C144.41,57.99 141.75,60.01 138.98,60.01C137.66,60.01 136.32,59.56 135.19,58.56L97.41,25.38C97.11,25.11 96.79,25 96.47,25C95.39,25 94.48,26.36 95.39,27.39L128.58,65.17C131.67,68.69 129.51,74.25 124.84,74.75L98.63,77.54C96.91,77.72 96.91,80.2 98.63,80.4L124.84,83.18C129.51,83.68 131.67,89.22 128.58,92.76L95.39,130.52C94.48,131.58 95.39,132.92 96.48,132.92C96.79,132.92 97.13,132.81 97.43,132.54L135.21,99.36C136.33,98.36 137.67,97.91 139,97.91C139.48,97.91 139.94,97.98 140.39,98.11C142.61,98.66 144.5,100.46 144.77,103.09L147.56,129.31C147.64,130.16 148.31,130.59 148.98,130.59C149.66,130.59 150.33,130.16 150.41,129.31L153.2,103.09C153.54,99.93 156.2,97.91 158.97,97.91C160.3,97.91 161.64,98.36 162.76,99.36L203.52,133.51L169.37,92.74Z","f":[0.01687,0.05202,0.05767,0.09281,0.10241,0.10961,0.17663,0.18104,0.18243,0.24947,0.255,0.26634,0.30149,0.30432,0.30714,0.34229,0.35362,0.35915,0.42619,0.42758,0.43197,0.49901,0.51588,0.55103,0.55668,0.59182,0.6087,0.67571,0.68013,0.68152,0.74855,0.75408,0.75597,0.7654,0.80055,0.80338,0.80621,0.84135,0.85269,0.85822,0.92911]},{"d":"M242.75,229.24L231.26,229.79C230.44,229.82 230.01,230.79 230.53,231.43L233.33,234.88C233.62,235.24 233.15,235.69 232.81,235.4L229.36,232.59C228.72,232.08 227.76,232.51 227.72,233.33L227.17,244.82C227.15,245.3 226.45,245.3 226.42,244.82L225.86,233.33C225.83,232.51 224.86,232.08 224.22,232.59L220.77,235.4C220.43,235.69 219.96,235.22 220.25,234.88L223.06,231.43C223.57,230.79 223.15,229.82 222.32,229.79L210.83,229.24C210.35,229.22 210.35,228.52 210.83,228.48L222.32,227.93C223.15,227.89 223.57,226.93 223.06,226.29L220.25,222.84C219.96,222.5 220.43,222.03 220.77,222.32L224.16,225.09C224.81,225.63 225.79,225.16 225.81,224.34L226.79,179.52L227.77,224.34C227.79,225.18 228.77,225.63 229.42,225.09L232.81,222.32C233.17,222.03 233.62,222.5 233.33,222.84L230.53,226.29C230.01,226.93 230.44,227.89 231.26,227.93L242.75,228.48C243.23,228.5 243.23,229.2 242.75,229.24Z","f":[0.05233,0.06245,0.08268,0.08767,0.1079,0.11802,0.17035,0.17562,0.22795,0.23807,0.25829,0.26326,0.28349,0.29361,0.34594,0.35121,0.40354,0.41366,0.43389,0.43886,0.45879,0.46901,0.67294,0.87688,0.88713,0.90706,0.91205,0.93228,0.9424,0.99473]},{"d":"M238.73,162.04C236.89,162.04 233.05,161.17 230.24,159.79C231.62,162.6 232.53,166.4 232.53,168.28C232.53,171.43 229.95,174 226.81,174C223.66,174 221.09,171.43 221.09,168.28C221.09,166.4 221.97,162.6 223.34,159.79C220.54,161.17 216.73,162.04 214.85,162.04C211.71,162.04 209.14,159.51 209.14,156.33C209.14,153.15 211.71,150.64 214.85,150.64C216.73,150.64 220.54,151.52 223.34,152.89C221.97,150.09 221.09,146.28 221.09,144.41C221.09,141.24 223.63,138.69 226.81,138.69C229.99,138.69 232.53,141.23 232.53,144.41C232.53,146.28 231.62,150.09 230.24,152.89C233.05,151.52 236.89,150.64 238.73,150.64C241.89,150.64 244.45,153.18 244.45,156.33C244.45,159.47 241.91,162.04 238.73,162.04Z","f":[0.06199,0.12405,0.18704,0.25002,0.31202,0.37401,0.43705,0.49992,0.56192,0.62392,0.68698,0.75007,0.81213,0.87412,0.93696]},{"d":"M274.4,232.86C271.86,234.61 269.29,235.63 266.68,235.92C264.07,236.2 261.62,235.79 259.33,234.69C257.04,233.58 255.1,231.84 253.49,229.52C251.9,227.22 250.97,224.79 250.72,222.23C250.47,219.67 250.93,217.21 252.09,214.83C253.27,212.46 255.11,210.4 257.65,208.65L267.75,201.68L284.49,225.89L274.4,232.86Z","f":[0.08248,0.15669,0.23423,0.31175,0.38671,0.46934,0.58996,0.87939]},{"d":"M296,214.56L289.89,210.45L295.7,201.82L292.69,199.8L287.58,207.4L281.83,203.52L286.94,195.93L283.49,193.6L277.68,202.22L271.57,198.11L282.53,181.83L306.95,198.27L296,214.55Z","f":[0.05366,0.12946,0.15582,0.22251,0.27307,0.33977,0.37006,0.44575,0.49941,0.64237,0.85691,0.99987]},{"d":"M253.61,69.78L271.63,77.54L268.71,84.29L259.17,80.18L257.74,83.51L266.14,87.13L263.39,93.51L254.99,89.89L253.35,93.71L262.89,97.82L259.97,104.57L241.96,96.8L253.61,69.76Z","f":[0.14293,0.19655,0.27227,0.29864,0.36532,0.41596,0.48264,0.51297,0.5887,0.64231,0.7853,0.99987]},{"d":"M278.43,91.73C280.95,90.83 283.51,90.64 286.12,91.14C288.71,91.62 291.09,92.78 293.21,94.55C295.34,96.34 296.86,98.45 297.81,100.91C298.73,103.38 298.98,105.93 298.54,108.56C298.09,111.19 296.95,113.6 295.09,115.81C293.23,118.01 291.07,119.59 288.55,120.48C286.05,121.37 283.47,121.59 280.86,121.1C278.26,120.62 275.9,119.5 273.79,117.73C271.66,115.94 270.13,113.81 269.2,111.33C268.25,108.85 268,106.29 268.45,103.65C268.87,101.02 270.02,98.59 271.88,96.37C273.73,94.16 275.91,92.62 278.43,91.73Z","f":[0.08166,0.165,0.24805,0.32946,0.41458,0.49969,0.58136,0.66439,0.74778,0.82959,0.91483]},{"d":"M315.84,170.32C315.53,172.68 314.87,174.66 313.82,176.23C312.76,177.81 311.48,178.91 309.92,179.57C308.37,180.24 306.69,180.45 304.86,180.22C302.92,179.99 301.25,179.22 299.88,177.95C298.5,176.66 297.61,174.98 297.2,172.86L285.23,177.82L286.48,167.76L297.64,163.58L297.64,163.55C297.64,152.11 287.17,162.24 287.17,162.24L288.32,153.07L317.53,156.72L315.84,170.34Z","f":[0.04806,0.08774,0.12706,0.16952,0.21414,0.31292,0.39018,0.48106,0.48134,0.6005,0.67091,0.89529,0.99986]},{"d":"M310.4,121.82L313.03,130.66L291.52,137.08L294.05,145.6L287.35,147.61L282.17,130.24L310.39,121.84Z","f":[0.09697,0.33291,0.42637,0.49987,0.69035,0.99973]},{"d":"M214.25,84.94L224.02,85.76C224.02,87.46 224.68,88.37 226.04,88.47C226.54,88.51 226.97,88.44 227.33,88.22C227.68,88.03 227.9,87.67 227.93,87.17C228.01,86.49 227.67,85.9 226.95,85.4C226.24,84.9 225.13,84.31 223.59,83.63C221.77,82.81 220.27,82.02 219.09,81.29C217.91,80.56 216.94,79.54 216.16,78.25C215.37,76.97 215.09,75.36 215.26,73.46C215.43,71.55 216.05,69.98 217.16,68.73C218.25,67.48 219.68,66.57 221.43,66.01C223.18,65.46 225.13,65.28 227.26,65.46C230.85,65.76 233.62,66.83 235.6,68.67C237.57,70.51 238.48,72.94 238.33,75.96L228.43,75.13C228.47,74.3 228.33,73.68 227.97,73.28C227.61,72.89 227.17,72.68 226.61,72.62C226.22,72.59 225.9,72.69 225.63,72.94C225.36,73.18 225.2,73.53 225.16,74C225.11,74.66 225.43,75.23 226.13,75.73C226.83,76.22 227.95,76.84 229.51,77.57C231.29,78.41 232.78,79.22 233.92,79.95C235.06,80.68 236.03,81.67 236.83,82.86C237.62,84.08 237.94,85.53 237.8,87.24C237.66,89.03 237.07,90.6 236.07,91.96C235.06,93.32 233.69,94.3 231.94,94.98C230.19,95.64 228.15,95.87 225.83,95.68C222.32,95.37 219.5,94.32 217.36,92.48C215.21,90.64 214.19,88.13 214.26,84.94Z","f":[0.07041,0.09773,0.10729,0.11642,0.13172,0.15901,0.19547,0.22605,0.26164,0.2989,0.3357,0.37797,0.44338,0.50119,0.5725,0.58647,0.59758,0.60525,0.61373,0.62868,0.65632,0.69232,0.7221,0.75489,0.79145,0.82867,0.87319,0.93926,0.99987]},{"d":"M263.03,214.96C261.32,216.14 260.3,217.55 259.92,219.17C259.56,220.8 259.99,222.48 261.19,224.23C262.39,225.96 263.82,226.95 265.46,227.18C267.11,227.43 268.78,226.95 270.5,225.79L272.31,224.54L264.84,213.72L263.03,214.97Z","f":[0.13765,0.27534,0.41249,0.54986,0.60618,0.94322,0.99954]},{"d":"M279.33,111.12C280.74,112.29 282.21,112.74 283.71,112.47C285.23,112.21 286.62,111.31 287.91,109.79C289.21,108.24 289.85,106.7 289.84,105.15C289.84,103.61 289.12,102.25 287.71,101.07C286.28,99.87 284.81,99.41 283.3,99.68C281.78,99.95 280.36,100.84 279.06,102.39C277.77,103.93 277.15,105.47 277.15,107.01C277.15,108.56 277.86,109.92 279.29,111.12Z","f":[0.11981,0.2483,0.37819,0.49834,0.61933,0.74913,0.87789,0.9991]},{"d":"M305.45,170.85C306.22,170.94 306.87,170.8 307.35,170.41C307.85,170.01 308.15,169.39 308.26,168.53L308.71,164.9L303.76,164.3L303.31,167.92C303.2,168.8 303.31,169.48 303.67,169.98C304.01,170.46 304.6,170.76 305.45,170.87Z","f":[0.09689,0.20058,0.37758,0.61908,0.79608,0.89947,0.99913]}],"anchors":[[263.03,214.96],[261.19,224.23],[272.31,224.54],[279.33,111.12],[289.84,105.15],[283.3,99.68],[305.45,170.85],[308.26,168.53],[303.31,167.92],[328.29,132.09],[172.23,67.69],[173.54,71.02],[199.75,84.17],[171.88,88.22],[160.3,102.22],[156.99,103.52],[143.84,129.74],[139.03,101.72],[202.74,257.88],[313.03,130.66],[287.35,147.61],[278.43,91.73],[297.81,100.91],[288.55,120.48],[273.79,117.73],[271.88,96.37],[271.63,77.54],[257.74,83.51],[263.39,93.51],[262.89,97.82],[241.96,96.8],[226.04,88.47],[227.93,87.17],[219.09,81.29],[215.26,73.46],[227.26,65.46],[238.33,75.96],[226.61,72.62],[225.16,74],[233.92,79.95],[237.8,87.24],[225.83,95.68],[242.75,229.24],[233.33,234.88],[229.36,232.59],[226.42,244.82],[220.77,235.4],[223.06,231.43],[210.83,228.48],[223.06,226.29],[224.16,225.09],[226.79,179.52],[232.81,222.32],[230.53,226.29],[238.73,162.04],[232.53,168.28],[223.34,159.79],[209.14,156.33],[221.09,144.41],[232.53,144.41],[244.45,156.33],[266.68,235.92],[250.72,222.23],[257.65,208.65],[296,214.56],[295.7,201.82],[281.83,203.52],[283.49,193.6],[282.53,181.83],[313.82,176.23],[304.86,180.22],[285.23,177.82],[297.64,163.58],[317.53,156.72],[173.11,83.17],[173.11,74.73],[169.39,65.17],[200.52,25.38],[158.96,60.01],[148.97,27.32],[144.75,54.82],[97.41,25.38],[95.39,27.39],[98.63,77.54],[124.84,83.18],[96.48,132.92],[135.21,99.36],[144.77,103.09],[148.98,130.59],[158.97,97.91]],"sel":[[95.39,130.52],[201.47,25],[328.29,132.09],[202.74,257.88]]},"yomyom":{"shapes":[{"d":"M89.31,25L123.4,25L123.4,36.37L134.78,36.37L134.78,47.72L146.15,47.72L146.15,70.46L157.49,70.46L157.49,59.09L248.42,59.09L248.42,70.46L259.76,70.46L259.76,47.72L271.13,47.72L271.13,36.37L282.51,36.37L282.51,25L316.6,25L316.6,36.37L327.94,36.37L327.94,47.72L339.31,47.72L339.31,93.18L327.94,93.18L327.94,104.55L316.6,104.55L316.6,115.9L305.22,115.9L305.22,138.64L316.6,138.64L316.6,172.73L327.94,172.73L327.94,161.36L339.31,161.36L339.31,149.99L362.03,149.99L362.03,161.36L373.4,161.36L373.4,206.82L362.03,206.82L362.03,218.17L350.69,218.17L350.69,229.54L339.31,229.54L339.31,240.91L305.22,240.91L305.22,252.26L293.85,252.26L293.85,263.63L282.51,263.63L282.51,275L123.4,275L123.4,263.63L112.06,263.63L112.06,252.26L100.69,252.26L100.69,240.91L89.31,240.91L89.31,195.45L100.69,195.45L100.69,172.73L89.31,172.73L89.31,138.64L100.69,138.64L100.69,115.9L89.31,115.9L89.31,104.55L77.97,104.55L77.97,93.18L66.6,93.18L66.6,47.72L77.97,47.72L77.97,36.37L89.31,36.37Z","f":[0.02459,0.03279,0.04099,0.04918,0.05738,0.07378,0.08197,0.09017,0.15575,0.16395,0.17213,0.18854,0.19674,0.20493,0.21313,0.22133,0.24592,0.25412,0.2623,0.27049,0.27869,0.31148,0.31968,0.32788,0.33607,0.34425,0.35245,0.36886,0.37706,0.40165,0.40983,0.41803,0.42624,0.43444,0.45082,0.45903,0.46723,0.50002,0.50822,0.5164,0.52459,0.53279,0.54099,0.5492,0.57378,0.58197,0.59017,0.59837,0.60655,0.61476,0.72951,0.73772,0.7459,0.7541,0.7623,0.77049,0.77869,0.81148,0.81968,0.83607,0.84427,0.86886,0.87706,0.89346,0.90167,0.90985,0.91803,0.92624,0.93444,0.96723,0.97543,0.98361,0.9918]},{"d":"M77.97,47.72L112.06,47.72L112.06,70.46L123.4,70.46L123.4,104.55L89.31,104.55L89.31,93.18L77.97,93.18Z","f":[0.16667,0.27786,0.33333,0.5,0.66667,0.72227,0.77773]},{"d":"M293.85,47.72L327.94,47.72L327.94,93.18L316.6,93.18L316.6,104.55L282.51,104.55L282.51,70.46L293.85,70.46Z","f":[0.16667,0.38893,0.4444,0.5,0.66667,0.83333,0.8888]},{"d":"M305.22,195.45L316.6,195.45L316.6,184.08L327.94,184.08L327.94,195.45L316.6,195.45L316.6,229.54L305.22,229.54Z","f":[0.0834,0.1668,0.25,0.3334,0.4166,0.6666,0.75]},{"d":"M191.58,172.73L214.33,172.73L214.33,161.36L225.67,161.36L225.67,172.73L214.33,172.73L214.33,184.08L191.58,184.08Z","f":[0.20019,0.30028,0.40014,0.50023,0.60009,0.69995,0.90014]},{"d":"M146.15,127.27L157.49,127.27L157.49,138.64L168.87,138.64L168.87,161.36L146.15,161.36Z","f":[0.09986,0.19995,0.30005,0.5,0.69995]},{"d":"M237.04,127.27L248.42,127.27L248.42,138.64L259.76,138.64L259.76,161.36L237.04,161.36Z","f":[0.10009,0.20019,0.30005,0.5,0.69995]},{"d":"M259.76,149.99L282.51,149.99L282.51,172.73L259.76,172.73Z","f":[0.25,0.5,0.75]},{"d":"M123.4,149.99L146.15,149.99L146.15,172.73L123.4,172.73Z","f":[0.25,0.5,0.75]},{"d":"M146.15,218.17L157.49,218.17L157.49,206.82L168.87,206.82L168.87,218.17L157.49,218.17L157.49,229.54L146.15,229.54Z","f":[0.12485,0.24971,0.37485,0.49971,0.62485,0.75,0.87485]},{"d":"M248.42,218.17L259.76,218.17L259.76,206.82L271.13,206.82L271.13,218.17L259.76,218.17L259.76,229.54L248.42,229.54Z","f":[0.12485,0.24971,0.37485,0.49971,0.62485,0.75,0.87485]},{"d":"M293.85,172.73L305.22,172.73L305.22,195.45L293.85,195.45Z","f":[0.1668,0.5,0.6668]},{"d":"M134.78,240.91L157.49,240.91L157.49,252.26L134.78,252.26Z","f":[0.33346,0.5,0.83346]},{"d":"M248.42,240.91L271.13,240.91L271.13,252.26L248.42,252.26Z","f":[0.33346,0.5,0.83346]},{"d":"M123.4,104.55L123.4,115.9L100.69,115.9L100.69,104.55Z","f":[0.16654,0.5,0.66654]},{"d":"M282.51,104.55L305.22,104.55L305.22,115.9L282.51,115.9Z","f":[0.33346,0.5,0.83346]},{"d":"M134.78,81.81L146.15,81.81L146.15,93.18L134.78,93.18Z","f":[0.25,0.5,0.75]},{"d":"M271.13,93.18L282.51,93.18L282.51,104.55L271.13,104.55Z","f":[0.25,0.5,0.75]},{"d":"M259.76,81.81L271.13,81.81L271.13,93.18L259.76,93.18Z","f":[0.25,0.5,0.75]},{"d":"M191.58,149.99L202.96,149.99L202.96,161.36L191.58,161.36Z","f":[0.25,0.5,0.75]},{"d":"M157.49,252.26L168.87,252.26L168.87,263.63L157.49,263.63Z","f":[0.25,0.5,0.75]},{"d":"M134.78,93.18L134.78,104.55L123.4,104.55L123.4,93.18Z","f":[0.25,0.5,0.75]},{"d":"M248.42,252.26L248.42,263.63L237.04,263.63L237.04,252.26Z","f":[0.25,0.5,0.75]},{"d":"M214.33,138.64L202.96,138.64L202.96,149.99L214.33,149.99Z","f":[0.25029,0.5,0.75029]},{"d":"M191.58,161.36L191.58,172.73L180.24,172.73L180.24,161.36Z","f":[0.25029,0.5,0.75029]},{"d":"M134.78,206.82L146.15,206.82L146.15,218.17L134.78,218.17Z","f":[0.25029,0.5,0.75029]},{"d":"M237.04,206.82L248.42,206.82L248.42,218.17L237.04,218.17Z","f":[0.25029,0.5,0.75029]}],"anchors":[[89.31,25],[134.78,47.72],[157.49,59.09],[259.76,47.72],[282.51,25],[327.94,47.72],[327.94,104.55],[305.22,138.64],[327.94,161.36],[362.03,161.36],[362.03,218.17],[305.22,240.91],[282.51,263.63],[112.06,263.63],[89.31,240.91],[89.31,172.73],[89.31,115.9],[66.6,93.18],[89.31,36.37],[214.33,149.99],[134.78,93.18],[259.76,81.81],[282.51,104.55],[305.22,104.55],[157.49,138.64],[237.04,127.27],[259.76,161.36],[191.58,161.36],[214.33,172.73],[214.33,184.08],[305.22,195.45],[327.94,184.08],[134.78,206.82],[157.49,206.82],[146.15,229.54],[237.04,218.17],[271.13,218.17],[157.49,240.91],[168.87,263.63],[271.13,252.26],[237.04,252.26],[89.31,93.18],[293.85,70.46],[123.4,172.73]],"sel":[[89.31,240.91],[316.6,25],[373.4,161.36],[123.4,275]],"crisp":true},"misfortune":{"shapes":[{"d":"M107.46,56.77C144.72,56.77 174.93,86.97 174.93,124.23C174.93,161.49 144.72,191.7 107.46,191.7C70.2,191.7 40,161.49 40,124.23C40,86.97 70.2,56.77 107.46,56.77Z","f":[0.25,0.5,0.75]},{"d":"M352.74,131.8C381.1,144.43 400,163.86 394.95,175.21C389.9,186.56 362.81,185.52 334.44,172.89C306.08,160.26 287.18,140.82 292.23,129.48C297.28,118.13 324.37,119.17 352.74,131.8Z","f":[0.25,0.5,0.75]},{"d":"M220.99,158.52C252.12,150.76 279.39,152.61 281.89,162.65C284.4,172.69 261.19,187.13 230.06,194.89C198.93,202.65 171.66,200.8 169.16,190.76C166.65,180.72 189.86,166.28 220.99,158.52Z","f":[0.25,0.5,0.75]},{"d":"M350.45,136.93C375.03,147.88 391.89,163.65 388.1,172.16C384.31,180.67 361.31,178.7 336.73,167.75C312.15,156.81 295.29,141.03 299.08,132.52C302.87,124.02 325.87,125.99 350.45,136.93Z","f":[0.25,0.5,0.75]},{"d":"M222.35,163.98C249.47,157.22 272.87,157.43 274.62,164.46C276.37,171.49 255.81,182.67 228.7,189.43C201.59,196.19 178.18,195.97 176.43,188.95C174.68,181.92 195.24,170.74 222.35,163.98Z","f":[0.25,0.5,0.75]},{"d":"M286.75,205.87C319.26,212.19 345.05,220.2 344.36,223.75C343.67,227.31 316.75,225.07 284.24,218.75C251.73,212.43 225.94,204.42 226.63,200.87C227.32,197.31 254.24,199.55 286.75,205.87Z","f":[0.25,0.5,0.75]},{"d":"M204.91,47.4L208.23,66.57L227.4,69.89L208.23,73.2L204.91,92.37L201.6,73.2L182.42,69.89L201.6,66.57Z","f":[0.125,0.25,0.375,0.5,0.625,0.75,0.875]},{"d":"M381.07,220.74L383.38,234.36L397,236.67L383.38,238.99L381.07,252.6L378.75,238.99L365.14,236.67L378.75,234.36Z","f":[0.125,0.25,0.375,0.5,0.625,0.75,0.875]},{"d":"M213.52,61.28L209.6,69.89L213.52,78.5L204.91,74.57L196.3,78.5L200.23,69.89L196.3,61.28L204.91,65.2Z","f":[0.125,0.25,0.375,0.5,0.625,0.75,0.875]},{"d":"M387.03,230.71L384.35,236.67L387.03,242.63L381.07,239.95L375.11,242.63L377.79,236.67L375.11,230.71L381.07,233.39Z","f":[0.125,0.25,0.375,0.5,0.625,0.75,0.875]},{"d":"M40,124.23L174.93,124.23","open":true},{"d":"M234.9,69.89L313.6,69.89","open":true}],"anchors":[[107.46,56.77],[174.93,124.23],[107.46,191.7],[40,124.23],[220.99,158.52],[281.89,162.65],[230.06,194.89],[169.16,190.76],[222.35,163.98],[274.62,164.46],[228.7,189.43],[176.43,188.95],[286.75,205.87],[344.36,223.75],[284.24,218.75],[226.63,200.87],[352.74,131.8],[394.95,175.21],[334.44,172.89],[292.23,129.48],[350.45,136.93],[388.1,172.16],[336.73,167.75],[299.08,132.52],[204.91,47.4],[208.23,66.57],[227.4,69.89],[208.23,73.2],[204.91,92.37],[201.6,73.2],[182.42,69.89],[201.6,66.57],[213.52,61.28],[209.6,69.89],[213.52,78.5],[204.91,74.57],[196.3,78.5],[200.23,69.89],[196.3,61.28],[204.91,65.2],[381.07,220.74],[383.38,234.36],[397,236.67],[383.38,238.99],[381.07,252.6],[378.75,238.99],[365.14,236.67],[378.75,234.36],[387.03,230.71],[384.35,236.67],[387.03,242.63],[381.07,239.95],[375.11,242.63],[377.79,236.67],[375.11,230.71],[381.07,233.39],[234.9,69.89],[313.6,69.89]],"sel":[[40,124.23],[204.91,47.4],[394.95,175.21],[381.07,252.6]]},"sipsi":{"shapes":[{"d":"M211.8,21.68C227.57,20 233.88,23.37 236.62,32.2C240.4,44.4 247.56,51.13 258.5,54.08C272.8,58.28 279.53,74.27 285.84,104.35C296.36,109.61 302.25,122.23 301.2,133.8C300.15,145.37 295.94,153.79 291.31,159.05C297.62,183.24 296.99,208.48 287.94,224.26C278.27,241.08 260.18,250.13 239.14,249.92C230.73,249.71 225.47,248.03 220.63,248.87C213.9,250.55 201.28,251.81 188.66,249.92C166.57,246.34 149.74,230.57 144.9,205.32C141.96,187.44 142.8,170.61 144.48,154.84C139.85,147.48 137.75,136.96 139.85,126.44C142.38,114.87 148.69,108.56 156.05,104.98C164.47,75.95 176.04,45.45 196.02,30.1C201.28,25.89 206.54,22.52 211.8,21.68Z","f":[0.04664,0.09744,0.19116,0.24616,0.28925,0.39366,0.48419,0.51325,0.56355,0.66806,0.74726,0.7933,0.83694,0.97174]},{"d":"M179.82,162.62C180.24,173.14 183.4,181.13 188.66,185.76L199.17,223.2C200.23,226.57 205.49,225.94 206.54,222.36L196.65,185.76C199.6,181.13 199.6,173.77 194.13,159.68Z","f":[0.16557,0.41872,0.48192,0.72869,0.90494]},{"d":"M168.67,177.35C178.14,185.76 188.66,191.65 196.02,196.28C201.28,202.59 197.49,210.58 182.35,211.63C174.35,211.63 168.04,209.53 163.83,207.64","open":true,"f":[0.42202,0.75824]},{"d":"M273.85,177.35C264.39,185.76 255.97,191.65 247.56,196.28C242.3,202.59 246.29,210.58 260.18,211.63C268.59,211.63 274.9,209.53 278.48,207.64","open":true,"f":[0.42193,0.75433]},{"d":"M174.35,246.76C175.19,261.07 177.09,273.27 182.35,276.63C190.76,280 201.28,279.16 208.01,277.06C210.11,267.38 210.32,256.86 210.11,250.97","open":true,"f":[0.37713,0.68789]},{"d":"M233.88,250.55C233.25,261.07 233.88,271.59 235.99,276.63C243.35,280 255.97,279.16 263.54,277.06C266.49,267.38 268.17,256.86 268.59,246.76","open":true,"f":[0.30932,0.6383]},{"d":"M249.24,179.45L235.99,221.52C234.94,226.15 240.19,228.25 242.3,224.26L255.55,181.55","open":true,"f":[0.44335,0.5506]},{"d":"M251.76,159.05C260.18,156.94 263.54,166.41 260.18,174.82C258.07,180.29 252.82,182.39 249.24,179.03C245.87,175.87 245.45,164.3 251.76,159.05Z","f":[0.38545,0.62526]},{"d":"M201.28,128.54C212.22,135.28 230.73,136.12 242.09,128.54","open":true},{"d":"M229.68,48.61C231.78,57.44 237.46,63.33 247.56,65.02","open":true},{"d":"M278.06,111.93C268.59,111.29 262.28,117.61 260.18,126.02","open":true},{"d":"M164.47,111.93C173.93,111.29 180.24,117.61 181.72,126.02","open":true},{"d":"M201.7,128.96C199.6,133.17 202.54,137.38 208.64,136.96C211.8,136.54 211.8,133.8 209.69,132.33","open":true,"f":[0.6674]},{"d":"M221.89,110.87C224.68,110.87 226.94,113.13 226.94,115.92C226.94,118.71 224.68,120.97 221.89,120.97C219.1,120.97 216.84,118.71 216.84,115.92C216.84,113.13 219.1,110.87 221.89,110.87Z","f":[0.25,0.5,0.75]},{"d":"M201.28,100.78C203.83,100.78 205.91,102.85 205.91,105.4C205.91,107.96 203.83,110.03 201.28,110.03C198.72,110.03 196.65,107.96 196.65,105.4C196.65,102.85 198.72,100.78 201.28,100.78Z","f":[0.25,0.5,0.75]},{"d":"M241.25,100.78C243.8,100.78 245.87,102.85 245.87,105.4C245.87,107.96 243.8,110.03 241.25,110.03C238.69,110.03 236.62,107.96 236.62,105.4C236.62,102.85 238.69,100.78 241.25,100.78Z","f":[0.25,0.5,0.75]},{"d":"M185.5,161.78L188.03,174.4","open":true},{"d":"M189.92,160.52L192.44,173.14","open":true}],"anchors":[[211.8,21.68],[236.62,32.2],[258.5,54.08],[285.84,104.35],[301.2,133.8],[291.31,159.05],[239.14,249.92],[220.63,248.87],[188.66,249.92],[144.9,205.32],[144.48,154.84],[156.05,104.98],[196.02,30.1],[229.68,48.61],[247.56,65.02],[164.47,111.93],[181.72,126.02],[260.18,126.02],[201.28,100.78],[205.91,105.4],[201.28,110.03],[196.65,105.4],[245.87,105.4],[241.25,110.03],[236.62,105.4],[221.89,110.87],[226.94,115.92],[221.89,120.97],[201.28,128.54],[242.09,128.54],[201.7,128.96],[208.64,136.96],[209.69,132.33],[182.35,276.63],[208.01,277.06],[210.11,250.97],[233.88,250.55],[235.99,276.63],[263.54,277.06],[168.67,177.35],[196.02,196.28],[182.35,211.63],[163.83,207.64],[273.85,177.35],[260.18,211.63],[278.48,207.64],[179.82,162.62],[188.66,185.76],[199.17,223.2],[206.54,222.36],[194.13,159.68],[185.5,161.78],[188.03,174.4],[189.92,160.52],[192.44,173.14],[260.18,174.82],[249.24,179.03],[249.24,179.45],[235.99,221.52],[242.3,224.26]],"sel":[[144.9,205.32],[211.8,21.68],[301.2,133.8],[182.35,276.63]]},"gimpick":{"shapes":[{"d":"M120,150A100,100 0 1,1 320,150A100,100 0 1,1 120,150Z"}],"anchors":[[220,50],[320,150],[220,250],[120,150]],"sel":[[220,50]]},"hardcopy":{"shapes":[{"d":"M130,60L310,60L310,240L130,240Z"},{"d":"M150,100L290,100","open":true},{"d":"M150,150L290,150","open":true},{"d":"M150,200L250,200","open":true}],"anchors":[[130,60],[310,60],[310,240],[130,240],[150,100],[290,100],[150,150],[150,200]],"sel":[[130,60]]},"puffnote":{"shapes":[{"d":"M140,180A40,40 0 1,1 180,140A50,50 0 1,1 280,140A40,40 0 1,1 300,180L140,180Z"},{"d":"M170,180L160,205L195,182Z"}],"anchors":[[140,180],[180,140],[280,140],[300,180],[170,180],[160,205],[195,182]],"sel":[[160,205]]}};
+
+/* ---------- sampling & normalisation ---------- */
+const N = 160;
+const sampler = document.getElementById('sampler');
+/* corner-preserving resample: every node (f = node positions as fraction of length) is hit exactly,
+   remaining points are spread along each segment in proportion to its length */
+function along(L, f, M, closed){
+  const stops=[0,...(f||[]),1], segs=stops.length-1, slots=closed?M:M-1;
+  if(segs>slots) return Array.from({length:M},(_,i)=>L*i/(closed?M:M-1));
+  const extra=slots-segs, lens=stops.slice(1).map((v,i)=>v-stops[i]);
+  const raw=lens.map(l=>l*extra), cnt=raw.map(Math.floor);
+  let left=extra-cnt.reduce((a,b)=>a+b,0);
+  raw.map((v,i)=>[v-cnt[i],i]).sort((a,b)=>b[0]-a[0]).slice(0,left).forEach(([,i])=>cnt[i]++);
+  const out=[];
+  stops.slice(0,-1).forEach((st,i)=>{const k=cnt[i]+1;for(let j=0;j<k;j++) out.push(L*(st+lens[i]*j/k))});
+  if(!closed) out.push(L);
+  return out;
+}
+function sample(d, open, f){
+  sampler.setAttribute('d', d);
+  const L = sampler.getTotalLength(), pt=l=>{const p=sampler.getPointAtLength(Math.min(l,L));return [p.x,p.y]};
+  if(open){
+    const fwd=along(L,f,N/2,false).map(pt);
+    return fwd.concat(fwd.slice().reverse().map(p=>p.slice()));   // ping-pong → closed loop
+  }
+  const pts=along(L,f,N,true).map(pt);
+  let a=0;for(let i=0;i<N;i++){const p=pts[i],q=pts[(i+1)%N];a+=p[0]*q[1]-q[0]*p[1]}
+  if(a<0) pts.reverse();                                          // clockwise
+  let k=0;for(let i=1;i<N;i++){if(pts[i][1]<pts[k][1]-.01||(Math.abs(pts[i][1]-pts[k][1])<.01&&pts[i][0]<pts[k][0]))k=i}
+  return pts.slice(k).concat(pts.slice(0,k));                      // start at top-left
+}
+const MAXS = Math.max(...Object.values(SYMBOLS).map(s=>s.shapes.length));
+const MAXA = Math.max(...Object.values(SYMBOLS).map(s=>s.anchors.length));
+const MAXSEL = Math.max(...Object.values(SYMBOLS).map(s=>s.sel.length));
+const PREP = {};
+for(const [id,s] of Object.entries(SYMBOLS)){
+  const shapes = s.shapes.map(sh=>sample(sh.d, sh.open, sh.f));
+  let cx=0,cy=0,n=0;shapes.forEach(ps=>ps.forEach(p=>{cx+=p[0];cy+=p[1];n++}));cx/=n;cy/=n;
+  while(shapes.length<MAXS) shapes.push(Array.from({length:N},()=>[cx,cy]));   // collapsed slot
+  const pad=(arr,m)=>Array.from({length:m},(_,i)=>arr[i%arr.length]);
+  PREP[id]={shapes, anchors:pad(s.anchors,MAXA), sel:pad(s.sel,MAXSEL),
+    exact:Array.from({length:MAXS},(_,i)=>s.shapes[i]?s.shapes[i].d:''), crisp:!!s.crisp};
+}
+
+/* ---------- SVG renderer ---------- */
+const NS='http://www.w3.org/2000/svg';
+function mkSym(svg, withBox){
+  const el=(t,a,p=svg)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e};
+  const r={svg,paths:[],anc:[],sel:[]};
+  for(let i=0;i<MAXS;i++) r.paths.push(el('path',{class:'shape',pathLength:1}));
+  for(let i=0;i<MAXA;i++) r.anc.push(el('rect',{class:'anc'}));
+  for(let i=0;i<MAXSEL;i++) r.sel.push(el('rect',{class:'sel'}));
+  if(withBox){
+    const g=el('g',{class:'bbox'});r.box=g;
+    r.boxRect=el('rect',{class:'box'},g);
+    r.h=[...Array(8)].map(()=>el('rect',{class:'h'},g));
+    r.tag=el('rect',{class:'tag'},g);r.tagT=el('text',{},g);
+  }
+  return r;
+}
+function unit(svg){ const w=svg.getBoundingClientRect().width||440, h=svg.getBoundingClientRect().height||300; return Math.max(440/w,300/h) }
+const lerp=(a,b,t)=>a+(b-a)*t;
+function drawSym(r, idA, idB, t){
+  const A=PREP[idA],B=PREP[idB||idA],u=unit(r.svg);
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  const rest = idA===idB||t<.0005||t>.9995, R = t>.5?B:A;
+  r.svg.setAttribute('shape-rendering', rest&&R.crisp?'crispEdges':'geometricPrecision');
+  for(let s=0;s<MAXS;s++){
+    if(rest){ r.paths[s].setAttribute('d',R.exact[s]); continue }      // at rest: original vector, no resampling
+    const pa=A.shapes[s],pb=B.shapes[s];let d='';
+    for(let i=0;i<N;i++){
+      const x=lerp(pa[i][0],pb[i][0],t),y=lerp(pa[i][1],pb[i][1],t);
+      d+=(i?'L':'M')+x.toFixed(2)+','+y.toFixed(2);
+      if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;
+    }
+    r.paths[s].setAttribute('d',d+'Z');
+  }
+  const put=(list,a,b,size)=>list.forEach((rc,i)=>{
+    const x=lerp(a[i][0],b[i][0],t),y=lerp(a[i][1],b[i][1],t);
+    rc.setAttribute('x',x-size/2);rc.setAttribute('y',y-size/2);rc.setAttribute('width',size);rc.setAttribute('height',size);
+  });
+  put(r.anc,A.anchors,B.anchors,4*u);
+  put(r.sel,A.sel,B.sel,10*u);
+  if(r.box){
+    const vis=Math.sin(Math.PI*t);r.box.style.opacity=vis>.02?Math.min(1,vis*1.6):0;
+    const pad=10*u;x0-=pad;y0-=pad;x1+=pad;y1+=pad;
+    Object.entries({x:x0,y:y0,width:x1-x0,height:y1-y0}).forEach(([k,v])=>r.boxRect.setAttribute(k,v));
+    const hs=6*u,mx=(x0+x1)/2,my=(y0+y1)/2;
+    [[x0,y0],[mx,y0],[x1,y0],[x1,my],[x1,y1],[mx,y1],[x0,y1],[x0,my]].forEach(([x,y],i)=>{
+      const h=r.h[i];h.setAttribute('x',x-hs/2);h.setAttribute('y',y-hs/2);h.setAttribute('width',hs);h.setAttribute('height',hs)});
+    const label=`W ${(x1-x0).toFixed(1)}  H ${(y1-y0).toFixed(1)}`;
+    r.tagT.textContent=label;r.tagT.setAttribute('font-size',10*u);
+    r.tagT.setAttribute('x',x1+8*u);r.tagT.setAttribute('y',y1+14*u);
+    Object.entries({x:x1+4*u,y:y1+4*u,width:label.length*5.4*u+8*u,height:14*u}).forEach(([k,v])=>r.tag.setAttribute(k,v));
+  }
+}
+
+/* =========================================================
+   COVER — scroll-driven morph + rolling labels
+   ========================================================= */
+PROJECTS.forEach(p=>p.images=GALLERY[p.id]||[]);
+const COUNT = PROJECTS.length;
+const pad2 = n => String(n).padStart(2,'0');
+document.getElementById('track').innerHTML = PROJECTS.map(()=>'<div></div>').join('');
+const reels = [...document.querySelectorAll('.stage .reel')];
+reels.forEach(reel=>{
+  const k=reel.dataset.key;
+  reel.innerHTML = PROJECTS.map((p,i)=>{
+    if(k==='title') return `<div>${p.title.map(t=>`<span>${t}</span>`).join('')}</div>`;
+    if(k==='count') return `<div>${pad2(i+1)} / ${pad2(COUNT)}</div>`;
+    return `<div>${p[k]}</div>`;
+  }).join('');
+});
+const cover = mkSym(document.getElementById('sym'), true);
+
+const smooth = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+function shaped(raw){                         // hold on each project, morph mid-scroll
+  const i=Math.min(Math.floor(raw),COUNT-1), f=raw-i;
+  const t=smooth(Math.min(1,Math.max(0,(f-.18)/.64)));
+  return i+t;
+}
+let cur=0, target=0, running=false;
+function readScroll(){ if(innerHeight) target = shaped(Math.min(COUNT-1, Math.max(0, scrollY/innerHeight))) }
+function render(p){
+  if(!isFinite(p)) p=0;
+  const i=Math.min(Math.floor(p),COUNT-1), t=p-i, j=Math.min(i+1,COUNT-1);
+  drawSym(cover, PROJECTS[i].id, PROJECTS[j].id, i===j?0:t);
+  reels.forEach(r=>r.style.transform=`translateY(${-p*100/COUNT}%)`);
+}
+function tick(){
+  cur += (target-cur)*.14;
+  if(Math.abs(target-cur)<.0004) cur=target;
+  render(cur);
+  running = cur!==target;
+  if(running) requestAnimationFrame(tick);
+}
+function kick(){ readScroll(); if(!running){running=true;requestAnimationFrame(tick)} }
+addEventListener('scroll', kick, {passive:true});
+addEventListener('resize', ()=>{ render(cur); if(openId) drawDetailSyms(); });
+
+/* guides */
+const toggleGuides = ()=>document.body.classList.toggle('show-guides');
+document.getElementById('guideBtn').addEventListener('click', e=>{e.stopPropagation();toggleGuides()});
+document.getElementById('nextBtn').addEventListener('click', e=>{
+  e.stopPropagation();
+  const k=(Math.round(cur)+1)%COUNT; scrollTo({top:k*innerHeight,behavior:'smooth'});
+});
+document.getElementById('stageBackBtn').addEventListener('click', e=>{
+  e.stopPropagation();
+  document.body.classList.remove('intro-page2');
+  document.body.classList.add('intro-open');
+});
+
+/* cursor smart-guide tag */
+const ctag=document.getElementById('ctag'), stage=document.getElementById('stage');
+stage.addEventListener('pointermove', e=>{
+  if(e.pointerType!=='mouse'||e.target.closest('.corner')){ctag.classList.remove('on');return}
+  ctag.textContent = `open → ${PROJECTS[Math.round(cur)].title.join(' ')}`;
+  ctag.style.transform=`translate(${e.clientX+14}px,${e.clientY+16}px)`;ctag.classList.add('on');
+});
+stage.addEventListener('pointerleave', ()=>ctag.classList.remove('on'));
+stage.addEventListener('click', ()=>go(PROJECTS[Math.round(cur)].id));
+
+/* =========================================================
+   DETAIL PAGE — slides in from the right
+   ========================================================= */
+const detail=document.getElementById('detail');
+let openId=null, dSyms=[];
+const enc = p => encodeURI(p).replace(/#/g,'%23');
+
+function detailHTML(p, idx){
+  const nx = PROJECTS[(idx+1)%COUNT];
+  const rows=[['Field',p.field],['Tools',p.tools],['Team',p.team],['Role',p.role],['Overview',p.overview]];
+  return `
+  <div class="d-wrap">
+    <aside class="d-aside">
+      <div class="d-top"><button data-back>← Index</button><span>${pad2(idx+1)} / ${pad2(COUNT)}</span></div>
+      <div class="dsym"><svg class="sym" viewBox="0 0 440 300" data-sym="${p.id}"></svg></div>
+      <h1 class="dtitle">${p.title.map(t=>`<span>${t}</span>`).join('')}</h1>
+      <div class="d-ko">${p.nameKo}</div>
+      <p class="d-desc">${p.desc}</p>
+      <div class="d-info">${rows.map(([k,v])=>`<div class="k">${k}</div><div class="v">${v}</div>`).join('')}</div>
+      <button class="d-nextbtn" data-next="${nx.id}"><span>Next →</span><b>${nx.title.join(' ')}</b></button>
+    </aside>
+    <section class="d-gallery">
+      ${!p.images.length ? `<div class="d-empty">이미지 준비중 — 자료가 추가되면 여기에 표시됩니다.</div>` : p.images.map((it,i)=>`
+        <figure class="fig${it.f.includes('w')?' wide':''}${it.f.includes('b')?' board':''}">
+          ${Array.isArray(it.src)
+            ? `<div class="strip">${it.src.map(x=>`<img src="${enc(x)}" alt="" loading="lazy">`).join('')}</div>`
+            : `<img src="${enc(it.src)}" alt="${p.title.join(' ')} — ${it.cap}" ${i>1?'loading="lazy"':''}>`}
+          <i class="hd a"></i><i class="hd b"></i><i class="hd c"></i><i class="hd d"></i>
+          <figcaption><b>L${pad2(i+1)}</b><span>${it.cap}</span></figcaption>
+        </figure>`).join('')}
+    </section>
+  </div>`;
+}
+function drawDetailSyms(){ dSyms.forEach(([r,id])=>drawSym(r,id,id,0)) }
+function fillDetail(id){
+  const idx=PROJECTS.findIndex(p=>p.id===id), p=PROJECTS[idx];
+  detail.innerHTML=detailHTML(p,idx);
+  detail.scrollTop=0;
+  dSyms=[...detail.querySelectorAll('svg[data-sym]')].map(s=>[mkSym(s,false),s.dataset.sym]);
+  requestAnimationFrame(drawDetailSyms);
+  document.title=`${p.title.join(' ')} — Kim Taehui`;
+  // keep the cover in sync so "Index" returns to this project
+  document.documentElement.style.scrollSnapType='none';
+  scrollTo(0, idx*innerHeight); target=cur=idx; render(cur);
+  requestAnimationFrame(()=>document.documentElement.style.scrollSnapType='');
+}
+detail.addEventListener('click', e=>{
+  if(e.target.closest('[data-back]')) return go(null);
+  const n=e.target.closest('[data-next]'); if(n) go(n.dataset.next);
+});
+
+function openDetail(id, animate=true){
+  ctag.classList.remove('on');
+  if(openId && openId!==id && animate){                 // detail → next detail: push left, enter from right
+    detail.classList.add('swap-out');
+    setTimeout(()=>{
+      detail.classList.remove('swap-out'); detail.classList.add('swap-in');
+      fillDetail(id); detail.offsetWidth;
+      detail.classList.remove('swap-in');
+    }, 700);
+  } else {
+    if(!animate) detail.classList.add('no-anim');
+    fillDetail(id);
+    document.body.classList.add('detail-open','locked');
+    if(!animate) requestAnimationFrame(()=>detail.classList.remove('no-anim'));
+  }
+  openId=id;
+}
+function closeDetail(){
+  document.body.classList.remove('detail-open','locked');
+  document.title='Kim Taehui — Works';
+  openId=null;
+}
+
+/* hash routing  (#/voyeur …) */
+function go(id){
+  if(id) location.hash='/'+id;
+  else { history.pushState(null,'',location.pathname+location.search); route() }
+}
+function route(animate=true){
+  const id=location.hash.replace(/^#\/?/,'');
+  if(id && PROJECTS.some(p=>p.id===id)) openDetail(id, animate);
+  else if(openId) closeDetail();
+}
+addEventListener('hashchange', ()=>route(true));
+
+/* keyboard */
+addEventListener('keydown', e=>{
+  if(e.key==='g'||e.key==='G'||(e.key===';'&&(e.ctrlKey||e.metaKey))){e.preventDefault();toggleGuides()}
+  if(e.key==='Escape'&&openId) go(null);
+  if(e.key==='Enter'&&!openId) go(PROJECTS[Math.round(cur)].id);
+});
+
+/* =========================================================
+   INTRO PAGES — two static screens shown before the cover stage
+   ========================================================= */
+if(location.hash.replace(/^#\/?/,'')) document.body.classList.remove('intro-open');
+function closeIntro(){ document.body.classList.remove('intro-open') }
+(function initIntro(){
+  document.getElementById('introCount').textContent = pad2(COUNT)+' Works';
+  document.getElementById('introWorksHead').textContent = pad2(COUNT)+' Projects · 2022 — 2026';
+  const worksList = document.getElementById('worksList');
+  worksList.innerHTML = PROJECTS.map((p,i)=>`
+    <a class="work-row" data-goto="${p.id}">
+      <span class="idx">${pad2(i+1)}</span>
+      <span class="nm"><b>${p.title.join(' ')}</b><i>${p.nameKo}</i></span>
+      <span class="fd">${p.field}</span>
+      <span class="ds">${p.desc}</span>
+    </a>`).join('');
+  worksList.addEventListener('click', e=>{
+    const row=e.target.closest('[data-goto]'); if(!row) return;
+    closeIntro(); go(row.dataset.goto);
+  });
+
+  /* draw pad — click a grid cell to stamp the current tool, click again to erase it */
+  const DP_COLS=10, DP_ROWS=7;
+  const pad=document.getElementById('drawpad'), grid=document.getElementById('dpGrid');
+  for(let i=0;i<DP_COLS*DP_ROWS;i++){
+    const cell=document.createElement('button');
+    cell.type='button'; cell.className='dp-cell'; cell.setAttribute('aria-label','drawing cell');
+    grid.appendChild(cell);
+  }
+  grid.addEventListener('click', e=>{
+    const cell=e.target.closest('.dp-cell'); if(!cell) return;
+    if(cell.hasAttribute('data-shape')) cell.removeAttribute('data-shape');
+    else cell.setAttribute('data-shape', pad.dataset.tool);
+  });
+  pad.querySelectorAll('.dp-tool').forEach(btn=>btn.addEventListener('click', ()=>{
+    pad.dataset.tool=btn.dataset.tool;
+    pad.querySelectorAll('.dp-tool').forEach(b=>b.classList.toggle('active', b===btn));
+  }));
+  document.getElementById('dpClear').addEventListener('click', ()=>{
+    grid.querySelectorAll('[data-shape]').forEach(c=>c.removeAttribute('data-shape'));
+  });
+
+  /* page 1 ↔ page 2, and exit into the cover stage */
+  document.getElementById('introToWorks').addEventListener('click', ()=>document.body.classList.add('intro-page2'));
+  document.getElementById('introBack').addEventListener('click', ()=>document.body.classList.remove('intro-page2'));
+  document.getElementById('introEnter').addEventListener('click', closeIntro);
+  document.getElementById('introDl').addEventListener('click', e=>e.preventDefault()); /* PDF export — TODO */
+})();
+
+/* scroll / swipe : intro page1 → page2 → into the cover stage */
+(function introScroll(){
+  const intro=document.getElementById('intro');
+  let busy=false;
+  const cooldown=()=>{busy=true; setTimeout(()=>busy=false, 900)};
+  function advance(){
+    if(!document.body.classList.contains('intro-page2')) document.body.classList.add('intro-page2');
+    else closeIntro();
+    cooldown();
+  }
+  function back(){
+    if(document.body.classList.contains('intro-page2')){ document.body.classList.remove('intro-page2'); cooldown() }
+  }
+  intro.addEventListener('wheel', e=>{
+    if(!document.body.classList.contains('intro-open')||busy||Math.abs(e.deltaY)<12) return;
+    e.preventDefault();
+    e.deltaY>0 ? advance() : back();
+  }, {passive:false});
+  let touchY=null;
+  intro.addEventListener('touchstart', e=>{ touchY=e.touches[0].clientY }, {passive:true});
+  intro.addEventListener('touchend', e=>{
+    if(touchY==null||busy||!document.body.classList.contains('intro-open')) return;
+    const dy=touchY-e.changedTouches[0].clientY; touchY=null;
+    if(Math.abs(dy)<40) return;
+    dy>0 ? advance() : back();
+  }, {passive:true});
+})();
+
+/* intro : guides on → paths draw in → guides fade */
+(function intro(){
+  readScroll(); cur=target; render(cur);
+  route(false);
+  if(openId || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.body.classList.add('show-guides');
+  cover.paths.forEach(p=>{p.style.strokeDasharray='1';p.style.strokeDashoffset='1'});
+  const t0=performance.now();
+  (function draw(now){
+    const k=Math.min(1,(now-t0)/1600), e=smooth(k);
+    cover.paths.forEach(p=>p.style.strokeDashoffset=String(1-e));
+    if(k<1) requestAnimationFrame(draw);
+    else { cover.paths.forEach(p=>{p.style.strokeDasharray='';p.style.strokeDashoffset=''});
+           setTimeout(()=>document.body.classList.remove('show-guides'),500) }
+  })(t0);
+})();
+</script>
+</body>
+</html>

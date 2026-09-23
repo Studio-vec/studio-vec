@@ -6,3 +6,4 @@
 *.ico -text binary
 *.woff -text binary
 *.woff2 -text binary
+*.webp -text binary

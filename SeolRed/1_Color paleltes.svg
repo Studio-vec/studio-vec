@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_레이어_1" data-name="레이어 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1366 768">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #d50000;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        font-family: Pretendard-ExtraBold-KSCpc-EUC-H, Pretendard;
+        font-weight: 700;
+      }
+
+      .cls-2, .cls-4 {
+        font-size: 30.54px;
+      }
+
+      .cls-5 {
+        letter-spacing: .02em;
+      }
+
+      .cls-6 {
+        fill: #1b512d;
+      }
+
+      .cls-6, .cls-7 {
+        stroke: #000;
+        stroke-miterlimit: 10;
+        stroke-width: .25px;
+      }
+
+      .cls-3 {
+        font-size: 49.98px;
+      }
+
+      .cls-7 {
+        fill: #fff5e1;
+      }
+
+      .cls-8 {
+        fill: #f05;
+      }
+
+      .cls-9 {
+        letter-spacing: 0em;
+      }
+
+      .cls-10 {
+        fill: #14171e;
+      }
+    </style>
+  </defs>
+  <g>
+    <g>
+      <rect class="cls-8" x="68.16" y="154.59" width="367.4" height="180.11"/>
+      <text class="cls-2" transform="translate(184.66 311.28)"><tspan x="0" y="0">#FF0055</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-10" x="499.3" y="154.59" width="367.4" height="180.11"/>
+      <text class="cls-2" transform="translate(623.59 311.28)"><tspan x="0" y="0">#1</tspan><tspan class="cls-9" x="33.9" y="0">4</tspan><tspan x="54" y="0">171e</tspan></text>
+    </g>
+    <text class="cls-3" transform="translate(78.95 78.73)"><tspan x="0" y="0">Main Color</tspan></text>
+  </g>
+  <g>
+    <g>
+      <rect class="cls-1" x="68.16" y="544.55" width="367.4" height="180.11"/>
+      <text class="cls-2" transform="translate(180.02 701.77)"><tspan x="0" y="0">#D50000</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-7" x="499.3" y="544.55" width="367.4" height="180.11"/>
+      <text class="cls-4" transform="translate(621.36 701.77)"><tspan x="0" y="0">#FFF5E1</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-6" x="930.44" y="544.55" width="367.4" height="180.11"/>
+      <text class="cls-2" transform="translate(1050.1201 701.7693)"><tspan x="0" y="0">#1B512D</tspan></text>
+    </g>
+    <text class="cls-3" transform="translate(78.95 472.95)"><tspan x="0" y="0">Suppo</tspan><tspan class="cls-5" x="154.14" y="0">r</tspan><tspan x="175.58" y="0">ting Color</tspan></text>
+  </g>
+</svg>

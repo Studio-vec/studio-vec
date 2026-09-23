@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_레이어_1" data-name="레이어 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 84.96">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15 {
+        font-family: Pretendard-Regular-KSCpc-EUC-H, Pretendard;
+      }
+
+      .cls-1, .cls-2, .cls-4, .cls-16, .cls-6, .cls-8, .cls-9, .cls-10, .cls-12, .cls-14, .cls-15 {
+        fill: #fffdf0;
+      }
+
+      .cls-17 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-17, .cls-2, .cls-15 {
+        font-size: 10px;
+      }
+
+      .cls-18 {
+        letter-spacing: -.06em;
+      }
+
+      .cls-19 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-20 {
+        letter-spacing: -.06em;
+      }
+
+      .cls-21, .cls-4 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-22, .cls-11, .cls-12 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-3, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13 {
+        font-size: 8px;
+        opacity: .7;
+      }
+
+      .cls-3, .cls-5, .cls-7, .cls-11, .cls-13 {
+        fill: #00030f;
+      }
+
+      .cls-3, .cls-6 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-23 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-24, .cls-15 {
+        letter-spacing: 0em;
+      }
+
+      .cls-25, .cls-10, .cls-13 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-4, .cls-26, .cls-14 {
+        font-size: 12px;
+      }
+
+      .cls-27 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-7, .cls-9 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-28 {
+        fill: #ff6f00;
+      }
+
+      .cls-29 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-30 {
+        fill: #007bff;
+      }
+    </style>
+  </defs>
+  <rect class="cls-30" width="469.87" height="48.71"/>
+  <rect class="cls-16" x="469.87" width="243.26" height="48.71"/>
+  <rect class="cls-28" x="713.13" width="126.87" height="48.71"/>
+  <text class="cls-4" transform="translate(7.74 68.03)"><tspan x="0" y="0">Kaleido Blue</tspan></text>
+  <text class="cls-2" transform="translate(7.74 82.03) scale(.95 1)"><tspan class="cls-24" x="0" y="0">#0</tspan><tspan class="cls-19" x="11.76" y="0">0</tspan><tspan class="cls-24" x="17.43" y="0">7bff</tspan></text>
+  <text class="cls-6" transform="translate(8.89 14.77)"><tspan x="0" y="0">H</tspan></text>
+  <text class="cls-12" transform="translate(14.13 14.77) scale(.9 1)"><tspan x="0" y="0">210</tspan></text>
+  <text class="cls-6" transform="translate(24.73 14.77)"><tspan x="0" y="0" xml:space="preserve">  S</tspan></text>
+  <text class="cls-9" transform="translate(32.4 14.77) scale(.9 1)"><tspan x="0" y="0">95</tspan></text>
+  <text class="cls-6" transform="translate(40.39 14.77)"><tspan x="0" y="0" xml:space="preserve">  B</tspan></text>
+  <text class="cls-9" transform="translate(48.15 14.77) scale(.9 1)"><tspan x="0" y="0">98</tspan></text>
+  <text class="cls-6" transform="translate(8.89 26.77)"><tspan x="0" y="0">R</tspan></text>
+  <text class="cls-12" transform="translate(13.35 26.77) scale(.9 1)"><tspan x="0" y="0">0</tspan></text>
+  <text class="cls-6" transform="translate(17.28 26.77)"><tspan x="0" y="0" xml:space="preserve">  G</tspan></text>
+  <text class="cls-12" transform="translate(25.74 26.77) scale(.9 1)"><tspan x="0" y="0">123</tspan></text>
+  <text class="cls-6" transform="translate(36.49 26.77)"><tspan x="0" y="0" xml:space="preserve">  B</tspan></text>
+  <text class="cls-12" transform="translate(44.25 26.77) scale(.9 1)"><tspan x="0" y="0">255</tspan></text>
+  <text class="cls-6" transform="translate(8.89 38.77)"><tspan x="0" y="0">C</tspan></text>
+  <text class="cls-9" transform="translate(14.04 38.77) scale(.9 1)"><tspan x="0" y="0">81</tspan></text>
+  <text class="cls-10" transform="translate(20.83 38.77)"><tspan x="0" y="0" xml:space="preserve">  M</tspan></text>
+  <text class="cls-12" transform="translate(30.45 38.77) scale(.9 1)"><tspan x="0" y="0">51</tspan></text>
+  <text class="cls-6" transform="translate(37.17 38.77)"><tspan x="0" y="0" xml:space="preserve">  Y</tspan></text>
+  <text class="cls-12" transform="translate(45.05 38.77) scale(.9 1)"><tspan x="0" y="0">0</tspan></text>
+  <text class="cls-10" transform="translate(48.98 38.77)"><tspan x="0" y="0" xml:space="preserve">  K</tspan></text>
+  <text class="cls-12" transform="translate(56.75 38.77) scale(.9 1)"><tspan x="0" y="0">0</tspan></text>
+  <text class="cls-1" transform="translate(479.89 68.03)"><tspan class="cls-26"><tspan class="cls-21" x="0" y="0">Kaleido Whi</tspan><tspan class="cls-18" x="56.4" y="0">t</tspan><tspan class="cls-25" x="59.81" y="0">e</tspan></tspan><tspan class="cls-17"><tspan x="0" y="14">#</tspan></tspan></text>
+  <text class="cls-2" transform="translate(485.39 82.03) scale(.95 1)"><tspan class="cls-27" x="0" y="0">ff</tspan><tspan class="cls-29" x="6.56" y="0">f</tspan><tspan class="cls-27" x="9.62" y="0">df0</tspan></text>
+  <text class="cls-3" transform="translate(479.89 14.85)"><tspan x="0" y="0">H</tspan></text>
+  <text class="cls-11" transform="translate(485.14 14.85) scale(.9 1)"><tspan x="0" y="0">50</tspan></text>
+  <text class="cls-3" transform="translate(493 14.85)"><tspan x="0" y="0" xml:space="preserve">  S</tspan></text>
+  <text class="cls-11" transform="translate(500.67 14.85) scale(.9 1)"><tspan x="0" y="0">5</tspan></text>
+  <text class="cls-3" transform="translate(504.6 14.85)"><tspan x="0" y="0" xml:space="preserve">  B</tspan></text>
+  <text class="cls-7" transform="translate(512.36 14.85) scale(.9 1)"><tspan x="0" y="0">90</tspan></text>
+  <text class="cls-3" transform="translate(479.89 26.85)"><tspan x="0" y="0">R</tspan></text>
+  <text class="cls-11" transform="translate(484.36 26.85) scale(.9 1)"><tspan x="0" y="0">255</tspan></text>
+  <text class="cls-3" transform="translate(496.09 26.85)"><tspan x="0" y="0" xml:space="preserve">  G</tspan></text>
+  <text class="cls-11" transform="translate(504.56 26.85) scale(.9 1)"><tspan x="0" y="0">253</tspan></text>
+  <text class="cls-3" transform="translate(516.44 26.85)"><tspan x="0" y="0" xml:space="preserve">  B</tspan></text>
+  <text class="cls-5" transform="translate(524.2 26.85) scale(.9 1)"><tspan class="cls-20" x="0" y="0">2</tspan><tspan class="cls-22" x="4.18" y="0">40</tspan></text>
+  <text class="cls-3" transform="translate(479.89 38.85)"><tspan x="0" y="0">C</tspan></text>
+  <text class="cls-11" transform="translate(485.05 38.85) scale(.9 1)"><tspan x="0" y="0">1</tspan></text>
+  <text class="cls-3" transform="translate(487.84 38.85)"><tspan x="0" y="0" xml:space="preserve">  M</tspan></text>
+  <text class="cls-11" transform="translate(497.46 38.85) scale(.9 1)"><tspan x="0" y="0">1</tspan></text>
+  <text class="cls-13" transform="translate(500.25 38.85)"><tspan x="0" y="0" xml:space="preserve">  Y</tspan></text>
+  <text class="cls-11" transform="translate(508.12 38.85) scale(.9 1)"><tspan x="0" y="0">8</tspan></text>
+  <text class="cls-3" transform="translate(512.12 38.85)"><tspan x="0" y="0" xml:space="preserve">  K</tspan></text>
+  <text class="cls-11" transform="translate(519.9 38.85) scale(.9 1)"><tspan x="0" y="0">1</tspan></text>
+  <text class="cls-14" transform="translate(723.8 68.03)"><tspan class="cls-21" x="0" y="0">Kaleido O</tspan><tspan class="cls-23" x="45.96" y="0">r</tspan><tspan class="cls-21" x="49.55" y="0">ange</tspan></text>
+  <text class="cls-15" transform="translate(723.8 82.03) scale(.95 1)"><tspan x="0" y="0">#ff6f00</tspan></text>
+  <text class="cls-6" transform="translate(723.8 15.18)"><tspan x="0" y="0">H</tspan></text>
+  <text class="cls-12" transform="translate(729.05 15.18) scale(.9 1)"><tspan x="0" y="0">25</tspan></text>
+  <text class="cls-6" transform="translate(736.85 15.18)"><tspan x="0" y="0" xml:space="preserve">  S</tspan></text>
+  <text class="cls-12" transform="translate(744.52 15.18) scale(.9 1)"><tspan x="0" y="0">100</tspan></text>
+  <text class="cls-10" transform="translate(755.17 15.18)"><tspan x="0" y="0" xml:space="preserve">  B</tspan></text>
+  <text class="cls-12" transform="translate(762.93 15.18) scale(.9 1)"><tspan x="0" y="0">100</tspan></text>
+  <text class="cls-6" transform="translate(723.8 27.18)"><tspan x="0" y="0">R</tspan></text>
+  <text class="cls-12" transform="translate(728.26 27.18) scale(.9 1)"><tspan x="0" y="0">255</tspan></text>
+  <text class="cls-6" transform="translate(740 27.18)"><tspan x="0" y="0" xml:space="preserve">  G</tspan></text>
+  <text class="cls-12" transform="translate(748.46 27.18) scale(.9 1)"><tspan x="0" y="0">111</tspan></text>
+  <text class="cls-10" transform="translate(756.84 27.18)"><tspan x="0" y="0" xml:space="preserve">  B</tspan></text>
+  <text class="cls-12" transform="translate(764.6 27.18) scale(.9 1)"><tspan x="0" y="0">0</tspan></text>
+  <text class="cls-6" transform="translate(723.8 39.18)"><tspan x="0" y="0">C</tspan></text>
+  <text class="cls-12" transform="translate(728.95 39.18) scale(.9 1)"><tspan x="0" y="0">0</tspan></text>
+  <text class="cls-6" transform="translate(732.88 39.18)"><tspan x="0" y="0" xml:space="preserve">  M</tspan></text>
+  <text class="cls-8" transform="translate(742.5 39.18) scale(.9 1)"><tspan class="cls-20" x="0" y="0">7</tspan><tspan class="cls-22" x="3.9" y="0">0</tspan></text>
+  <text class="cls-6" transform="translate(749.94 39.18)"><tspan x="0" y="0" xml:space="preserve">  Y</tspan></text>
+  <text class="cls-12" transform="translate(757.81 39.18) scale(.9 1)"><tspan x="0" y="0">92</tspan></text>
+  <text class="cls-10" transform="translate(765.74 39.18)"><tspan x="0" y="0" xml:space="preserve">  K</tspan></text>
+  <text class="cls-12" transform="translate(773.52 39.18) scale(.9 1)"><tspan x="0" y="0">0</tspan></text>
+</svg>
