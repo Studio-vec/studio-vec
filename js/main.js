@@ -231,6 +231,157 @@
     });
   }
 
+  var nfCanvas = document.getElementById('notfound-canvas');
+  var nfArt = nfCanvas ? nfCanvas.closest('.notfound-art') : null;
+
+  if (nfCanvas && nfArt) {
+    var nfCtx = nfCanvas.getContext('2d');
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var nfParticles = [];
+    var nfWidth = 0;
+    var nfHeight = 0;
+    var nfDpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    var nfPointer = { x: -9999, y: -9999, active: false };
+    var nfLastActivity = 0;
+
+    function buildParticles() {
+      var rect = nfArt.getBoundingClientRect();
+      nfWidth = Math.max(rect.width, 1);
+      nfHeight = Math.max(rect.height, 1);
+
+      nfCanvas.width = nfWidth * nfDpr;
+      nfCanvas.height = nfHeight * nfDpr;
+      nfCtx.setTransform(nfDpr, 0, 0, nfDpr, 0, 0);
+
+      var sample = document.createElement('canvas');
+      var sampleH = 220;
+      var sampleW = Math.round(sampleH * (nfWidth / nfHeight));
+      sample.width = sampleW;
+      sample.height = sampleH;
+      var sctx = sample.getContext('2d');
+      sctx.clearRect(0, 0, sampleW, sampleH);
+      sctx.fillStyle = '#fff';
+      sctx.textAlign = 'center';
+      sctx.textBaseline = 'middle';
+      sctx.font = '800 ' + Math.round(sampleH * 0.72) + 'px "Inter Tight", sans-serif';
+      sctx.fillText('404', sampleW / 2, sampleH * 0.54);
+
+      var data = sctx.getImageData(0, 0, sampleW, sampleH).data;
+      var step = sampleW > 260 ? 4 : 3;
+      var scaleX = nfWidth / sampleW;
+      var scaleY = nfHeight / sampleH;
+
+      nfParticles = [];
+      for (var y = 0; y < sampleH; y += step) {
+        for (var x = 0; x < sampleW; x += step) {
+          var alpha = data[(y * sampleW + x) * 4 + 3];
+          if (alpha > 128) {
+            var ox = x * scaleX;
+            var oy = y * scaleY;
+            nfParticles.push({
+              ox: ox,
+              oy: oy,
+              x: ox,
+              y: oy,
+              vx: 0,
+              vy: 0,
+              phase: Math.random() * Math.PI * 2
+            });
+          }
+        }
+      }
+    }
+
+    function updatePointerFromEvent(clientX, clientY) {
+      var rect = nfArt.getBoundingClientRect();
+      nfPointer.x = clientX - rect.left;
+      nfPointer.y = clientY - rect.top;
+      nfPointer.active = true;
+      nfLastActivity = Date.now();
+    }
+
+    nfArt.addEventListener('mousemove', function (e) {
+      updatePointerFromEvent(e.clientX, e.clientY);
+    });
+    nfArt.addEventListener('mouseleave', function () {
+      nfPointer.active = false;
+    });
+    nfArt.addEventListener('touchmove', function (e) {
+      if (e.touches && e.touches[0]) {
+        updatePointerFromEvent(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+    nfArt.addEventListener('touchend', function () {
+      nfPointer.active = false;
+    });
+
+    var REPEL_RADIUS = 70;
+    var REPEL_STRENGTH = 9;
+    var SPRING_K = 0.06;
+    var DAMPING = 0.85;
+
+    function nfStep(t) {
+      nfCtx.clearRect(0, 0, nfWidth, nfHeight);
+
+      var idle = !reduceMotion;
+
+      for (var i = 0; i < nfParticles.length; i++) {
+        var p = nfParticles[i];
+        var tx = p.ox;
+        var ty = p.oy;
+
+        if (idle) {
+          tx += Math.sin(t * 0.0012 + p.phase) * 1.6;
+          ty += Math.cos(t * 0.0015 + p.phase) * 1.6;
+        }
+
+        var ax = (tx - p.x) * SPRING_K;
+        var ay = (ty - p.y) * SPRING_K;
+
+        if (nfPointer.active) {
+          var dx = p.x - nfPointer.x;
+          var dy = p.y - nfPointer.y;
+          var dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+          if (dist < REPEL_RADIUS) {
+            var force = Math.pow(1 - dist / REPEL_RADIUS, 2) * REPEL_STRENGTH;
+            ax += (dx / dist) * force;
+            ay += (dy / dist) * force;
+          }
+        }
+
+        p.vx = (p.vx + ax) * DAMPING;
+        p.vy = (p.vy + ay) * DAMPING;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        var disp = Math.min(Math.sqrt(Math.pow(p.x - p.ox, 2) + Math.pow(p.y - p.oy, 2)) / 14, 1);
+        var r = Math.round(255 - disp * (255 - 219));
+        var g = Math.round(255 - disp * (255 - 255));
+        var b = Math.round(255 - disp * (255 - 120));
+
+        nfCtx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+        nfCtx.fillRect(p.x - 1, p.y - 1, 2, 2);
+      }
+
+      if (nfPointer.active && Date.now() - nfLastActivity > 4000) {
+        nfPointer.active = false;
+      }
+
+      requestAnimationFrame(nfStep);
+    }
+
+    buildParticles();
+    requestAnimationFrame(nfStep);
+
+    var nfResizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(nfResizeTimer);
+      nfResizeTimer = setTimeout(buildParticles, 150);
+    });
+  }
+
   var revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {
     var observer = new IntersectionObserver(
