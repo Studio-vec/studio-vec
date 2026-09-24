@@ -1090,14 +1090,21 @@ button {
   border-radius: var(--radius-md);
 }
 
-/* Behance-style module stack: modules sit flush on one canvas, in source order.
+/* Behance-style module stack: modules sit on one canvas in source order.
+   Per-project canvas colour (--pm-bg) and module spacing (--pm-sp, px on Behance's 1400px canvas) come from each project's Behance style settings.
    image = full-width · pm-inset = non-full-bleed · pm-row = same-height image row · pm-text = centred KR/EN copy */
+.project-stream {
+  background: var(--pm-bg, var(--black));
+}
+
+.project-stream .container {
+  container-type: inline-size;
+}
+
 .pm-stack {
   display: flex;
   flex-direction: column;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: var(--black);
+  gap: calc(var(--pm-sp, 0) / 1400 * 100cqw);
 }
 
 .pm-stack > img {
@@ -1114,6 +1121,7 @@ button {
 .pm-row {
   display: flex;
   width: 100%;
+  gap: calc(4 / 1400 * 100cqw);
 }
 
 .pm-row img {
@@ -1145,6 +1153,14 @@ button {
 .pm-text p.pm-en {
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.5);
+}
+
+.pm-light .pm-text p {
+  color: #696969;
+}
+
+.pm-light .pm-text p.pm-en {
+  color: #a4a4a4;
 }
 
 .pm-text a {
