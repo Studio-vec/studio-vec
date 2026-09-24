@@ -1090,6 +1090,72 @@ button {
   border-radius: var(--radius-md);
 }
 
+/* Behance-style module stack: modules sit flush on one canvas, in source order.
+   image = full-width · pm-inset = non-full-bleed · pm-row = same-height image row · pm-text = centred KR/EN copy */
+.pm-stack {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--black);
+}
+
+.pm-stack > img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pm-stack > img.pm-inset {
+  width: 88%;
+  margin-inline: auto;
+}
+
+.pm-row {
+  display: flex;
+  width: 100%;
+}
+
+.pm-row img {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pm-text {
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1rem, 8%, 6rem);
+  text-align: center;
+  color: var(--white);
+}
+
+.pm-text p {
+  max-width: 62ch;
+  margin: 0 auto;
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.pm-text p + p {
+  margin-top: 0.6rem;
+}
+
+.pm-text p.pm-en {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.pm-text a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.project-hero-grid.no-poster {
+  grid-template-columns: 1fr;
+}
+
 .project-footer-nav {
   background: var(--black);
   padding-bottom: clamp(3rem, 6vw, 4.5rem);
