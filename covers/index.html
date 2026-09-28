@@ -237,7 +237,7 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
 .cta-download{
   position:relative;overflow:hidden;isolation:isolate;
   display:flex;flex-direction:column;justify-content:space-between;
-  min-height:clamp(300px,52vh,580px);padding:clamp(26px,3.2vw,52px);
+  min-height:clamp(300px,52vh,580px);padding:clamp(36px,4.4vw,76px);
   border:1px solid rgba(17,17,17,.16);background:var(--paper);color:var(--ink);
   text-decoration:none;cursor:pointer;transition:border-color .3s var(--ease);
 }
@@ -767,14 +767,14 @@ function backToCover(){
 }
 detail.addEventListener('wheel', e=>{
   if(!document.body.classList.contains('detail-open')||backCooldown) return;
-  if(detail.scrollTop<=0 && e.deltaY<-8){ e.preventDefault(); backToCover() }
+  if(detail.scrollTop<=2 && e.deltaY<0){ e.preventDefault(); backToCover() }
 }, {passive:false});
 let dTouchY=null;
 detail.addEventListener('touchstart', e=>{ dTouchY=e.touches[0].clientY }, {passive:true});
 detail.addEventListener('touchmove', e=>{
   if(dTouchY==null||backCooldown) return;
   const dy=e.touches[0].clientY-dTouchY;
-  if(detail.scrollTop<=0 && dy>70){ dTouchY=null; backToCover() }
+  if(detail.scrollTop<=2 && dy>70){ dTouchY=null; backToCover() }
 }, {passive:true});
 
 function openDetail(id, animate=true){
