@@ -277,7 +277,8 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
 .intro .dlmini:hover{color:var(--ink)}
 .intro .dlmini svg{width:13px;height:13px}
 
-.works-list{grid-column:1/8;grid-row:2;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.works-list{grid-column:1/8;grid-row:2;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:clamp(16px,2.5vh,32px) 0}
+#introPage2 .intro-grid{padding-bottom:clamp(52px,8vh,92px)}
 .work-row{display:grid;grid-template-columns:44px 1.5fr 190px 2fr;column-gap:20px;align-items:baseline;padding:calc(var(--mt)*.32) 0;border-top:1px solid rgba(17,17,17,.12);text-decoration:none;color:var(--ink);cursor:pointer;background:none}
 .work-row:hover{color:var(--guide-strong)}
 .work-row .idx{font-family:"Newsreader",serif;font-style:italic;font-size:var(--label);color:var(--sub)}
@@ -674,6 +675,20 @@ function tick(){
 function kick(){ readScroll(); if(!running){running=true;requestAnimationFrame(tick)} }
 addEventListener('scroll', kick, {passive:true});
 addEventListener('resize', ()=>{ render(cur); if(openId) drawDetailSyms(); });
+
+/* scrolling up past the very first project on the stage exits back to the cover page */
+addEventListener('wheel', e=>{
+  if(document.body.classList.contains('intro-open')||document.body.classList.contains('detail-open')||backCooldown) return;
+  if(scrollY<=2 && e.deltaY<0){ e.preventDefault(); backToCover() }
+}, {passive:false});
+let sTouchY=null;
+addEventListener('touchstart', e=>{ sTouchY=e.touches[0].clientY }, {passive:true});
+addEventListener('touchmove', e=>{
+  if(sTouchY==null||backCooldown) return;
+  if(document.body.classList.contains('intro-open')||document.body.classList.contains('detail-open')) return;
+  const dy=e.touches[0].clientY-sTouchY;
+  if(scrollY<=2 && dy>70){ sTouchY=null; backToCover() }
+}, {passive:true});
 
 /* guides */
 const toggleGuides = ()=>document.body.classList.toggle('show-guides');
