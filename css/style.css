@@ -352,13 +352,17 @@ button {
 .btn-hero-download {
   background: transparent;
   color: var(--white);
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border: none;
+  border-radius: 0;
+  padding: 0.3rem 0 0.5rem;
+  font-weight: 400;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .btn-hero-download:hover {
-  background: var(--white);
-  color: var(--black);
-  border-color: var(--white);
+  background: transparent;
+  color: var(--white);
+  border-bottom-color: var(--white);
 }
 
 /* ---------- Headline section ---------- */
