@@ -917,6 +917,13 @@ button {
 }
 
 /* ---------- Project detail page ---------- */
+.project-topbar .container,
+.project-hero .container,
+.project-stream .container,
+.project-footer-nav .container {
+  width: min(960px, 100% - 2.5rem);
+}
+
 .project-topbar {
   background: var(--black);
   color: rgba(255, 255, 255, 0.75);
