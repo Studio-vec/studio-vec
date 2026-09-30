@@ -1179,6 +1179,69 @@ button {
   text-underline-offset: 3px;
 }
 
+.pm-pull {
+  padding: clamp(3rem, 7vw, 5.5rem) clamp(1rem, 8%, 6rem) clamp(1.25rem, 3vw, 2rem);
+  text-align: center;
+}
+
+.pm-pull p {
+  margin: 0 auto;
+  max-width: 18ch;
+  font-family: var(--font-en);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 4.4vw, 3.1rem);
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+.pm-light .pm-pull p {
+  color: var(--black);
+}
+
+.pm-mark {
+  display: flex;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 2rem) 1rem clamp(2.5rem, 6vw, 4rem);
+}
+
+.pm-mark svg {
+  width: clamp(120px, 16vw, 200px);
+  height: auto;
+}
+
+.pm-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1.5rem, 5vw, 3.5rem);
+  padding: clamp(1rem, 4vw, 2.5rem) clamp(1rem, 8%, 6rem) clamp(3rem, 7vw, 5.5rem);
+}
+
+.pm-swatch {
+  text-align: center;
+}
+
+.pm-swatch-chip {
+  display: block;
+  width: clamp(44px, 6vw, 64px);
+  height: clamp(44px, 6vw, 64px);
+  border-radius: 50%;
+  margin: 0 auto 0.7rem;
+}
+
+.pm-swatch-hex {
+  display: block;
+  font-family: var(--font-en);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pm-light .pm-swatch-hex {
+  color: rgba(0, 0, 0, 0.5);
+}
+
 .project-hero-grid.no-poster {
   grid-template-columns: 1fr;
 }
