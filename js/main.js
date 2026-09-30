@@ -167,6 +167,26 @@
     });
   }
 
+  var toast = document.getElementById('toast');
+  var toastTimer = null;
+
+  function showToast(message) {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.remove('visible');
+    }, 2200);
+  }
+
+  document.querySelectorAll('[data-soon]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      showToast('준비중입니다');
+    });
+  });
+
   var nfCanvas = document.getElementById('notfound-canvas');
   var nfArt = nfCanvas ? nfCanvas.closest('.notfound-art') : null;
 
