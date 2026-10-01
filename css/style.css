@@ -344,9 +344,33 @@ button {
   gap: clamp(1.5rem, 4vw, 2.5rem);
 }
 
+.hero-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  font-weight: 400;
+  text-align: center;
+}
+
 .hero-logo {
   width: clamp(110px, 15vw, 210px);
   height: auto;
+  margin-bottom: clamp(0.75rem, 2vw, 1.1rem);
+}
+
+.hero-name {
+  font-family: var(--font-en);
+  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hero-sub {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .btn-hero-download {
@@ -728,15 +752,31 @@ button {
   opacity: 0;
 }
 
-.work-card:hover .work-img-default {
+/* Pointer devices: real hover. Touch devices: JS marks the card at the
+   viewport's vertical centre with .is-center (see main.js). */
+@media (hover: hover) and (pointer: fine) {
+  .work-card:hover .work-img-default {
+    opacity: 0;
+  }
+
+  .work-card:hover .work-img-hover {
+    opacity: 1;
+  }
+
+  .work-card:hover .work-img {
+    transform: scale(1.04);
+  }
+}
+
+.work-card.is-center .work-img-default {
   opacity: 0;
 }
 
-.work-card:hover .work-img-hover {
+.work-card.is-center .work-img-hover {
   opacity: 1;
 }
 
-.work-card:hover .work-img {
+.work-card.is-center .work-img {
   transform: scale(1.04);
 }
 
@@ -1159,12 +1199,91 @@ button {
   gap: calc(4 / 1400 * 100cqw);
 }
 
+/* --ar = image width / height; growing by it keeps every image in a row the same height. */
 .pm-row img {
-  flex: 1 1 0;
+  flex: var(--ar, 1) 1 0;
   min-width: 0;
   width: 100%;
   height: auto;
   display: block;
+}
+
+/* Chapter divider inside a module stack (e.g. PUFFNOTE brand flow) */
+.pm-chapter {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem clamp(1rem, 3vw, 2rem);
+  align-items: baseline;
+  padding: clamp(3rem, 7vw, 5rem) 0 clamp(1.25rem, 2.5vw, 1.75rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  margin-bottom: clamp(0.5rem, 1.2vw, 0.85rem);
+  color: var(--white);
+}
+
+.pm-chapter-num {
+  grid-row: span 2;
+  font-family: var(--font-en);
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1;
+  color: var(--pm-accent, var(--accent));
+}
+
+.pm-chapter-title {
+  font-family: var(--font-en);
+  font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.pm-chapter-title small {
+  margin-left: 0.6rem;
+  font-family: var(--font-kr);
+  font-size: 0.6em;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pm-chapter-desc {
+  grid-column: 2;
+  max-width: 60ch;
+  font-size: clamp(0.88rem, 1.1vw, 0.98rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.pm-stack.pm-flow {
+  gap: clamp(0.5rem, 1.2vw, 0.85rem);
+}
+
+.pm-flow .pm-row {
+  gap: clamp(0.5rem, 1.2vw, 0.85rem);
+}
+
+.pm-flow img {
+  border-radius: 6px;
+}
+
+@media (max-width: 640px) {
+  .pm-flow .pm-row {
+    flex-direction: column;
+  }
+
+  .pm-flow .pm-row img {
+    flex: none;
+  }
+
+  .pm-chapter {
+    grid-template-columns: 1fr;
+  }
+
+  .pm-chapter-num {
+    grid-row: auto;
+  }
+
+  .pm-chapter-desc {
+    grid-column: 1;
+  }
 }
 
 .pm-text {

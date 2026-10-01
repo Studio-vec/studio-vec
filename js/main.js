@@ -167,6 +167,34 @@
     });
   }
 
+  // Touch devices have no hover: show the hover image on the card(s) crossing
+  // the viewport's vertical centre line instead.
+  var hoverQuery = window.matchMedia ? window.matchMedia('(hover: hover) and (pointer: fine)') : null;
+
+  if (workCards.length && hoverQuery) {
+    function updateCenterCards() {
+      var touchMode = !hoverQuery.matches;
+      var mid = window.innerHeight / 2;
+
+      workCards.forEach(function (card) {
+        var on = false;
+        if (touchMode && !card.hidden) {
+          var r = card.getBoundingClientRect();
+          on = r.top <= mid && r.bottom >= mid;
+        }
+        card.classList.toggle('is-center', on);
+      });
+    }
+
+    window.addEventListener('scroll', updateCenterCards, { passive: true });
+    window.addEventListener('resize', updateCenterCards);
+    if (hoverQuery.addEventListener) hoverQuery.addEventListener('change', updateCenterCards);
+    filterChips.forEach(function (chip) {
+      chip.addEventListener('click', updateCenterCards);
+    });
+    updateCenterCards();
+  }
+
   var toast = document.getElementById('toast');
   var toastTimer = null;
 
