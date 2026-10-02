@@ -1386,6 +1386,64 @@ button {
   color: rgba(0, 0, 0, 0.5);
 }
 
+.pm-swatch-name {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-family: var(--font-en);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Challenge / approach cards under the opening pull quote */
+.pm-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.5rem, 1.2vw, 0.85rem);
+  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.pm-fact {
+  padding: clamp(1.1rem, 2vw, 1.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(0.86rem, 1.05vw, 0.95rem);
+  line-height: 1.7;
+}
+
+.pm-fact-label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-en);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pm-accent, var(--accent));
+}
+
+/* Closing module: logo mark + credits */
+.pm-outro {
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.pm-outro .pm-mark {
+  padding-bottom: 0;
+}
+
+.pm-outro .pm-text {
+  padding-top: clamp(1.25rem, 3vw, 2rem);
+}
+
+@media (max-width: 640px) {
+  .pm-facts {
+    grid-template-columns: 1fr;
+  }
+}
+
 .project-hero-grid.no-poster {
   grid-template-columns: 1fr;
 }
