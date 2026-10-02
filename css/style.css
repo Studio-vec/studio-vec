@@ -1386,6 +1386,34 @@ button {
   color: rgba(0, 0, 0, 0.5);
 }
 
+/* Full-viewport cover above the project title */
+.project-cover {
+  background: var(--black);
+}
+
+.project-cover img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Edge-to-edge module that breaks out of the 960px stream column */
+.project-stream {
+  overflow-x: clip;
+}
+
+.pm-stack > img.pm-bleed {
+  width: 100vw;
+  max-width: none;
+  margin-inline: calc(50% - 50vw);
+  border-radius: 0;
+}
+
+.pm-bleed + .pm-chapter,
+.pm-chapter + .pm-bleed {
+  margin-top: clamp(0.5rem, 2vw, 1.5rem);
+}
+
 .pm-swatch-name {
   display: block;
   margin-bottom: 0.2rem;
