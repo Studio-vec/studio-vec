@@ -1414,6 +1414,167 @@ button {
   margin-top: clamp(0.5rem, 2vw, 1.5rem);
 }
 
+/* Light band: full-width section that flips the stream to a paper background */
+.pm-band {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding: clamp(3rem, 8vw, 6rem) 0;
+  background: var(--band-bg, #f3eee6);
+}
+
+.pm-band-inner {
+  width: min(960px, 100% - 2.5rem);
+  margin-inline: auto;
+}
+
+.pm-light .pm-chapter {
+  color: var(--black);
+  border-bottom-color: rgba(0, 0, 0, 0.14);
+}
+
+.pm-light .pm-chapter-num {
+  color: var(--pm-accent-light, var(--black));
+}
+
+.pm-light .pm-chapter-title small,
+.pm-light .pm-chapter-desc {
+  color: rgba(0, 0, 0, 0.62);
+}
+
+.pm-light .pm-swatch-name {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.pm-light .pm-cap {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* Even grid of 2-4 items, cropped to one ratio */
+.pm-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  gap: clamp(0.5rem, 1.2vw, 0.85rem);
+}
+
+.pm-grid figure {
+  margin: 0;
+}
+
+.pm-grid img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--ratio, auto);
+  object-fit: cover;
+  display: block;
+}
+
+.pm-grid.pm-contain img {
+  object-fit: contain;
+}
+
+.pm-grid figcaption,
+.pm-cap {
+  margin-top: 0.6rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* One large image beside a column of smaller ones */
+.pm-asym {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: clamp(0.5rem, 1.2vw, 0.85rem);
+}
+
+.pm-asym.pm-flip {
+  grid-template-columns: 1fr 2fr;
+}
+
+.pm-asym.pm-flip > img {
+  order: 2;
+}
+
+.pm-asym > img,
+.pm-asym-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pm-asym-side {
+  display: grid;
+  gap: clamp(0.5rem, 1.2vw, 0.85rem);
+  min-height: 0;
+}
+
+/* Image with a short note beside it */
+.pm-split {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  padding-block: clamp(1rem, 3vw, 2rem);
+}
+
+.pm-split.pm-flip > img {
+  order: 2;
+}
+
+.pm-split img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pm-split h3 {
+  font-family: var(--font-en);
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--white);
+}
+
+.pm-split p {
+  margin-top: 0.9rem;
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.pm-light .pm-split h3 {
+  color: var(--black);
+}
+
+.pm-light .pm-split p {
+  color: rgba(0, 0, 0, 0.66);
+}
+
+/* Single image held to a narrow centred column (posters, covers) */
+.pm-stack > img.pm-narrow {
+  width: min(380px, 62%);
+  margin: clamp(1rem, 4vw, 3rem) auto;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 640px) {
+  .pm-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pm-asym,
+  .pm-asym.pm-flip,
+  .pm-split {
+    grid-template-columns: 1fr;
+  }
+
+  .pm-asym.pm-flip > img,
+  .pm-split.pm-flip > img {
+    order: 0;
+  }
+}
+
 .pm-swatch-name {
   display: block;
   margin-bottom: 0.2rem;
