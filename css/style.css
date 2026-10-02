@@ -1414,6 +1414,209 @@ button {
   margin-top: clamp(0.5rem, 2vw, 1.5rem);
 }
 
+/* ---------- Editorial project layout (opt-in per page) ---------- */
+.project-hero--editorial .container {
+  width: min(1200px, 100% - 2.5rem);
+}
+
+.ed-head {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: end;
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ed-title {
+  font-family: var(--font-en);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 6.2vw, 5.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  color: var(--white);
+}
+
+.ed-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.55rem 1.5rem;
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.ed-info dt {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.ed-info dd {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.ed-lede {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.ed-lede p {
+  grid-column: 2;
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Section opener: hairline, small label on the left, prose on the right */
+.pm-sec {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(3.5rem, 8vw, 6rem) 0 clamp(1.25rem, 2.5vw, 1.75rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+  color: var(--white);
+}
+
+.pm-sec-label {
+  font-family: var(--font-en);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pm-sec-label b {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.pm-sec p {
+  max-width: 34em;
+  font-size: clamp(1.02rem, 1.45vw, 1.25rem);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.pm-light .pm-sec {
+  border-top-color: rgba(0, 0, 0, 0.2);
+  color: var(--black);
+}
+
+.pm-light .pm-sec-label {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.pm-light .pm-sec-label b {
+  color: var(--black);
+}
+
+.pm-light .pm-sec p {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.pm-band-inner > .pm-sec:first-child {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* Large left-aligned line of type */
+.pm-display {
+  padding: clamp(3rem, 8vw, 6rem) 0 clamp(1rem, 3vw, 2rem);
+  font-family: var(--font-en);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.6vw, 3.9rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--white);
+}
+
+.pm-display span {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Flat colour strip: printed-chip style */
+.pm-chips {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 6), 1fr);
+  margin-block: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.pm-chip {
+  aspect-ratio: 3 / 4;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-family: var(--font-en);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.pm-chip b {
+  font-weight: 700;
+}
+
+/* Image pushed right with its caption in the left margin */
+.pm-offset {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: end;
+}
+
+.pm-offset.pm-flip {
+  grid-template-columns: 3fr 1fr;
+}
+
+.pm-offset.pm-flip img {
+  order: -1;
+}
+
+.pm-offset img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pm-offset p {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pm-light .pm-offset p {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+@media (max-width: 760px) {
+  .ed-head,
+  .ed-lede,
+  .pm-sec,
+  .pm-offset,
+  .pm-offset.pm-flip {
+    grid-template-columns: 1fr;
+  }
+
+  .ed-lede p {
+    grid-column: 1;
+  }
+
+  .pm-offset.pm-flip img {
+    order: 0;
+  }
+
+  .pm-chips {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 /* Light band: full-width section that flips the stream to a paper background */
 .pm-band {
   width: 100vw;
