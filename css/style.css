@@ -780,6 +780,42 @@ button {
   transform: scale(1.04);
 }
 
+/* Unreleased projects: not clickable, image stays put, "준비중입니다" overlay. */
+.work-card.is-soon {
+  cursor: default;
+}
+
+.work-card.is-soon .work-img-default {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.work-soon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.72);
+  color: var(--white);
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .work-card.is-soon:hover .work-soon {
+    opacity: 1;
+  }
+}
+
+.work-card.is-soon.is-center .work-soon {
+  opacity: 1;
+}
+
 /* ---------- Partners ---------- */
 .partner-card {
   margin-top: clamp(2.5rem, 5vw, 3.5rem);
@@ -1881,6 +1917,15 @@ button {
 
 .project-nav-link:hover .project-nav-title {
   opacity: 0.7;
+}
+
+.project-nav-link.is-soon {
+  cursor: default;
+}
+
+.project-nav-link.is-soon .project-nav-title,
+.project-nav-link.is-soon:hover .project-nav-title {
+  opacity: 0.45;
 }
 
 @media (max-width: 860px) {
