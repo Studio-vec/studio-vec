@@ -2207,3 +2207,9 @@ button {
     font-size: 0.6rem;
   }
 }
+
+.pm-stack > video.pm-video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
