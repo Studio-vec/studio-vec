@@ -2213,3 +2213,12 @@ button {
   height: auto;
   display: block;
 }
+
+/* Video tile inside a pm-row (same sizing as the row's images) */
+.pm-row video.pm-video {
+  flex: var(--ar, 1) 1 0;
+  min-width: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+}
