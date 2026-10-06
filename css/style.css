@@ -2137,3 +2137,73 @@ button {
     min-height: calc(100svh - 70px);
   }
 }
+
+/* Hover-swap tile inside a pm-row (e.g. YOMYOM lenticular / glitter goods): second image fades in on hover or tap-focus */
+.pm-row .pm-swap {
+  flex: var(--ar, 1) 1 0;
+  min-width: 0;
+  margin: 0;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+}
+
+.pm-swap img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pm-swap .pm-swap-alt {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.pm-swap-hint {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.6rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(20, 18, 40, 0.55);
+  color: #fff;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.pm-swap:hover .pm-swap-alt,
+.pm-swap:focus-visible .pm-swap-alt,
+.pm-swap:focus .pm-swap-alt {
+  opacity: 1;
+}
+
+.pm-swap:hover .pm-swap-hint,
+.pm-swap:focus .pm-swap-hint {
+  opacity: 0;
+}
+
+.pm-swap-hint::before {
+  content: "Hover · ";
+  font-weight: 600;
+}
+
+@media (hover: none) {
+  .pm-swap-hint::before {
+    content: "Tap · ";
+  }
+}
+
+@media (max-width: 640px) {
+  .pm-swap-hint {
+    left: 0.35rem;
+    bottom: 0.35rem;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.6rem;
+  }
+}
