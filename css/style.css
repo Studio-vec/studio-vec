@@ -2047,3 +2047,339 @@ button {
   height: auto;
   display: block;
 }
+
+/* ---------- WKF 2026 modules ---------- */
+/* Palette: main colours full size, sub colours as a smaller second row */
+.pm-palette {
+  margin-block: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.pm-palette-label {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-en);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pm-palette .pm-chips {
+  margin-block: 0 clamp(1.25rem, 3vw, 2rem);
+}
+
+.pm-palette .pm-chip {
+  aspect-ratio: 16 / 9;
+  font-size: 0.85rem;
+}
+
+.pm-palette .pm-chips-sub {
+  width: 50%;
+}
+
+.pm-palette .pm-chips-sub .pm-chip {
+  aspect-ratio: 2 / 1;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.68rem;
+}
+
+@media (max-width: 760px) {
+  .pm-palette .pm-chips {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pm-palette .pm-chips-sub {
+    width: 100%;
+  }
+}
+
+/* Page-turn booklet: 5 leaves, each with a front and back page, hinged on the spine */
+.pm-book {
+  margin: clamp(1rem, 3vw, 2rem) 0 0;
+  outline: none;
+}
+
+.pm-book-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2000 / 1818;
+  perspective: 2600px;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+.pm-book-inner {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.8s cubic-bezier(0.3, 0.1, 0.2, 1);
+}
+
+/* Closed: front cover centred. Fully read: back cover centred. */
+.pm-book[data-at="start"] .pm-book-inner {
+  transform: translateX(-25%);
+}
+
+.pm-book[data-at="end"] .pm-book-inner {
+  transform: translateX(25%);
+}
+
+.pm-book-leaf {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.3, 0.1, 0.2, 1);
+}
+
+.pm-book-leaf.is-flipped {
+  transform: rotateY(-180deg);
+}
+
+.pm-book-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 18px 40px rgba(51, 2, 4, 0.18);
+}
+
+.pm-book-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pm-book-face.is-back {
+  transform: rotateY(180deg);
+}
+
+/* Chrome drops the image on some back faces, so JS also swaps which face is
+   visible halfway through the turn (.show-back) instead of relying on backface-visibility alone. */
+.pm-book-leaf .pm-book-face.is-back,
+.pm-book-leaf.show-back .pm-book-face.is-front {
+  visibility: hidden;
+}
+
+.pm-book-leaf.show-back .pm-book-face.is-back {
+  visibility: visible;
+}
+
+/* Spine shading on the inner edge of each page */
+.pm-book-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pm-book-face.is-front::after {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0) 7%);
+}
+
+.pm-book-face.is-back::after {
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0) 7%);
+}
+
+.pm-book-ui {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 1.1rem;
+  font-family: var(--font-en);
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.pm-book-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  font-size: 1rem;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+.pm-book-btn:hover:not(:disabled) {
+  background: var(--black);
+  color: var(--white);
+}
+
+.pm-book-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.pm-book-count {
+  min-width: 6.5em;
+  text-align: center;
+  font-weight: 600;
+}
+
+.pm-book-hint {
+  margin-left: auto;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-book-inner,
+  .pm-book-leaf {
+    transition: none;
+  }
+}
+
+/* On-site event: three mission columns */
+.pm-event {
+  margin-block: clamp(1rem, 3vw, 2rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: #fff;
+  border-radius: var(--radius-md);
+  color: var(--black);
+}
+
+.pm-event-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 1.5rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.pm-event-title {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 800;
+}
+
+.pm-event-meta {
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.pm-event-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.pm-mission-tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--pm-accent-light, #E61F19);
+  color: #fff;
+  font-family: var(--font-en);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pm-mission.is-bonus .pm-mission-tag {
+  background: var(--black);
+}
+
+.pm-mission-name {
+  margin: 0.6rem 0 0.8rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.pm-mission ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.pm-mission li {
+  position: relative;
+  padding: 0 0 0.85rem 2rem;
+  counter-increment: step;
+}
+
+.pm-mission li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1.5px solid currentColor;
+  font-family: var(--font-en);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* thin connector between steps */
+.pm-mission li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 0.7rem;
+  top: 1.6rem;
+  bottom: 0.15rem;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.pm-mission li b {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.pm-mission li span {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: rgba(0, 0, 0, 0.62);
+}
+
+@media (max-width: 760px) {
+  .pm-event-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Phone screenshots */
+.pm-phones img {
+  border-radius: clamp(10px, 2vw, 22px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14);
+}
+
+.pm-phones figcaption {
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .pm-grid.pm-phones {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+/* Hover detail: the real photo first, the print artwork on hover / tap */
+.pm-swap-detail .pm-swap-alt {
+  object-fit: contain;
+  background: var(--pm-bg, #120405);
+}
+
+/* Captions inside light bands (the default caption colour is for dark canvases) */
+.pm-light .pm-grid figcaption {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.ed-lede {
+  row-gap: 0.9rem;
+}

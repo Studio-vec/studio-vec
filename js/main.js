@@ -322,6 +322,85 @@
     });
   }
 
+  // Page-turn booklet (.pm-book): leaf i holds pages 2i (front) and 2i+1 (back).
+  document.querySelectorAll('.pm-book').forEach(function (book) {
+    var leaves = book.querySelectorAll('.pm-book-leaf');
+    var stage = book.querySelector('.pm-book-stage');
+    var count = book.querySelector('.pm-book-count');
+    var prevBtn = book.querySelector('.pm-book-btn[data-dir="-1"]');
+    var nextBtn = book.querySelector('.pm-book-btn[data-dir="1"]');
+    var n = leaves.length;
+    var total = n * 2;
+    var at = 0; // number of turned leaves
+
+    function stack(moving) {
+      leaves.forEach(function (leaf, i) {
+        leaf.style.zIndex = i === moving ? n + 2 : (i < at ? i + 1 : n - i);
+      });
+    }
+
+    function render(moving) {
+      leaves.forEach(function (leaf, i) {
+        var flipped = i < at;
+        leaf.classList.toggle('is-flipped', flipped);
+        // swap the visible face when the leaf is edge-on (half of the 0.9s turn)
+        if (i === moving) {
+          setTimeout(function () { leaf.classList.toggle('show-back', flipped); }, 450);
+        } else {
+          leaf.classList.toggle('show-back', flipped);
+        }
+      });
+      stack(moving);
+      if (moving !== undefined) {
+        setTimeout(function () { stack(); }, 900);
+      }
+      book.setAttribute('data-at', at === 0 ? 'start' : at === n ? 'end' : 'mid');
+      if (count) {
+        count.textContent = at === 0 ? '표지' : at === n ? '뒤표지' : (2 * at) + '–' + (2 * at + 1) + ' / ' + total;
+      }
+      if (prevBtn) prevBtn.disabled = at === 0;
+      if (nextBtn) nextBtn.disabled = at === n;
+    }
+
+    function go(dir) {
+      var next = Math.max(0, Math.min(n, at + dir));
+      if (next === at) return;
+      var moving = dir > 0 ? at : at - 1;
+      at = next;
+      render(moving);
+    }
+
+    book.querySelectorAll('.pm-book-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        go(Number(btn.getAttribute('data-dir')));
+      });
+    });
+
+    var downX = null;
+    stage.addEventListener('pointerdown', function (e) { downX = e.clientX; });
+    stage.addEventListener('pointerup', function (e) {
+      if (downX === null) return;
+      var dx = e.clientX - downX;
+      downX = null;
+      if (Math.abs(dx) > 40) {
+        go(dx < 0 ? 1 : -1);
+        return;
+      }
+      // tap / click: right half forward, left half back; a closed book always opens
+      if (at === 0) return go(1);
+      if (at === n) return go(-1);
+      var r = stage.getBoundingClientRect();
+      go(e.clientX > r.left + r.width / 2 ? 1 : -1);
+    });
+
+    book.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    });
+
+    render();
+  });
+
   var revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {
     var observer = new IntersectionObserver(
