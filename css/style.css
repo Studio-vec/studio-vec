@@ -2383,3 +2383,44 @@ button {
 .ed-lede {
   row-gap: 0.9rem;
 }
+
+/* Phones: three-up grids become a swipeable row instead of 2 + 1 orphan */
+@media (max-width: 640px) {
+  .pm-grid[style*="--cols:3"]:not(.pm-phones) {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+    scroll-padding-inline: 1.25rem;
+    scrollbar-width: none;
+  }
+
+  .pm-grid[style*="--cols:3"]:not(.pm-phones)::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pm-grid[style*="--cols:3"]:not(.pm-phones) > figure {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
+}
+
+.pm-stack > .pm-picture,
+.pm-stack > .pm-picture img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Rows that must stay side by side on phones (e.g. a wide photo next to a tall flag) */
+@media (max-width: 640px) {
+  .pm-flow .pm-row.pm-row-keep {
+    flex-direction: row;
+  }
+
+  .pm-flow .pm-row.pm-row-keep img {
+    flex: var(--ar, 1) 1 0;
+  }
+}
