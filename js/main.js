@@ -12,54 +12,47 @@
 
     var points = [];
     var lastPointTime = 0;
+    var pruneTimer = null;
 
     function rand(n) {
       return (Math.random() - 0.5) * n;
     }
 
-    function buildPathData(pts) {
-      if (pts.length < 2) return '';
-      var d = 'M ' + pts[0].x + ' ' + pts[0].y;
-      for (var i = 1; i < pts.length; i++) {
-        d += ' L ' + pts[i].x + ' ' + pts[i].y;
-      }
-      return d;
+    function svgEl(tag, attrs) {
+      var el = document.createElementNS(SVG_NS, tag);
+      for (var k in attrs) el.setAttribute(k, attrs[k]);
+      return el;
     }
 
-    function render() {
-      pathEl.setAttribute('d', buildPathData(points));
-
-      while (pointsGroup.firstChild) {
-        pointsGroup.removeChild(pointsGroup.firstChild);
+    function renderPath() {
+      var d = '';
+      if (points.length > 1) {
+        d = 'M ' + points[0].x + ' ' + points[0].y;
+        for (var i = 1; i < points.length; i++) {
+          d += ' L ' + points[i].x + ' ' + points[i].y;
+        }
       }
+      pathEl.setAttribute('d', d);
+    }
 
-      points.forEach(function (p) {
-        var line = document.createElementNS(SVG_NS, 'line');
-        line.setAttribute('x1', p.x);
-        line.setAttribute('y1', p.y);
-        line.setAttribute('x2', p.hx);
-        line.setAttribute('y2', p.hy);
-        line.setAttribute('stroke', 'white');
-        line.setAttribute('stroke-width', p.weight);
-        pointsGroup.appendChild(line);
+    // Each point owns its <g>, so only new / expired points touch the DOM.
+    function addPointNode(p) {
+      var g = svgEl('g', {});
+      g.appendChild(svgEl('line', { x1: p.x, y1: p.y, x2: p.hx, y2: p.hy, stroke: 'white', 'stroke-width': p.weight }));
+      g.appendChild(svgEl('rect', { x: p.x - p.size / 2, y: p.y - p.size / 2, width: p.size, height: p.size, fill: 'white' }));
+      g.appendChild(svgEl('circle', { cx: p.hx, cy: p.hy, r: p.size * 0.35, fill: 'none', stroke: 'white', 'stroke-width': p.weight }));
+      pointsGroup.appendChild(g);
+      p.node = g;
+    }
 
-        var rect = document.createElementNS(SVG_NS, 'rect');
-        rect.setAttribute('x', p.x - p.size / 2);
-        rect.setAttribute('y', p.y - p.size / 2);
-        rect.setAttribute('width', p.size);
-        rect.setAttribute('height', p.size);
-        rect.setAttribute('fill', 'white');
-        pointsGroup.appendChild(rect);
-
-        var circle = document.createElementNS(SVG_NS, 'circle');
-        circle.setAttribute('cx', p.hx);
-        circle.setAttribute('cy', p.hy);
-        circle.setAttribute('r', p.size * 0.35);
-        circle.setAttribute('fill', 'none');
-        circle.setAttribute('stroke', 'white');
-        circle.setAttribute('stroke-width', p.weight);
-        pointsGroup.appendChild(circle);
-      });
+    // Runs only while there are points left to expire.
+    function prune() {
+      var now = Date.now();
+      while (points.length && now - points[0].createdAt >= POINT_LIFETIME) {
+        pointsGroup.removeChild(points.shift().node);
+      }
+      renderPath();
+      pruneTimer = points.length ? setTimeout(prune, 100) : null;
     }
 
     heroSection.addEventListener('mousemove', function (e) {
@@ -72,30 +65,21 @@
       var y = e.clientY - rect.top;
       var angle = Math.random() * Math.PI * 2;
       var handleLen = 40 + Math.random() * 30;
-      var size = 8 + Math.random() * 14;
-      var weight = 1 + Math.random() * 3;
 
-      points.push({
+      var p = {
         x: x + rand(JITTER),
         y: y + rand(JITTER),
         hx: x + Math.cos(angle) * handleLen,
         hy: y + Math.sin(angle) * handleLen,
-        size: size,
-        weight: weight,
+        size: 8 + Math.random() * 14,
+        weight: 1 + Math.random() * 3,
         createdAt: now
-      });
-
-      render();
+      };
+      points.push(p);
+      addPointNode(p);
+      renderPath();
+      if (!pruneTimer) pruneTimer = setTimeout(prune, 100);
     });
-
-    setInterval(function () {
-      var now = Date.now();
-      var before = points.length;
-      points = points.filter(function (p) {
-        return now - p.createdAt < POINT_LIFETIME;
-      });
-      if (points.length !== before) render();
-    }, 100);
   }
 
   var header = document.getElementById('site-header');
@@ -112,25 +96,22 @@
   window.addEventListener('resize', setHeaderHeightVar);
 
   if (navToggle && mainNav) {
-    navToggle.addEventListener('click', function () {
-      var isOpen = mainNav.classList.toggle('is-open');
+    function setNavOpen(isOpen) {
+      mainNav.classList.toggle('is-open', isOpen);
       navToggle.setAttribute('aria-expanded', String(isOpen));
       navToggle.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
+    }
+
+    navToggle.addEventListener('click', function () {
+      setNavOpen(!mainNav.classList.contains('is-open'));
     });
 
     mainNav.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
-        mainNav.classList.remove('is-open');
-        navToggle.setAttribute('aria-expanded', 'false');
-        navToggle.setAttribute('aria-label', '메뉴 열기');
+        setNavOpen(false);
       });
     });
   }
-
-  window.addEventListener('scroll', function () {
-    if (!toTop) return;
-    toTop.classList.toggle('visible', window.scrollY > 480);
-  }, { passive: true });
 
   if (toTop) {
     toTop.addEventListener('click', function () {
@@ -142,15 +123,33 @@
   var workCards = document.querySelectorAll('#works-grid .work-card');
   var worksEmpty = document.getElementById('works-empty');
 
+  // Touch devices have no hover: show the hover image on the card(s) crossing
+  // the viewport's vertical centre line instead.
+  var hoverQuery = window.matchMedia ? window.matchMedia('(hover: hover) and (pointer: fine)') : null;
+
+  function updateCenterCards() {
+    if (!workCards.length || !hoverQuery) return;
+    var touchMode = !hoverQuery.matches;
+    var mid = window.innerHeight / 2;
+
+    workCards.forEach(function (card) {
+      var on = false;
+      if (touchMode && !card.hidden) {
+        var r = card.getBoundingClientRect();
+        on = r.top <= mid && r.bottom >= mid;
+      }
+      card.classList.toggle('is-center', on);
+    });
+  }
+
   if (filterChips.length && workCards.length) {
     filterChips.forEach(function (chip) {
       chip.addEventListener('click', function () {
         filterChips.forEach(function (c) {
-          c.classList.remove('is-active');
-          c.setAttribute('aria-selected', 'false');
+          var active = c === chip;
+          c.classList.toggle('is-active', active);
+          c.setAttribute('aria-selected', String(active));
         });
-        chip.classList.add('is-active');
-        chip.setAttribute('aria-selected', 'true');
 
         var filter = chip.getAttribute('data-filter');
         var visibleCount = 0;
@@ -163,57 +162,27 @@
         });
 
         if (worksEmpty) worksEmpty.hidden = visibleCount > 0;
+        updateCenterCards();
       });
     });
   }
 
-  // Touch devices have no hover: show the hover image on the card(s) crossing
-  // the viewport's vertical centre line instead.
-  var hoverQuery = window.matchMedia ? window.matchMedia('(hover: hover) and (pointer: fine)') : null;
-
-  if (workCards.length && hoverQuery) {
-    function updateCenterCards() {
-      var touchMode = !hoverQuery.matches;
-      var mid = window.innerHeight / 2;
-
-      workCards.forEach(function (card) {
-        var on = false;
-        if (touchMode && !card.hidden) {
-          var r = card.getBoundingClientRect();
-          on = r.top <= mid && r.bottom >= mid;
-        }
-        card.classList.toggle('is-center', on);
-      });
-    }
-
-    window.addEventListener('scroll', updateCenterCards, { passive: true });
-    window.addEventListener('resize', updateCenterCards);
-    if (hoverQuery.addEventListener) hoverQuery.addEventListener('change', updateCenterCards);
-    filterChips.forEach(function (chip) {
-      chip.addEventListener('click', updateCenterCards);
-    });
+  // One rAF-throttled scroll handler for everything scroll-driven.
+  var scrollQueued = false;
+  function onScrollFrame() {
+    scrollQueued = false;
+    if (toTop) toTop.classList.toggle('visible', window.scrollY > 480);
     updateCenterCards();
   }
-
-  var toast = document.getElementById('toast');
-  var toastTimer = null;
-
-  function showToast(message) {
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add('visible');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () {
-      toast.classList.remove('visible');
-    }, 2200);
+  function queueScrollFrame() {
+    if (scrollQueued) return;
+    scrollQueued = true;
+    requestAnimationFrame(onScrollFrame);
   }
-
-  document.querySelectorAll('[data-soon]').forEach(function (el) {
-    el.addEventListener('click', function (e) {
-      e.preventDefault();
-      showToast('준비중입니다');
-    });
-  });
+  window.addEventListener('scroll', queueScrollFrame, { passive: true });
+  window.addEventListener('resize', queueScrollFrame);
+  if (hoverQuery && hoverQuery.addEventListener) hoverQuery.addEventListener('change', queueScrollFrame);
+  onScrollFrame();
 
   var nfCanvas = document.getElementById('notfound-canvas');
   var nfArt = nfCanvas ? nfCanvas.closest('.notfound-art') : null;
@@ -245,7 +214,6 @@
       sample.width = sampleW;
       sample.height = sampleH;
       var sctx = sample.getContext('2d');
-      sctx.clearRect(0, 0, sampleW, sampleH);
       sctx.fillStyle = '#fff';
       sctx.textAlign = 'center';
       sctx.textBaseline = 'middle';
@@ -260,19 +228,10 @@
       nfParticles = [];
       for (var y = 0; y < sampleH; y += step) {
         for (var x = 0; x < sampleW; x += step) {
-          var alpha = data[(y * sampleW + x) * 4 + 3];
-          if (alpha > 128) {
+          if (data[(y * sampleW + x) * 4 + 3] > 128) {
             var ox = x * scaleX;
             var oy = y * scaleY;
-            nfParticles.push({
-              ox: ox,
-              oy: oy,
-              x: ox,
-              y: oy,
-              vx: 0,
-              vy: 0,
-              phase: Math.random() * Math.PI * 2
-            });
+            nfParticles.push({ ox: ox, oy: oy, x: ox, y: oy, vx: 0, vy: 0, phase: Math.random() * Math.PI * 2 });
           }
         }
       }
@@ -309,14 +268,12 @@
     function nfStep(t) {
       nfCtx.clearRect(0, 0, nfWidth, nfHeight);
 
-      var idle = !reduceMotion;
-
       for (var i = 0; i < nfParticles.length; i++) {
         var p = nfParticles[i];
         var tx = p.ox;
         var ty = p.oy;
 
-        if (idle) {
+        if (!reduceMotion) {
           tx += Math.sin(t * 0.0012 + p.phase) * 1.6;
           ty += Math.cos(t * 0.0015 + p.phase) * 1.6;
         }
@@ -340,12 +297,11 @@
         p.x += p.vx;
         p.y += p.vy;
 
-        var disp = Math.min(Math.sqrt(Math.pow(p.x - p.ox, 2) + Math.pow(p.y - p.oy, 2)) / 14, 1);
-        var r = Math.round(255 - disp * (255 - 219));
-        var g = Math.round(255 - disp * (255 - 255));
-        var b = Math.round(255 - disp * (255 - 120));
-
-        nfCtx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+        // Displaced particles shift from white towards the accent (#dbff78).
+        var ddx = p.x - p.ox;
+        var ddy = p.y - p.oy;
+        var disp = Math.min(Math.sqrt(ddx * ddx + ddy * ddy) / 14, 1);
+        nfCtx.fillStyle = 'rgb(' + Math.round(255 - disp * 36) + ',255,' + Math.round(255 - disp * 135) + ')';
         nfCtx.fillRect(p.x - 1, p.y - 1, 2, 2);
       }
 

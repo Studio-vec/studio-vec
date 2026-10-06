@@ -417,14 +417,20 @@ button {
 .card {
   border-radius: var(--radius-md);
   padding: 1.3rem;
-}
-
-.problem-card {
-  background: var(--white);
   min-height: 180px;
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
+}
+
+.card h3 {
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.problem-card {
+  background: var(--white);
 }
 
 .icon-badge {
@@ -444,12 +450,6 @@ button {
   height: 22px;
 }
 
-.problem-card h3 {
-  font-size: 1.02rem;
-  font-weight: 700;
-  line-height: 1.4;
-}
-
 /* ---------- Philosophy section ---------- */
 .philosophy-grid {
   margin-top: clamp(2.25rem, 4.5vw, 3.25rem);
@@ -459,16 +459,6 @@ button {
 .dark-card {
   background: var(--black);
   color: var(--white);
-  min-height: 180px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
-}
-
-.dark-card h3 {
-  font-size: 1.02rem;
-  font-weight: 700;
-  line-height: 1.4;
 }
 
 /* ---------- Vec panels ---------- */
@@ -528,12 +518,17 @@ button {
   background: var(--off-white);
 }
 
-.panel-img {
-  display: block;
+.panel-img,
+.process-img,
+.service-img {
   width: 100%;
   height: auto;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+.panel-img {
+  aspect-ratio: 3 / 2;
 }
 
 .panel-quote {
@@ -566,14 +561,6 @@ button {
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--off-white);
-}
-
-.process-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
 }
 
 .process-step-head {
@@ -646,14 +633,6 @@ button {
   background: var(--off-white);
 }
 
-.service-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-}
-
 .service-card h3 {
   font-size: 1.1rem;
   font-weight: 800;
@@ -724,10 +703,6 @@ button {
   font-size: 0.9rem;
 }
 
-.works-empty[hidden] {
-  display: none;
-}
-
 .work-card {
   display: block;
   position: relative;
@@ -740,10 +715,6 @@ button {
   height: 100%;
   object-fit: cover;
   transition: opacity 0.35s var(--ease), transform 0.4s var(--ease);
-}
-
-.work-img-default {
-  opacity: 1;
 }
 
 .work-img-hover {
@@ -766,13 +737,18 @@ button {
   .work-card:hover .work-img {
     transform: scale(1.04);
   }
+
+  .work-card.is-soon:hover .work-soon {
+    opacity: 1;
+  }
 }
 
 .work-card.is-center .work-img-default {
   opacity: 0;
 }
 
-.work-card.is-center .work-img-hover {
+.work-card.is-center .work-img-hover,
+.work-card.is-soon.is-center .work-soon {
   opacity: 1;
 }
 
@@ -804,16 +780,6 @@ button {
   opacity: 0;
   transition: opacity 0.35s var(--ease);
   pointer-events: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .work-card.is-soon:hover .work-soon {
-    opacity: 1;
-  }
-}
-
-.work-card.is-soon.is-center .work-soon {
-  opacity: 1;
 }
 
 /* ---------- Partners ---------- */
@@ -969,30 +935,6 @@ button {
   transform: translateY(0);
 }
 
-.toast {
-  position: fixed;
-  left: 50%;
-  bottom: 2rem;
-  transform: translate(-50%, 10px);
-  background: var(--black);
-  color: var(--white);
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 0.85rem 1.5rem;
-  border-radius: 999px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
-  z-index: 200;
-  white-space: nowrap;
-}
-
-.toast.visible {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
 /* ---------- Scroll reveal ---------- */
 .reveal {
   opacity: 0;
@@ -1071,29 +1013,6 @@ button {
   display: flex;
   flex-direction: column;
   gap: clamp(1.5rem, 3vw, 2.25rem);
-}
-
-.project-hero-img {
-  position: relative;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.project-hero-img img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.project-hero-img-title {
-  position: absolute;
-  right: clamp(1rem, 2.5vw, 1.75rem);
-  bottom: clamp(0.85rem, 2vw, 1.5rem);
-  font-family: var(--font-en);
-  font-weight: 700;
-  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
-  color: var(--white);
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
 }
 
 .project-title {
@@ -1183,29 +1102,14 @@ button {
   color: rgba(255, 255, 255, 0.55);
 }
 
-.project-stream {
-  background: var(--black);
-  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
-}
-
-.project-stream-list {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.5rem, 1.2vw, 0.85rem);
-}
-
-.project-stream-list img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: var(--radius-md);
-}
-
 /* Behance-style module stack: modules sit on one canvas in source order.
    Per-project canvas colour (--pm-bg) and module spacing (--pm-sp, px on Behance's 1400px canvas) come from each project's Behance style settings.
    image = full-width · pm-inset = non-full-bleed · pm-row = same-height image row · pm-text = centred KR/EN copy */
 .project-stream {
   background: var(--pm-bg, var(--black));
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  /* lets .pm-bleed / .pm-band break out of the 960px column without a horizontal scrollbar */
+  overflow-x: clip;
 }
 
 .project-stream .container {
@@ -1434,10 +1338,6 @@ button {
 }
 
 /* Edge-to-edge module that breaks out of the 960px stream column */
-.project-stream {
-  overflow-x: clip;
-}
-
 .pm-stack > img.pm-bleed {
   width: 100vw;
   max-width: none;
@@ -1607,14 +1507,6 @@ button {
   align-items: end;
 }
 
-.pm-offset.pm-flip {
-  grid-template-columns: 3fr 1fr;
-}
-
-.pm-offset.pm-flip img {
-  order: -1;
-}
-
 .pm-offset img {
   width: 100%;
   height: auto;
@@ -1635,17 +1527,12 @@ button {
   .ed-head,
   .ed-lede,
   .pm-sec,
-  .pm-offset,
-  .pm-offset.pm-flip {
+  .pm-offset {
     grid-template-columns: 1fr;
   }
 
   .ed-lede p {
     grid-column: 1;
-  }
-
-  .pm-offset.pm-flip img {
-    order: 0;
   }
 
   .pm-chips {
@@ -1684,10 +1571,6 @@ button {
   color: rgba(0, 0, 0, 0.8);
 }
 
-.pm-light .pm-cap {
-  color: rgba(0, 0, 0, 0.5);
-}
-
 /* Even grid of 2-4 items, cropped to one ratio */
 .pm-grid {
   display: grid;
@@ -1711,8 +1594,7 @@ button {
   object-fit: contain;
 }
 
-.pm-grid figcaption,
-.pm-cap {
+.pm-grid figcaption {
   margin-top: 0.6rem;
   font-size: 0.78rem;
   line-height: 1.5;
@@ -1724,14 +1606,6 @@ button {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: clamp(0.5rem, 1.2vw, 0.85rem);
-}
-
-.pm-asym.pm-flip {
-  grid-template-columns: 1fr 2fr;
-}
-
-.pm-asym.pm-flip > img {
-  order: 2;
 }
 
 .pm-asym > img,
@@ -1748,48 +1622,6 @@ button {
   min-height: 0;
 }
 
-/* Image with a short note beside it */
-.pm-split {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: clamp(1.5rem, 4vw, 3.5rem);
-  align-items: center;
-  padding-block: clamp(1rem, 3vw, 2rem);
-}
-
-.pm-split.pm-flip > img {
-  order: 2;
-}
-
-.pm-split img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.pm-split h3 {
-  font-family: var(--font-en);
-  font-size: clamp(1.3rem, 2.6vw, 2rem);
-  font-weight: 800;
-  line-height: 1.2;
-  color: var(--white);
-}
-
-.pm-split p {
-  margin-top: 0.9rem;
-  font-size: clamp(0.9rem, 1.1vw, 1rem);
-  line-height: 1.75;
-  color: rgba(255, 255, 255, 0.72);
-}
-
-.pm-light .pm-split h3 {
-  color: var(--black);
-}
-
-.pm-light .pm-split p {
-  color: rgba(0, 0, 0, 0.66);
-}
-
 /* Single image held to a narrow centred column (posters, covers) */
 .pm-stack > img.pm-narrow {
   width: min(380px, 62%);
@@ -1802,15 +1634,8 @@ button {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .pm-asym,
-  .pm-asym.pm-flip,
-  .pm-split {
+  .pm-asym {
     grid-template-columns: 1fr;
-  }
-
-  .pm-asym.pm-flip > img,
-  .pm-split.pm-flip > img {
-    order: 0;
   }
 }
 
