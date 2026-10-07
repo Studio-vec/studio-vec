@@ -804,6 +804,15 @@ button {
   object-fit: cover;
 }
 
+.partner-photo--zoom img {
+  transform: scale(1.15);
+  transform-origin: 55% 40%;
+}
+
+.partner-photo--bright img {
+  filter: brightness(1.12);
+}
+
 .partner-info h3 {
   font-size: 1.5rem;
   font-weight: 800;
