@@ -1126,6 +1126,9 @@ button {
   width: 100%;
   height: auto;
   display: block;
+  /* Safari: without these a flex-column image can keep its natural height and look stretched */
+  flex-shrink: 0;
+  min-height: 0;
 }
 
 .pm-stack > img.pm-inset {
@@ -2093,7 +2096,7 @@ button {
   }
 }
 
-/* Page-turn booklet: 5 leaves, each with a front and back page, hinged on the spine */
+/* Page-turn booklet: 8 leaves, each with a front and back page, hinged on the spine */
 .pm-book {
   margin: clamp(1rem, 3vw, 2rem) 0 0;
   outline: none;
@@ -2103,7 +2106,7 @@ button {
   position: relative;
   width: 100%;
   aspect-ratio: 2000 / 1818;
-  perspective: 2600px;
+  perspective: 3200px;
   cursor: pointer;
   touch-action: pan-y;
 }
@@ -2111,7 +2114,7 @@ button {
 .pm-book-inner {
   position: absolute;
   inset: 0;
-  transition: transform 0.8s cubic-bezier(0.3, 0.1, 0.2, 1);
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 /* Closed: front cover centred. Fully read: back cover centred. */
@@ -2131,7 +2134,8 @@ button {
   height: 100%;
   transform-origin: left center;
   transform-style: preserve-3d;
-  transition: transform 0.9s cubic-bezier(0.3, 0.1, 0.2, 1);
+  /* symmetric ease: the leaf is edge-on exactly halfway, when JS swaps faces */
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .pm-book-leaf.is-flipped {
@@ -2145,7 +2149,7 @@ button {
   -webkit-backface-visibility: hidden;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0 18px 40px rgba(51, 2, 4, 0.18);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .pm-book-face img {
@@ -2179,11 +2183,11 @@ button {
 }
 
 .pm-book-face.is-front::after {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0) 7%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0) 4%);
 }
 
 .pm-book-face.is-back::after {
-  background: linear-gradient(270deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0) 7%);
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0) 4%);
 }
 
 .pm-book-ui {
@@ -2411,7 +2415,8 @@ button {
 .pm-stack > .pm-picture img {
   display: block;
   width: 100%;
-  height: auto;
+  height: auto;  flex-shrink: 0;
+  min-height: 0;
 }
 
 /* Rows that must stay side by side on phones (e.g. a wide photo next to a tall flag) */

@@ -332,6 +332,7 @@
     var n = leaves.length;
     var total = n * 2;
     var at = 0; // number of turned leaves
+    var restackTimer;
 
     function stack(moving) {
       leaves.forEach(function (leaf, i) {
@@ -343,16 +344,18 @@
       leaves.forEach(function (leaf, i) {
         var flipped = i < at;
         leaf.classList.toggle('is-flipped', flipped);
-        // swap the visible face when the leaf is edge-on (half of the 0.9s turn)
+        // swap the visible face when the leaf is edge-on (half of the 0.7s turn)
+        clearTimeout(leaf._swap);
         if (i === moving) {
-          setTimeout(function () { leaf.classList.toggle('show-back', flipped); }, 450);
+          leaf._swap = setTimeout(function () { leaf.classList.toggle('show-back', flipped); }, 350);
         } else {
           leaf.classList.toggle('show-back', flipped);
         }
       });
       stack(moving);
+      clearTimeout(restackTimer);
       if (moving !== undefined) {
-        setTimeout(function () { stack(); }, 900);
+        restackTimer = setTimeout(function () { stack(); }, 700);
       }
       book.setAttribute('data-at', at === 0 ? 'start' : at === n ? 'end' : 'mid');
       if (count) {
