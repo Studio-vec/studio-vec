@@ -36,12 +36,16 @@ def read(path):
 def render(page):
     src = read(page)
     out = src
+    # Git may check files out with CRLF (core.autocrlf); match the page's
+    # line endings so they alone never count as out of sync.
+    nl = '\r\n' if '\r\n' in src else '\n'
     for name, legacy in PARTIALS.items():
-        body = read(os.path.join('partials', name + '.html')).strip()
+        body = read(os.path.join('partials', name + '.html')).strip().replace('\r\n', '\n')
         if page == 'index.html':
             # Same-page anchors on home, so a URL with ?query doesn't reload.
             body = body.replace('href="/#', 'href="#')
         block = '<!-- partial:%s -->\n%s\n<!-- /partial:%s -->' % (name, body, name)
+        block = block.replace('\n', nl)
         marked = re.compile(r'<!-- partial:%s -->.*?<!-- /partial:%s -->' % (name, name), re.S)
         if marked.search(out):
             out = marked.sub(lambda m: block, out, count=1)
