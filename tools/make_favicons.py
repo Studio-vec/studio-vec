@@ -17,16 +17,18 @@ VIEW = 289  # artboard size the shapes are drawn in
 # Selection-box mark: four hollow corner handles, four edge bars, a ring.
 HANDLE = 41      # outer size of each corner handle
 HANDLE_W = 10.5  # handle stroke
-NEAR, FAR = 52.5, 236.5  # handle centres
+NEAR = 52.5      # handle centre offset from each edge
+FAR = VIEW - NEAR
 BAR_W = 15
-BAR_START, BAR_LEN = 77, 135
+BAR_START = 77
+BAR_LEN = VIEW - 2 * BAR_START
 RING_R, RING_W = 65.25, 10.5
 C = VIEW / 2
 
 
 def handles():
-    s = HANDLE - HANDLE_W
-    return [(x - s / 2, y - s / 2, s) for x in (NEAR, FAR) for y in (NEAR, FAR)]
+    """Centres of the four corner handles."""
+    return [(x, y) for x in (NEAR, FAR) for y in (NEAR, FAR)]
 
 
 def bars():
@@ -36,8 +38,9 @@ def bars():
 
 
 def svg():
-    parts = [f'<rect x="{x}" y="{y}" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="{HANDLE_W}"/>'
-             for x, y, s in handles()]
+    s = HANDLE - HANDLE_W  # stroke is centred on the path
+    parts = [f'<rect x="{x - s / 2}" y="{y - s / 2}" width="{s}" height="{s}" fill="none" stroke="currentColor" stroke-width="{HANDLE_W}"/>'
+             for x, y in handles()]
     parts += [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="currentColor"/>' for x, y, w, h in bars()]
     parts.append(f'<circle cx="{C}" cy="{C}" r="{RING_R}" fill="none" stroke="currentColor" stroke-width="{RING_W}"/>')
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {VIEW} {VIEW}">'
@@ -51,9 +54,8 @@ def raster(size, background=None, ss=8):
     k = n / VIEW
     mask = Image.new('L', (n, n), 0)
     d = ImageDraw.Draw(mask)
-    for x, y, s in handles():
-        o, i = (s + HANDLE_W) / 2, (s - HANDLE_W) / 2
-        cx, cy = x + s / 2, y + s / 2
+    o, i = HANDLE / 2, HANDLE / 2 - HANDLE_W
+    for cx, cy in handles():
         d.rectangle([(cx - o) * k, (cy - o) * k, (cx + o) * k - 1, (cy + o) * k - 1], fill=255)
         d.rectangle([(cx - i) * k, (cy - i) * k, (cx + i) * k - 1, (cy + i) * k - 1], fill=0)
     for x, y, w, h in bars():

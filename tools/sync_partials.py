@@ -12,9 +12,6 @@ Each page marks where a partial goes:
 Pages without markers (404.html, covers/) are left alone. The first run on a
 page that has no markers yet wraps its existing <header class="site-header">
 and <footer class="site-footer"> in markers.
-
-Pages are written back in their own dominant line ending; a page with mixed
-endings is normalized to that one.
 """
 import glob
 import os
@@ -38,7 +35,7 @@ SKIP = {os.path.join('p06-shit-chat', 'index.html')}
 
 
 def load_partials():
-    # utf-8-sig drops a BOM; universal newlines turn \r\n and \r into \n.
+    # utf-8-sig drops a BOM an editor may add.
     bodies = {}
     for name in PARTIALS:
         with open(os.path.join(ROOT, 'partials', name + '.html'), encoding='utf-8-sig') as fh:
@@ -48,12 +45,9 @@ def load_partials():
 
 def render(page, partials):
     with open(os.path.join(ROOT, page), encoding='utf-8', newline='') as fh:
-        raw = fh.read()
-    # Work in \n, then write back in the page's dominant line ending
-    # (Git may check files out with CRLF under core.autocrlf).
-    crlf = raw.count('\r\n')
-    nl = '\r\n' if crlf > raw.count('\n') - crlf else '\n'
-    out = raw.replace('\r\n', '\n').replace('\r', '\n')
+        src = fh.read()
+    # Pages are LF (.gitattributes); reading raw lets --check flag a stray CRLF.
+    out = src.replace('\r\n', '\n')
     for name, (marked, legacy) in PATTERNS.items():
         body = partials[name]
         if page == 'index.html':
@@ -66,28 +60,27 @@ def render(page, partials):
             out = legacy.sub(lambda m: block, out, count=1)
         else:
             raise SystemExit('%s: no %s found' % (page, name))
-    return raw, out.replace('\n', nl)
+    return src, out
 
 
 def main():
     check = '--check' in sys.argv
     partials = load_partials()
+    pages = [p for p in PAGES if p not in SKIP]
     stale = []
-    for page in PAGES:
-        if page in SKIP:
-            continue
+    for page in pages:
         src, out = render(page, partials)
         if src != out:
             stale.append(page)
             if not check:
-                with open(os.path.join(ROOT, page), 'w', encoding='utf-8', newline='') as fh:
+                with open(os.path.join(ROOT, page), 'w', encoding='utf-8', newline='\n') as fh:
                     fh.write(out)
     if check:
         if stale:
             print('Out of sync (run python tools/sync_partials.py):')
             print('\n'.join('  ' + p for p in stale))
             sys.exit(1)
-        print('All %d pages in sync.' % (len(PAGES) - len(SKIP & set(PAGES))))
+        print('All %d pages in sync.' % len(pages))
     else:
         print('Updated %d page(s).' % len(stale) if stale else 'Nothing to update.')
 
