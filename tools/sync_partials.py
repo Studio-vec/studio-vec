@@ -12,6 +12,9 @@ Each page marks where a partial goes:
 Pages without markers (404.html, covers/) are left alone. The first run on a
 page that has no markers yet wraps its existing <header class="site-header">
 and <footer class="site-footer"> in markers.
+
+Pages are written back in their own dominant line ending; a page with mixed
+endings is normalized to that one.
 """
 import glob
 import os
@@ -24,45 +27,56 @@ PARTIALS = {
     'header': r'<header class="site-header".*?</header>',
     'footer': r'<footer class="site-footer".*?</footer>',
 }
+# name -> (marked pattern, legacy pattern)
+PATTERNS = {
+    name: (re.compile(r'<!-- partial:%s -->.*?<!-- /partial:%s -->' % (name, name), re.S),
+           re.compile(legacy, re.S))
+    for name, legacy in PARTIALS.items()
+}
 # Redirect stubs have no header/footer.
 SKIP = {os.path.join('p06-shit-chat', 'index.html')}
 
 
-def read(path):
-    with open(os.path.join(ROOT, path), encoding='utf-8', newline='') as fh:
-        return fh.read()
+def load_partials():
+    # utf-8-sig drops a BOM; universal newlines turn \r\n and \r into \n.
+    bodies = {}
+    for name in PARTIALS:
+        with open(os.path.join(ROOT, 'partials', name + '.html'), encoding='utf-8-sig') as fh:
+            bodies[name] = fh.read().strip()
+    return bodies
 
 
-def render(page):
-    src = read(page)
-    out = src
-    # Git may check files out with CRLF (core.autocrlf); match the page's
-    # line endings so they alone never count as out of sync.
-    nl = '\r\n' if '\r\n' in src else '\n'
-    for name, legacy in PARTIALS.items():
-        body = read(os.path.join('partials', name + '.html')).strip().replace('\r\n', '\n')
+def render(page, partials):
+    with open(os.path.join(ROOT, page), encoding='utf-8', newline='') as fh:
+        raw = fh.read()
+    # Work in \n, then write back in the page's dominant line ending
+    # (Git may check files out with CRLF under core.autocrlf).
+    crlf = raw.count('\r\n')
+    nl = '\r\n' if crlf > raw.count('\n') - crlf else '\n'
+    out = raw.replace('\r\n', '\n').replace('\r', '\n')
+    for name, (marked, legacy) in PATTERNS.items():
+        body = partials[name]
         if page == 'index.html':
             # Same-page anchors on home, so a URL with ?query doesn't reload.
             body = body.replace('href="/#', 'href="#')
         block = '<!-- partial:%s -->\n%s\n<!-- /partial:%s -->' % (name, body, name)
-        block = block.replace('\n', nl)
-        marked = re.compile(r'<!-- partial:%s -->.*?<!-- /partial:%s -->' % (name, name), re.S)
         if marked.search(out):
             out = marked.sub(lambda m: block, out, count=1)
-        elif re.search(legacy, out, re.S):
-            out = re.sub(legacy, lambda m: block, out, count=1, flags=re.S)
+        elif legacy.search(out):
+            out = legacy.sub(lambda m: block, out, count=1)
         else:
             raise SystemExit('%s: no %s found' % (page, name))
-    return src, out
+    return raw, out.replace('\n', nl)
 
 
 def main():
     check = '--check' in sys.argv
+    partials = load_partials()
     stale = []
     for page in PAGES:
         if page in SKIP:
             continue
-        src, out = render(page)
+        src, out = render(page, partials)
         if src != out:
             stale.append(page)
             if not check:
