@@ -2445,3 +2445,42 @@ button {
     flex: var(--ar, 1) 1 0;
   }
 }
+
+/* Product block inside a light module (p14 offline goods): number + name over a hero / detail / steps grid */
+.pm-prod {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(0.75rem, 1.5vw, 1rem);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+  margin-bottom: clamp(0.25rem, 0.6vw, 0.4rem);
+}
+
+.pm-prod-num {
+  font-family: var(--font-en);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--pm-accent, var(--accent));
+}
+
+.pm-prod-name {
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+  color: var(--black);
+}
+
+.pm-prod-name small {
+  margin-left: 0.5rem;
+  font-family: var(--font-en);
+  font-size: 0.6em;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 640px) {
+  .pm-asym .pm-asym-side {
+    grid-template-columns: 1fr 1fr;
+  }
+}
