@@ -1417,6 +1417,26 @@ button {
   color: rgba(255, 255, 255, 0.78);
 }
 
+/* Short, high-contrast variant: three facts and one line */
+.project-hero--clear .ed-info {
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  gap: 0.7rem 1.75rem;
+}
+
+.project-hero--clear .ed-info dt {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.project-hero--clear .ed-info dd {
+  color: var(--white);
+  font-weight: 500;
+}
+
+.project-hero--clear .ed-lede p {
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  color: var(--white);
+}
+
 /* Section opener: hairline, small label on the left, prose on the right */
 .pm-sec {
   display: grid;
@@ -2483,4 +2503,58 @@ button {
   .pm-asym .pm-asym-side {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* Closing call to action: send the reader to the live service */
+.project-cta {
+  padding: clamp(4rem, 10vw, 7.5rem) 0;
+  text-align: center;
+  color: var(--white);
+}
+
+.project-cta-label {
+  font-family: var(--font-en);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.project-cta-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  margin-top: 1rem;
+  font-family: var(--font-en);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 6vw, 4.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--white);
+  text-decoration: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+  padding-bottom: 0.15em;
+  transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+  overflow-wrap: anywhere;
+}
+
+.project-cta-link span {
+  transition: transform 0.3s var(--ease);
+}
+
+.project-cta-link:hover,
+.project-cta-link:focus-visible {
+  color: #EF4D6D;
+  border-color: #EF4D6D;
+}
+
+.project-cta-link:hover span {
+  transform: translateX(0.15em);
+}
+
+.project-cta-note {
+  margin-top: 1.25rem;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.85);
 }
