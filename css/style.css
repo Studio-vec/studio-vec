@@ -2428,6 +2428,13 @@ button {
   min-height: 0;
 }
 
+/* Edge-to-edge picture (a board with a separate phone crop) */
+.pm-stack > .pm-picture.pm-bleed {
+  width: 100vw;
+  max-width: none;
+  margin-inline: calc(50% - 50vw);
+}
+
 /* Rows that must stay side by side on phones (e.g. a wide photo next to a tall flag) */
 @media (max-width: 640px) {
   .pm-flow .pm-row.pm-row-keep {
