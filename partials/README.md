@@ -13,3 +13,9 @@ The block between `<!-- partial:header -->` / `<!-- /partial:header -->` (and th
 footer equivalent) in each page is overwritten, so don't edit it in a page
 directly. `python tools/sync_partials.py --check` reports pages that are out of
 sync. `404.html` and `covers/` have their own layouts and are not touched.
+
+The same script also writes each project page's prev/next links
+(`project-footer-nav`) from the order of the works grid in `index.html`. To
+reorder projects, move the card in the grid and run the script. The link title
+comes from the card's `data-title`, and a "soon" card names its page in
+`data-page`.
