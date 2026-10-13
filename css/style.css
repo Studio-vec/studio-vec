@@ -2448,11 +2448,19 @@ button {
   min-height: 0;
 }
 
-/* Edge-to-edge picture (a board with a separate phone crop) */
+/* Wide board with a separate phone crop: wider than the 960px text column,
+   but keeps side margins like the footer (same width as .container) */
 .pm-stack > .pm-picture.pm-bleed {
-  width: 100vw;
+  --board-w: min(1125px, 100vw - 2.5rem);
+  width: var(--board-w);
   max-width: none;
-  margin-inline: calc(50% - 50vw);
+  margin-inline: calc(50% - var(--board-w) / 2);
+}
+
+@media (max-width: 640px) {
+  .pm-stack > .pm-picture.pm-bleed {
+    --board-w: 100vw;
+  }
 }
 
 /* Rows that must stay side by side on phones (e.g. a wide photo next to a tall flag) */
