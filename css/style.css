@@ -1349,12 +1349,20 @@ button {
   display: block;
 }
 
-/* Edge-to-edge module that breaks out of the 960px stream column */
+/* Wide module that breaks out of the 960px stream column,
+   but keeps side margins like the footer (same width as .container) */
 .pm-stack > img.pm-bleed {
-  width: 100vw;
+  --board-w: min(1125px, 100vw - 2.5rem);
+  width: var(--board-w);
   max-width: none;
-  margin-inline: calc(50% - 50vw);
-  border-radius: 0;
+  margin-inline: calc(50% - var(--board-w) / 2);
+}
+
+@media (max-width: 640px) {
+  .pm-stack > img.pm-bleed {
+    --board-w: 100vw;
+    border-radius: 0;
+  }
 }
 
 .pm-bleed + .pm-chapter,
