@@ -1,141 +1,149 @@
-"""Draw the FLANT nutrient box dieline (reverse tuck-end carton) → assets/img/projects/p04-flant/dieline.png
+"""FLANT nutrient box dielines as printed board seen from above → assets/img/projects/p04-flant/dieline.png
 
     python tools/flant_dieline.py
 
-Panels follow the boxes in img-25.png: a gradient from the SKU colour to white, a stepped window
-on the front that shows the adapter, product name, logo at the foot, information and barcode on the back.
-Solid line = cut, dashed = fold.
+Source: the four colourways in ../FLANT/4_Packages/Boxes_1–4.svg (templatemaker carton, real artwork).
+Each SVG is rendered by headless Chrome, then pressed onto board in code: paper fibre, crease lines on
+the folds, a thin cut edge and a soft shadow on a plain surface. Doing it in code keeps every letter and
+the barcode exact (an image model would redraw them).
 """
+import subprocess, tempfile
 from pathlib import Path
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter
 
-OUT = Path(__file__).resolve().parent.parent / 'assets/img/projects/p04-flant/dieline.png'
-S = 11                                   # px per mm
-W, D, H, G, TK = 55, 55, 130, 12, 14     # front width, depth, height, glue flap, tuck
-PAD = 26                                 # mm around the drawing
-TOP = (204, 233, 140)                    # SKU colour (leaf green) → white
-INK, CUT, FOLD = (24, 30, 22), (24, 30, 22), (120, 128, 118)
-FONT = 'C:/Windows/Fonts/malgun.ttf'; FONTB = 'C:/Windows/Fonts/malgunbd.ttf'
-f = lambda pt, b=False: ImageFont.truetype(FONTB if b else FONT, int(pt * S / 3))
+ROOT = Path(__file__).resolve().parent.parent
+SRC = ROOT.parent / 'FLANT' / '4_Packages'
+OUT = ROOT / 'assets/img/projects/p04-flant/dieline.png'
+FONTS = ROOT.parent / 'YomYom/app/renderer/fonts'   # Pretendard, the typeface the boxes were set in
+CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe'
+VB = (637.8, 763.94)            # viewBox of every Boxes_n.svg
+K = 3.2                         # px per viewBox unit
+rng = np.random.default_rng(11)
 
-cols = [('glue', G), ('side', D), ('front', W), ('side', D), ('back', W)]
-x0 = PAD; xs = []
-for name, w in cols: xs.append((name, x0, w)); x0 += w
-y_body = PAD + D + TK                    # body panels start under the top lid
-CW, CH = (x0 + PAD) * S, (y_body + H + D + TK + PAD) * S
-im = Image.new('RGB', (CW, CH), (247, 246, 241)); dr = ImageDraw.Draw(im)
-P = lambda *v: [round(a * S) for a in v]
+# folds, in viewBox units (traced from the cut outline: glue flap · 4 panels · tuck lids)
+FOLDS = [((113.54, 238.88), (113.54, 522.7)), ((227.77, 238.88), (227.77, 522.7)),
+         ((339.9, 238.88), (339.9, 522.7)), ((454.8, 238.88), (454.8, 522.7)),
+         ((113.54, 238.88), (567.63, 238.88)), ((113.54, 522.7), (567.63, 522.7)),
+         ((114.95, 125.35), (225.63, 125.35)), ((342.0, 637.64), (452.69, 637.64))]
 
-def gradient(box):
-    x, y, w, h = P(*box)
-    t = np.linspace(0, 1, h)[:, None] ** 1.3
-    col = (np.array(TOP)[None, :] * (1 - t) + 255 * t).astype(np.uint8)
-    im.paste(Image.fromarray(np.repeat(col[:, None, :], w, axis=1)), (x, y))
 
-def dashed(a, b, step=2.2):
-    (xa, ya), (xb, yb) = a, b
-    n = max(1, int(((xb - xa) ** 2 + (yb - ya) ** 2) ** .5 / step))
-    for i in range(0, n, 2):
-        p, q = i / n, min(1, (i + 1) / n)
-        dr.line(P(xa + (xb - xa) * p, ya + (yb - ya) * p, xa + (xb - xa) * q, ya + (yb - ya) * q), fill=FOLD, width=2)
+def render(svg):
+    w, h = round(VB[0] * K), round(VB[1] * K)
+    out = Path(tempfile.gettempdir()) / f'flant-{svg.stem}.png'
+    html = Path(tempfile.gettempdir()) / f'flant-{svg.stem}.html'
+    # inline the SVG so the page's @font-face reaches its text (an <img> SVG cannot load fonts)
+    body = svg.read_text(encoding='utf-8')
+    body = body[body.index('<svg'):].replace('<svg', f'<svg width="{w}" height="{h}"', 1)
+    face = ''.join(f"@font-face{{font-family:Pretendard;font-weight:{wt};src:url('{(FONTS / f).as_uri()}')}}"
+                   for wt, f in (('100 500', 'Pretendard-Regular.woff2'), ('600 900', 'Pretendard-Bold.woff2')))
+    html.write_text(f'<html><head><style>{face}body{{margin:0;background:transparent}}svg{{display:block}}</style></head>'
+                    f'<body>{body}</body></html>', encoding='utf-8')
+    subprocess.run([CHROME, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
+                    '--default-background-color=00000000', '--virtual-time-budget=3000', f'--window-size={w},{h}', f'--screenshot={out}',
+                    html.as_uri()], check=True, capture_output=True)
+    return Image.open(out).convert('RGBA')
 
-# body panels
-for name, x, w in xs:
-    if name != 'glue': gradient((x, y_body, w, H))
-# glue flap (tapered)
-gx = xs[0][1]
-dr.polygon(P(gx + G, y_body, gx, y_body + 6, gx, y_body + H - 6, gx + G, y_body + H), fill=(232, 231, 224))
 
-# front : label, stepped window, name, logo
-fx = xs[2][1]
-dr.text(P(fx + W / 2, y_body + 9), '고농축 식물 영양제', font=f(7), fill=INK, anchor='mm')
-steps = [(16, 22), (12, 30), (8, 40), (4, 50), (0, 62)]          # (inset from each side, y) — the ziggurat window
-win = []
-for inset, yy in steps: win += [(fx + 10 + inset, y_body + yy - 8), (fx + 10 + inset, y_body + yy)]
-win = [(fx + 10 + 16, y_body + 14)] + win[1:] + [(fx + W - 10, y_body + 62)]
-right = [(2 * fx + W - x, y) for x, y in reversed(win)]
-poly = win + right
-dr.polygon([tuple(P(*p)) for p in poly], fill=(247, 246, 241))
-dr.line([tuple(P(*p)) for p in poly + [poly[0]]], fill=CUT, width=3)
-dr.text(P(fx + W / 2, y_body + 72), 'WINDOW', font=f(5), fill=FOLD, anchor='mm')
-for i, t in enumerate(['Plant', 'Nutritional', 'Supplements']):
-    dr.text(P(fx + W / 2, y_body + 84 + i * 6.4), t, font=f(10, True), fill=INK, anchor='mm')
-dr.text(P(fx + W / 2, y_body + H - 9), 'FLANT', font=f(11, True), fill=INK, anchor='mm')
+def windows():
+    """the die-cut windows : the inner subpaths of the cut outline (cls-17), as polygons in viewBox units"""
+    import re
+    svg = (SRC / 'Boxes_1.svg').read_text(encoding='utf-8')
+    d = re.search(r'<path class="cls-17" d="([^"]+)"', svg).group(1)
+    polys = []
+    for sub in d.split('Z')[1:]:
+        toks = re.findall(r'[MlhvHVL]|-?\d*\.?\d+', sub)
+        if not toks: continue
+        x = y = 0; cmd = None; pts = []; i = 0
+        while i < len(toks):
+            t = toks[i]
+            if t.isalpha(): cmd = t; i += 1; continue
+            if cmd in 'ML': x, y = float(toks[i]), float(toks[i + 1]); i += 2
+            elif cmd == 'l': x += float(toks[i]); y += float(toks[i + 1]); i += 2
+            elif cmd == 'h': x += float(t); i += 1
+            elif cmd == 'H': x = float(t); i += 1
+            elif cmd == 'v': y += float(t); i += 1
+            elif cmd == 'V': y = float(t); i += 1
+            pts.append((x, y))
+        polys.append(pts)
+    return polys
 
-# sides : information
-for k, (name, x, w) in enumerate(xs):
-    if name != 'side': continue
-    rows = ['원료 성분', '사용 방법', '주의 사항', '보관 방법'] if k == 1 else ['어댑터 결합', '1회 사용량', '교체 주기', '제조원']
-    for i, t in enumerate(rows):
-        yy = y_body + 16 + i * 24
-        dr.text(P(x + 7, yy), t, font=f(6.5, True), fill=INK)
-        for j in range(3): dr.line(P(x + 7, yy + 8 + j * 3.4, x + w - 7 - (j == 2) * 14, yy + 8 + j * 3.4), fill=(150, 160, 145), width=3)
 
-# back : copy, barcode
-bx = xs[4][1]
-dr.text(P(bx + 7, y_body + 12), '식물별 맞춤 영양 4종', font=f(7, True), fill=INK)
-for j in range(9): dr.line(P(bx + 7, y_body + 22 + j * 4, bx + W - 7 - (j % 3 == 2) * 16, y_body + 22 + j * 4), fill=(150, 160, 145), width=3)
-rng = np.random.default_rng(7); x = bx + 7
-while x < bx + 31:
-    w_ = rng.choice([.35, .6, .9]); dr.rectangle(P(x, y_body + H - 26, x + w_, y_body + H - 12), fill=INK); x += w_ + rng.choice([.35, .6])
-dr.text(P(bx + W - 7, y_body + H - 12), '200ml', font=f(6), fill=INK, anchor='rs')
+def noise(h, w, blur, amp):
+    n = Image.fromarray((rng.random((h, w)) * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(blur))
+    a = np.asarray(n).astype(float) / 255
+    return (a - a.mean()) / (a.std() + 1e-6) * amp
 
-# lids : top on the back panel, bottom on the front ; dust flaps on the sides
-def lid(x, w, y, up):
-    s = -1 if up else 1
-    body = [(x, y), (x, y + s * D), (x + w, y + s * D), (x + w, y)]
-    tuck = [(x + 2, y + s * D), (x + 6, y + s * (D + TK)), (x + w - 6, y + s * (D + TK)), (x + w - 2, y + s * D)]
-    dr.polygon([tuple(P(*p)) for p in body], fill=(238, 242, 226))
-    dr.polygon([tuple(P(*p)) for p in tuck], fill=(238, 242, 226))
-    dr.line([tuple(P(*p)) for p in [(x, y), (x, y + s * D), (x + 2, y + s * D), (x + 6, y + s * (D + TK)),
-             (x + w - 6, y + s * (D + TK)), (x + w - 2, y + s * D), (x + w, y + s * D), (x + w, y)]], fill=CUT, width=3)
-    dashed((x, y + s * D), (x + w, y + s * D))
 
-def dust(x, w, y, up):
-    s = -1 if up else 1; d = D * .42
-    pts = [(x, y), (x + 3, y + s * d), (x + w - 9, y + s * d), (x + w, y + s * 4), (x + w, y)]
-    dr.polygon([tuple(P(*p)) for p in pts], fill=(238, 242, 226))
-    dr.line([tuple(P(*p)) for p in pts[:-1]], fill=CUT, width=3)
+def board(art):
+    """the flat artwork printed on uncoated board"""
+    a = np.asarray(art).astype(float) / 255
+    rgb, alpha = a[..., :3], a[..., 3]
+    h, w = alpha.shape
+    win = Image.new('L', (w, h), 0); d = ImageDraw.Draw(win)
+    for poly in windows(): d.polygon([(x * K, y * K) for x, y in poly], fill=255)
+    alpha = alpha * (1 - np.asarray(win).astype(float) / 255)
+    paper = np.array([0.965, 0.955, 0.93])
+    # fibre : fine grain + short soft streaks
+    tex = 1 + noise(h, w, .6, .012) + noise(h, w, 2.5, .008)
+    fib = Image.new('L', (w, h), 0); d = ImageDraw.Draw(fib)
+    for _ in range(int(w * h / 1400)):
+        x, y = rng.random() * w, rng.random() * h
+        L, t = rng.uniform(6, 22), rng.normal(0, .5)
+        d.line([(x, y), (x + L * np.cos(t), y + L * np.sin(t))], fill=int(rng.uniform(20, 60)), width=1)
+    fib = np.asarray(fib.filter(ImageFilter.GaussianBlur(.7))).astype(float) / 255
+    tex = tex - fib * .05
+    # ink sits in the paper : white in the file becomes the board, colour multiplies with it
+    printed = rgb * paper * tex[..., None]
+    # creases : a dark groove with a light lip beside it
+    cr = Image.new('L', (w, h), 0); d = ImageDraw.Draw(cr)
+    for (x0, y0), (x1, y1) in FOLDS: d.line([(x0 * K, y0 * K), (x1 * K, y1 * K)], fill=255, width=3)
+    groove = np.asarray(cr.filter(ImageFilter.GaussianBlur(1.6))).astype(float) / 255
+    lip = np.roll(np.roll(groove, -2, 0), -2, 1)
+    printed = printed * (1 - .16 * groove[..., None]) + .05 * np.clip(lip - groove, 0, 1)[..., None]
+    # cut edge : a hair of board thickness on the lower-right of every edge
+    al = Image.fromarray((alpha * 255).astype(np.uint8))
+    inner = np.asarray(al.filter(ImageFilter.MinFilter(5))).astype(float) / 255
+    edge = np.clip(alpha - inner, 0, 1)
+    printed = printed * (1 - .10 * edge[..., None])
+    return np.clip(printed, 0, 1), alpha
 
-lid(bx, W, y_body, True); lid(fx, W, y_body + H, False)
-for name, x, w in xs:
-    if name == 'side': dust(x, w, y_body, True); dust(x, w, y_body + H, False)
 
-# outline of the body and folds between panels
-xl, xr = xs[1][1], x0
-dr.line(P(gx + G, y_body, gx, y_body + 6, gx, y_body + H - 6, gx + G, y_body + H), fill=CUT, width=3)
-for name, x, w in xs:
-    if name in ('glue',): continue
-    if name not in ('back', 'front'):
-        pass
-dr.line(P(xr, y_body, xr, y_body + H), fill=CUT, width=3)
-for name, x, w in xs[1:]:
-    dashed((x, y_body), (x, y_body + H))
-    if name in ('side',): dashed((x, y_body), (x + w, y_body)); dashed((x, y_body + H), (x + w, y_body + H))
-dashed((bx, y_body), (bx + W, y_body)); dashed((fx, y_body + H), (fx + W, y_body + H))
-# top edge of the front panel and bottom edge of the back panel are cuts
-dr.line(P(fx, y_body, fx + W, y_body), fill=CUT, width=3); dr.line(P(bx, y_body + H, bx + W, y_body + H), fill=CUT, width=3)
+def main():
+    sheets = [board(render(SRC / f'Boxes_{i}.svg')) for i in (1, 2, 3, 4)]
+    h, w = sheets[0][1].shape
+    # tight box of the outline, so the four sit close
+    ys, xs = np.where(sheets[0][1] > .5); y0, y1, x0, x1 = ys.min(), ys.max(), xs.min(), xs.max()
+    cw, ch = x1 - x0, y1 - y0
+    gap, pad = int(cw * .10), int(cw * .16)
+    W, H = pad * 2 + cw * 2 + gap, pad * 2 + ch * 2 + gap
+    # surface : warm light grey, a little low-frequency unevenness, light from the upper left
+    yy, xx = np.mgrid[0:H, 0:W]
+    light = 1.03 - .06 * (xx / W * .6 + yy / H * .4)
+    surf = np.array([0.885, 0.875, 0.855])[None, None, :] * (light + noise(H, W, 160, .004) + noise(H, W, .8, .005))[..., None]
+    canvas = surf.copy()
+    for k, (rgb, alpha) in enumerate(sheets):
+        rgb, alpha = rgb[y0:y1, x0:x1], alpha[y0:y1, x0:x1]
+        ang = rng.uniform(-1.2, 1.2)
+        A = Image.fromarray((alpha * 255).astype(np.uint8)).rotate(ang, Image.BICUBIC, expand=True)
+        R = Image.fromarray((rgb * 255).astype(np.uint8)).rotate(ang, Image.BICUBIC, expand=True)
+        ox = pad + (k % 2) * (cw + gap) - (A.width - cw) // 2
+        oy = pad + (k // 2) * (ch + gap) - (A.height - ch) // 2
+        a = np.asarray(A).astype(float) / 255; r = np.asarray(R).astype(float) / 255
+        # shadow : soft contact shadow plus a wider faint one
+        for off, blur, op in ((6, 6, .22), (22, 38, .14)):
+            s = np.asarray(A.filter(ImageFilter.GaussianBlur(blur))).astype(float) / 255
+            sy, sx = oy + off, ox + int(off * .7)
+            region = canvas[sy:sy + s.shape[0], sx:sx + s.shape[1]]
+            region *= (1 - op * s[:region.shape[0], :region.shape[1]])[..., None]
+        region = canvas[oy:oy + a.shape[0], ox:ox + a.shape[1]]
+        aa = a[:region.shape[0], :region.shape[1], None]
+        region[:] = region * (1 - aa) + r[:region.shape[0], :region.shape[1]] * light[oy:oy + aa.shape[0], ox:ox + aa.shape[1], None] * aa
+    img = Image.fromarray((np.clip(canvas, 0, 1) * 255).astype(np.uint8))
+    img.thumbnail((2600, 2600), Image.LANCZOS)
+    img.save(OUT, optimize=True)
+    print(OUT, img.size)
 
-# dimensions
-def dim(a, b, label, off, vertical=False):
-    if vertical:
-        x = a[0] + off; dr.line(P(x, a[1], x, b[1]), fill=FOLD, width=2)
-        for y in (a[1], b[1]): dr.line(P(x - 1.5, y, x + 1.5, y), fill=FOLD, width=2)
-        dr.text(P(x - 2, (a[1] + b[1]) / 2), label, font=f(6), fill=FOLD, anchor='rm')
-    else:
-        y = a[1] + off; dr.line(P(a[0], y, b[0], y), fill=FOLD, width=2)
-        for x in (a[0], b[0]): dr.line(P(x, y - 1.5, x, y + 1.5), fill=FOLD, width=2)
-        dr.text(P((a[0] + b[0]) / 2, y + 2), label, font=f(6), fill=FOLD, anchor='ma')
-yb = y_body + H + D * .42
-dim((xs[1][1], yb), (xs[1][1] + D, yb), f'{D} mm', 6)
-dim((fx, y_body + H + D + TK), (fx + W, y_body + H + D + TK), f'{W} mm', 3)
-dim((gx, y_body), (gx, y_body + H), f'{H} mm', -3, vertical=True)
 
-# legend
-lx, ly = PAD, CH / S - PAD + 8
-dr.line(P(lx, ly, lx + 10, ly), fill=CUT, width=3); dr.text(P(lx + 13, ly), 'CUT', font=f(6), fill=INK, anchor='lm')
-dashed((lx + 30, ly), (lx + 40, ly)); dr.text(P(lx + 43, ly), 'FOLD', font=f(6), fill=INK, anchor='lm')
-dr.text(P(CW / S - PAD, ly), f'FLANT Nutrient Box — {W} × {D} × {H} mm · Reverse tuck end', font=f(6), fill=INK, anchor='rm')
-im.save(OUT, optimize=True)
-print(OUT, im.size)
+if __name__ == '__main__':
+    main()
