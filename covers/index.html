@@ -285,7 +285,7 @@ body.detail-open .detail{transform:translateX(0)}
 .o-flow span{font-family:"Noto Serif KR",serif;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* end : next project */
-.d-end{display:flex;justify-content:center;padding:0 var(--m) calc(var(--mt)*2)}
+.d-end{display:flex;justify-content:center;padding:0 var(--m) calc(var(--mt)*2);scroll-snap-align:end}   /* a snap point of its own, or proximity snapping pulls the page back to the last sheet */
 .d-nextbtn{all:unset;cursor:pointer;width:var(--sw);display:flex;justify-content:space-between;align-items:baseline;padding-top:calc(var(--mt)*.6);border-top:1px solid rgba(17,17,17,.12);font-size:var(--label)}
 .d-nextbtn:hover{color:var(--guide-strong)}
 .d-nextbtn b{font-weight:400;font-family:"Instrument Serif",serif;font-size:calc(var(--label)*2.6);line-height:1}
