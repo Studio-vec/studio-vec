@@ -19,6 +19,7 @@ OUT = ROOT / 'covers' / 'sheet-images.js'
 MAX_TRIM = 0.45          # never trim more than this per side (some web slides pad a photo by ~40%)
 TOL = 7                  # spread allowed inside a dark band
 FLAT = 1.2               # spread of a digitally flat band (photos have more grain than this)
+PLATE = .6               # ring share in the padding colour that makes a slide (same value in covers/index.html)
 DARK = 70                # a band this dark counts as padding even with a little noise
 
 
@@ -52,17 +53,32 @@ def measure(path):
     small.thumbnail((400, 400))
     t, b, l, r = (band(small, s) for s in 'tblr')
     if t + b > .7 or l + r > .7: t = b = l = r = 0   # mostly flat image — leave it alone
-    # keep a hair of the padding so nothing touches the cut
-    t, b, l, r = (max(0, x - .004) if x > .01 else 0 for x in (t, b, l, r))
-    W, H = small.size   # edge is read after the trim — what the sheet will actually show
-    c, f = edge(small.crop((round(l * W), round(t * H), round(W - r * W), round(H - b * H))))
+    W, H = small.size
+    inner = small.crop((round(l * W), round(t * H), round(W - r * W), round(H - b * H)))
+    pad, flat = edge(small)                      # the file's own outer ring
+    if flat > .9 and any((t, b, l, r)):
+        # a padded slide: does the content carry on in the padding colour right up to the cut?
+        # (a slide — yes, give it a mat of that colour; a photo pasted on grey — no, it bleeds)
+        c, f = pad, edge(inner, pad, 26)[1]
+    else:
+        c, f = edge(inner)
+    # a photograph: cut a little past the band, so no sliver of a thin divider line survives.
+    # a slide (flat edge, it will get a mat): the band stops at its content, so cut nothing more.
+    if f < PLATE:
+        t, b, l, r = (min(MAX_TRIM, x + .006) if x > 0 else 0 for x in (t, b, l, r))
+    else:   # keep a hair of padding round the content; the mat adds the rest
+        t, b, l, r = (max(0, x - .004) for x in (t, b, l, r))
     lum = ImageStat.Stat(small.convert('L')).mean[0] / 255
     return {'a': round(w / h, 4), 't': [round(t, 4), round(r, 4), round(b, 4), round(l, 4)],
             'c': c, 'f': f, 'l': round(lum, 3)}
 
 
-def edge(im):
-    """colour of the outer ring, and whether it is one flat colour (a slide background, not a photo)"""
+def rgb(h): return [int(h[i:i + 2], 16) for i in (1, 3, 5)]
+
+
+def edge(im, ref=None, tol=14):
+    """colour of the outer ring, and the share of it that is one flat colour
+    (the ring's own mean, or `ref`) — a slide background, not a photo"""
     w, h = im.size
     k = max(2, round(min(w, h) * .02))
     px = []
@@ -70,8 +86,8 @@ def edge(im):
         px += list(im.crop(box).get_flattened_data())
     n = len(px)
     mean = [sum(p[i] for p in px) / n for i in range(3)]
-    # share of ring pixels close to the mean colour
-    near = sum(1 for p in px if max(abs(p[i] - mean[i]) for i in range(3)) < 14) / n
+    ref = rgb(ref) if ref else mean
+    near = sum(1 for p in px if max(abs(p[i] - ref[i]) for i in range(3)) < tol) / n
     return '#%02x%02x%02x' % tuple(round(v) for v in mean), round(near, 2)
 
 

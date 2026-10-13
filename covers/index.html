@@ -258,6 +258,11 @@ body.detail-open .detail{transform:translateX(0)}
 .fig.plate:not(.blend) .ph{box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}
 .fig figcaption{margin-top:calc(1.6*var(--u));display:flex;gap:.8em;font-family:"Noto Serif KR",serif;font-size:calc(2.6*var(--u));line-height:1.45;color:var(--sub);word-break:keep-all}
 .fig figcaption b{font-weight:400;font-family:"Newsreader",serif;color:var(--ink)}
+.s-art.mosaic .ph{background:var(--rule)}
+.fig .tab{position:absolute;left:0;bottom:0;padding:calc(.7*var(--u)) calc(1.3*var(--u)) calc(.5*var(--u)) calc(1*var(--u));background:var(--bg);font-style:normal;font-family:"Newsreader",serif;font-size:calc(2.4*var(--u));line-height:1;color:var(--ink)}
+.mcap{position:absolute;margin:0;display:flex;flex-wrap:wrap;column-gap:1.4em;row-gap:.2em;font-family:"Noto Serif KR",serif;font-size:calc(2.6*var(--u));line-height:1.45;color:var(--sub);word-break:keep-all}
+.mcap span{white-space:nowrap}
+.mcap b{font-weight:400;font-family:"Newsreader",serif;color:var(--ink);margin-right:.5em}
 
 /* opener */
 .lay-open .s-text{grid-column:1/4;gap:0}
@@ -419,6 +424,9 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
   .s-art{height:auto!important;align-self:stretch;display:flex;flex-direction:column;gap:14px}
   .fig{position:static;width:auto!important}
   .fig .ph{height:auto!important}
+  .s-art.mosaic{gap:0}
+  .mcap{position:static;width:auto!important;margin-top:8px;font-size:11px}
+  .fig .tab{font-size:11px;padding:3px 6px 2px 4px}
 }
 @media (prefers-reduced-motion:reduce){
   .stage,.detail{transition:none}
@@ -838,13 +846,12 @@ const esc = s => String(s).replace(/"/g,'&quot;');
 /* sheet body geometry (mm) — 12mm margins, 7 columns, 5mm gutter */
 const SB = {W:273, H:176, G:5}; SB.C=(SB.W-SB.G*6)/7;
 const span = n => n*SB.C+(n-1)*SB.G;
-const GAP=4, CAP=8.5;                     // gap between images · room for a two-line caption
 /* how an image meets the paper (values measured by tools/sheet_images.py)
    - photo            : bleeds to its own rectangle, nothing added
    - flat background  : a slide or a product on a seamless backdrop — trimmed, then given an even
                         mat of its own edge colour so nothing touches the cut. On a sheet of the
                         same colour the mat disappears and the image sits straight on the paper. */
-const PLATE=.75, MAT=.075, DARK_L=.38;
+const PLATE=.6, MAT=.075, DARK_L=.38;
 const rgb = h => [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
 const close = (a,b,d=20) => rgb(a).every((v,i)=>Math.abs(v-rgb(b)[i])<d);
 function meta(src, im){
@@ -854,8 +861,15 @@ function meta(src, im){
   const mat = im.mat ?? (m.f>=PLATE ? MAT : 0), p = mat*Math.min(a,1);   // mat in units of the image height
   return {t,r,b,l, a:(a+2*p)/(1+2*p), ai:a, p, c:im.bg||m.c, lum:m.l};
 }
+/* two ways to set the pictures of a sheet (page art.look, otherwise read from the pictures)
+   grid   : explanation — boards, diagrams, steps. Gutters, and a numbered caption under each picture.
+   mosaic : mood and application — photographs butted edge to edge into one block, so they read as
+            one scene. Numbers are notched into each picture's corner; the captions sit together under it. */
+const LOOK = { grid:{gap:4, cap:8.5}, mosaic:{gap:0, cap:0} };
+const MCAP = 10;                          // room under a mosaic for its gathered captions (two lines)
 /* justified rows (or columns) at each image's own proportion — nothing is cropped */
-function packArt(items, groups, mode, W, H){
+function packArt(items, groups, mode, W, H, o){
+  const GAP=o.gap, CAP=o.cap;
   const runs=[]; let k=0; groups.forEach(n=>{ runs.push(items.slice(k,k+n)); k+=n });
   const cap = run => run.some(it=>it.cap) ? CAP : 0;
   const cells=[];
@@ -880,8 +894,13 @@ function packArt(items, groups, mode, W, H){
 function artLayout(art, dir, W, H){
   if(!art) return null;
   const items = art.i.map(im=>{ const src=im.s.startsWith('/')?im.s:IMG_ROOT+dir+'/'+im.s; return {...im, src, ...meta(src,im)} });
+  // photographs only → mosaic; anything on a plate (a slide, a board, a cut-out product) → grid
+  const look = art.look || (items.length>1 && items.every(it=>!it.p) ? 'mosaic' : 'grid');
+  // in a mosaic the pictures touch : no mats, each tile is the picture itself
+  if(look==='mosaic') items.forEach(it=>{ it.a=it.ai; it.p=0 });
+  const o = LOOK[look], Hx = look==='mosaic' && items.some(it=>it.cap) ? H-MCAP : H;
   const mode = art.cols ? 'cols' : 'rows', groups = art.cols || art.rows || [items.length];
-  let L = packArt(items, groups, mode, W, H);
+  let L = packArt(items, groups, mode, W, Hx, o);
   // the authored arrangement stays unless another split into rows shows the pictures much larger
   // (e.g. two wide boards side by side leave half the sheet empty — stacked, they fill it)
   // score = Σ√area : rewards larger pictures, but not one huge picture beside a row of thumbnails
@@ -891,28 +910,32 @@ function artLayout(art, dir, W, H){
     for(let mask=0; mask<1<<(n-1); mask++){
       const g=[]; let run=1; for(let i=0;i<n-1;i++){ if(mask>>i&1){ g.push(run); run=1 } else run++ } g.push(run);
       if(g.length>4 || g.some(k=>k>4)) continue;
-      const P=packArt(items, g, 'rows', W, H), A=score(P);
+      const P=packArt(items, g, 'rows', W, Hx, o), A=score(P);
       if(A>bestA){ best=P; bestA=A }
     }
     L=best;
   }
   let dk=0, all=0; L.cells.forEach(({it,w,h})=>{ all+=w*h; if(it.lum<DARK_L) dk+=w*h });
-  return {...L, W, dark: all>0 && dk/all>=.55};
+  return {...L, W, look, dark: all>0 && dk/all>=.55};
 }
 function artHTML(L, counter, alt, eager, bg, align){
   if(!L) return '';
-  const dx = align==='right' ? L.W-L.w : 0;
+  const dx = align==='right' ? L.W-L.w : 0, mosaic = L.look==='mosaic';
   const mm = v => `calc(${v.toFixed(2)}*var(--u))`, pc = v => (v*100).toFixed(3)+'%';
-  return `<div class="s-art" style="height:${mm(L.h)}">${L.cells.map(({it,x,y,w,h})=>{
+  const caps = [];
+  const figs = L.cells.map(({it,x,y,w,h})=>{
     const num = it.cap ? ++counter.n : 0, sw=1-it.l-it.r, sh=1-it.t-it.b;
+    if(num) caps.push(`<span><b>${pad2(num)}</b>${it.cap}</span>`);
     const img = `left:${pc(-it.l/sw)};top:${pc(-it.t/sh)};width:${pc(1/sw)};height:${pc(1/sh)}`;
     // mat : the picture's inset inside its plate, as a share of the plate's width / height
     const ix = it.p/(it.ai+2*it.p), iy = it.p/(1+2*it.p);
     const plate = it.p>0, blend = plate && close(it.c,bg);
     return `<figure class="fig${plate?' plate':''}${blend?' blend':''}" style="left:${mm(x+dx)};top:${mm(y)};width:${mm(w)}">
-      <div class="ph" style="height:${mm(h)};aspect-ratio:${it.a.toFixed(4)}${plate?`;background:${blend?bg:it.c}`:''}"><div class="im" style="inset:${pc(iy)} ${pc(ix)}"><img src="${enc(it.src)}" alt="${esc(alt+(it.cap?' — '+it.cap:''))}"${eager?'':' loading="lazy"'} style="${img}"></div></div>
-      ${it.cap?`<figcaption><b>${pad2(num)}</b><span>${it.cap}</span></figcaption>`:''}</figure>`;
-  }).join('')}</div>`;
+      <div class="ph" style="height:${mm(h)};aspect-ratio:${it.a.toFixed(4)}${plate?`;background:${blend?bg:it.c}`:''}"><div class="im" style="inset:${pc(iy)} ${pc(ix)}"><img src="${enc(it.src)}" alt="${esc(alt+(it.cap?' — '+it.cap:''))}"${eager?'':' loading="lazy"'} style="${img}"></div>${mosaic&&num?`<i class="tab">${pad2(num)}</i>`:''}</div>
+      ${!mosaic&&it.cap?`<figcaption><b>${pad2(num)}</b><span>${it.cap}</span></figcaption>`:''}</figure>`;
+  }).join('');
+  const mcap = mosaic&&caps.length ? `<p class="mcap" style="left:${mm(dx)};top:${mm(L.h+2)};width:${mm(L.w)}">${caps.join('')}</p>` : '';
+  return `<div class="s-art${mosaic?' mosaic':''}" style="height:${mm(L.h+(mosaic?MCAP:0))}">${figs}${mcap}</div>`;
 }
 function textHTML(pg){
   const out=[];
