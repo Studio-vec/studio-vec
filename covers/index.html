@@ -244,6 +244,16 @@ body.detail-open .detail{transform:translateX(0)}
 .t-steps div{border-top:1px solid var(--ink);padding-top:calc(2*var(--u));font-size:calc(2.8*var(--u));line-height:1.55}
 .t-steps i{display:block;font-family:"Newsreader",serif;font-style:italic;color:var(--acc);font-size:calc(2.6*var(--u));margin-bottom:calc(1*var(--u))}
 .t-steps b{display:block;font-weight:500;font-size:calc(3.3*var(--u));margin-bottom:calc(.8*var(--u))}
+/* flow diagram : numbered nodes on one vertical line */
+.t-flow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;position:relative}
+.t-flow li{position:relative;display:grid;grid-template-columns:calc(7*var(--u)) 1fr;column-gap:calc(2.4*var(--u));padding:0 0 calc(2.6*var(--u));font-size:calc(2.8*var(--u));line-height:1.5}
+.t-flow li::before{content:"";position:absolute;left:calc(3.5*var(--u));top:calc(6.2*var(--u));bottom:calc(.6*var(--u));border-left:1px solid var(--rule)}
+.t-flow li:last-child{padding-bottom:0}
+.t-flow li:last-child::before{display:none}
+.t-flow i{grid-row:1/3;display:flex;align-items:center;justify-content:center;width:calc(7*var(--u));height:calc(5.6*var(--u));border:1px solid var(--acc);font-style:italic;font-family:"Newsreader",serif;font-size:calc(2.6*var(--u));color:var(--acc)}
+.t-flow b{font-weight:500;font-size:calc(3.2*var(--u));line-height:1.3;padding-top:calc(.5*var(--u))}
+.t-flow span{color:var(--sub)}
+.t-flow.loop li:last-child::after{content:"↺ 01";display:block;grid-column:2;margin-top:calc(1*var(--u));font-family:"Newsreader",serif;font-style:italic;color:var(--acc);font-size:calc(2.6*var(--u))}
 /* hand-off to the next sheet, pinned to the foot of the text column */
 .t-next{margin-top:auto;padding-top:calc(2.2*var(--u));border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:calc(.8*var(--u));font-size:calc(2.7*var(--u));line-height:1.5;color:var(--sub)}
 .t-next i{font-style:italic;font-family:"Newsreader",serif;color:var(--acc)}
@@ -412,6 +422,10 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
   .t-list div,.o-brief div,.o-info{grid-template-columns:76px 1fr}
   .t-steps{grid-template-columns:1fr;row-gap:12px}
   .t-steps b{font-size:15px}
+  .t-flow li{font-size:13px;grid-template-columns:30px 1fr;column-gap:10px}
+  .t-flow i{width:30px;height:24px;font-size:11px}
+  .t-flow b{font-size:14px}
+  .t-flow li::before{left:15px;top:26px}
   .t-sw i{height:28px}
   .o-title{font-size:44px}
   .o-sym{height:52px;width:76px}
@@ -854,11 +868,12 @@ const span = n => n*SB.C+(n-1)*SB.G;
 const PLATE=.6, MAT=.075, DARK_L=.38;
 const rgb = h => [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
 const close = (a,b,d=20) => rgb(a).every((v,i)=>Math.abs(v-rgb(b)[i])<d);
-function meta(src, im){
+function meta(src, im, trim){
   const m = SHEET_IMG[src] || {a:1.5, t:[0,0,0,0], c:'#ffffff', f:0, l:.6};
-  const [t,r,b,l] = im.t || m.t;
+  // trim:false (project or page) keeps each file whole — for slides whose own margin is part of the picture
+  const [t,r,b,l] = im.t || (trim===false ? [0,0,0,0] : m.t);
   const a = m.a*(1-l-r)/(1-t-b);
-  const mat = im.mat ?? (m.f>=PLATE ? MAT : 0), p = mat*Math.min(a,1);   // mat in units of the image height
+  const mat = im.mat ?? (trim===false ? 0 : m.f>=PLATE ? MAT : 0), p = mat*Math.min(a,1);   // mat in units of the image height
   return {t,r,b,l, a:(a+2*p)/(1+2*p), ai:a, p, c:im.bg||m.c, lum:m.l};
 }
 /* two ways to set the pictures of a sheet (page art.look, otherwise read from the pictures)
@@ -890,27 +905,57 @@ function packArt(items, groups, mode, W, H, o){
     c.forEach(it=>{ cells.push({it,x,y,w,h:w/it.a}); y+=w/it.a+(it.cap?CAP:0)+GAP }); x+=w+GAP });
   return {cells, w:x-GAP, h};
 }
+/* fill : the same rows (or columns), stretched to the whole W × H box so the sheet keeps no stray
+   white. Each row takes height in proportion to what it would naturally need (even : all equal);
+   a photograph is then cropped to its cell, a picture on a plate keeps all of itself and the plate grows. */
+function fillArt(items, groups, mode, W, H, o, even){
+  const GAP=o.gap, CAP=o.cap;
+  const runs=[]; let k=0; groups.forEach(n=>{ runs.push(items.slice(k,k+n)); k+=n });
+  const cells=[];
+  if(mode==='rows'){
+    const cap = r => r.some(it=>it.cap) ? CAP : 0;
+    const A = runs.map(r=>r.reduce((s,it)=>s+it.a,0));
+    const free = H - runs.reduce((s,r)=>s+cap(r),0) - GAP*(runs.length-1);
+    const nat = runs.map((r,i)=>(W-GAP*(r.length-1))/A[i]), tot = nat.reduce((s,v)=>s+v,0);
+    let y=0; runs.forEach((r,i)=>{ const h = even ? free/runs.length : free*nat[i]/tot, iw = W-GAP*(r.length-1); let x=0;
+      r.forEach(it=>{ const w = iw*it.a/A[i]; cells.push({it,x,y,w,h}); x+=w+GAP }); y+=h+cap(r)+GAP });
+    return {cells, w:W, h:H, fill:true};
+  }
+  const B = runs.map(c=>c.reduce((s,it)=>s+1/it.a,0));
+  const fix = c => c.reduce((s,it)=>s+(it.cap?CAP:0),0)+GAP*(c.length-1);
+  const free = W - GAP*(runs.length-1);
+  const nat = runs.map((c,i)=>(H-fix(c))/B[i]), tot = nat.reduce((s,v)=>s+v,0);
+  let x=0; runs.forEach((c,i)=>{ const w = even ? free/runs.length : free*nat[i]/tot, ih = H-fix(c); let y=0;
+    c.forEach(it=>{ const h = ih/it.a/B[i]; cells.push({it,x,y,w,h}); y+=h+(it.cap?CAP:0)+GAP }); x+=w+GAP });
+  return {cells, w:W, h:H, fill:true};
+}
+/* how far a filled layout bends the pictures : area-weighted |log(cell shape / picture shape)| */
+const bend = P => { let s=0, a=0; P.cells.forEach(({it,w,h})=>{ s+=w*h*Math.abs(Math.log(w/h/it.a)); a+=w*h }); return a ? s/a : 0 };
 /* lay the images out, and read the sheet's tone from them : mostly dark pictures → a dark sheet */
 function artLayout(art, dir, W, H){
   if(!art) return null;
-  const items = art.i.map(im=>{ const src=im.s.startsWith('/')?im.s:IMG_ROOT+dir+'/'+im.s; return {...im, src, ...meta(src,im)} });
+  const items = art.i.map(im=>{ const src=im.s.startsWith('/')?im.s:IMG_ROOT+dir+'/'+im.s; return {...im, src, ...meta(src,im,im.trim??art.trim)} });
   // photographs only → mosaic; anything on a plate (a slide, a board, a cut-out product) → grid
   const look = art.look || (items.length>1 && items.every(it=>!it.p) ? 'mosaic' : 'grid');
   // in a mosaic the pictures touch : no mats, each tile is the picture itself
   if(look==='mosaic') items.forEach(it=>{ it.a=it.ai; it.p=0 });
   const o = LOOK[look], Hx = look==='mosaic' && items.some(it=>it.cap) ? H-MCAP : H;
-  const mode = art.cols ? 'cols' : 'rows', groups = art.cols || art.rows || [items.length];
-  let L = packArt(items, groups, mode, W, Hx, o);
+  const mode = art.cols ? 'cols' : 'rows', groups = art.cols || art.rows || [items.length], n = items.length;
+  const score = P => P.cells.reduce((s,c)=>s+Math.sqrt(c.w*c.h),0);
+  // fill : the same choice, but a split is marked down by how much filling would crop its pictures
+  const pack = (g, m) => { const P=packArt(items, g, m, W, Hx, o); if(!art.fill) return [P, score(P)];
+    const F=fillArt(items, g, m, W, Hx, o, art.even); return [F, score(P)*(1-Math.min(.6, bend(F)))] };
+  let [L, LA] = pack(groups, mode);
   // the authored arrangement stays unless another split into rows shows the pictures much larger
   // (e.g. two wide boards side by side leave half the sheet empty — stacked, they fill it)
   // score = Σ√area : rewards larger pictures, but not one huge picture beside a row of thumbnails
-  const score = P => P.cells.reduce((s,c)=>s+Math.sqrt(c.w*c.h),0), n = items.length;
-  if(n>1 && n<=7 && !art.fixed){
-    let best=L, bestA=score(L)*1.12;
+  // (a filled page that names its rows keeps them : filling already uses the whole area)
+  if(n>1 && n<=7 && !art.fixed && !(art.fill && (art.rows||art.cols))){
+    let best=L, bestA=LA*1.12;
     for(let mask=0; mask<1<<(n-1); mask++){
       const g=[]; let run=1; for(let i=0;i<n-1;i++){ if(mask>>i&1){ g.push(run); run=1 } else run++ } g.push(run);
       if(g.length>4 || g.some(k=>k>4)) continue;
-      const P=packArt(items, g, 'rows', W, Hx, o), A=score(P);
+      const [P,A]=pack(g, 'rows');
       if(A>bestA){ best=P; bestA=A }
     }
     L=best;
@@ -920,18 +965,28 @@ function artLayout(art, dir, W, H){
 }
 function artHTML(L, counter, alt, eager, bg, align){
   if(!L) return '';
-  const dx = align==='right' ? L.W-L.w : 0, mosaic = L.look==='mosaic';
+  const dx = align==='right' ? L.W-L.w : align==='center' ? (L.W-L.w)/2 : 0, mosaic = L.look==='mosaic';
   const mm = v => `calc(${v.toFixed(2)}*var(--u))`, pc = v => (v*100).toFixed(3)+'%';
   const caps = [];
   const figs = L.cells.map(({it,x,y,w,h})=>{
-    const num = it.cap ? ++counter.n : 0, sw=1-it.l-it.r, sh=1-it.t-it.b;
+    const num = it.cap ? ++counter.n : 0;
     if(num) caps.push(`<span><b>${pad2(num)}</b>${it.cap}</span>`);
-    const img = `left:${pc(-it.l/sw)};top:${pc(-it.t/sh)};width:${pc(1/sw)};height:${pc(1/sh)}`;
-    // mat : the picture's inset inside its plate, as a share of the plate's width / height
-    const ix = it.p/(it.ai+2*it.p), iy = it.p/(1+2*it.p);
+    let {t,r,b,l} = it, ix=0, iy=0;
+    if(it.p>0){
+      // mat : the picture keeps all of itself, centred in its plate with at least the mat all round
+      const m = it.p*Math.min(w/(it.ai+2*it.p), h/(1+2*it.p)), hh = Math.min(h-2*m, (w-2*m)/it.ai);
+      ix = (w-hh*it.ai)/2/w; iy = (h-hh)/2/h;
+    } else {
+      // a photograph in a cell of another shape (fill) is cropped round its focus (pos [x,y], default centre)
+      const A = w/h, [fx,fy] = it.pos||[.5,.5];
+      if(A > it.ai*1.002){ const cut=(1-t-b)*(1-it.ai/A); t+=cut*fy; b+=cut*(1-fy) }
+      else if(A < it.ai/1.002){ const cut=(1-l-r)*(1-A/it.ai); l+=cut*fx; r+=cut*(1-fx) }
+    }
+    const sw=1-l-r, sh=1-t-b;
+    const img = `left:${pc(-l/sw)};top:${pc(-t/sh)};width:${pc(1/sw)};height:${pc(1/sh)}`;
     const plate = it.p>0, blend = plate && close(it.c,bg);
     return `<figure class="fig${plate?' plate':''}${blend?' blend':''}" style="left:${mm(x+dx)};top:${mm(y)};width:${mm(w)}">
-      <div class="ph" style="height:${mm(h)};aspect-ratio:${it.a.toFixed(4)}${plate?`;background:${blend?bg:it.c}`:''}"><div class="im" style="inset:${pc(iy)} ${pc(ix)}"><img src="${enc(it.src)}" alt="${esc(alt+(it.cap?' — '+it.cap:''))}"${eager?'':' loading="lazy"'} style="${img}"></div>${mosaic&&num?`<i class="tab">${pad2(num)}</i>`:''}</div>
+      <div class="ph" style="height:${mm(h)};aspect-ratio:${(w/h).toFixed(4)}${plate?`;background:${blend?bg:it.c}`:''}"><div class="im" style="inset:${pc(iy)} ${pc(ix)}"><img src="${enc(it.src)}" alt="${esc(alt+(it.cap?' — '+it.cap:''))}"${eager?'':' loading="lazy"'} style="${img}"></div>${mosaic&&num?`<i class="tab">${pad2(num)}</i>`:''}</div>
       ${!mosaic&&it.cap?`<figcaption><b>${pad2(num)}</b><span>${it.cap}</span></figcaption>`:''}</figure>`;
   }).join('');
   const mcap = mosaic&&caps.length ? `<p class="mcap" style="left:${mm(dx)};top:${mm(L.h+2)};width:${mm(L.w)}">${caps.join('')}</p>` : '';
@@ -944,6 +999,8 @@ function textHTML(pg){
   if(pg.list) out.push(`<div class="t-list">${pg.list.map(([k,v])=>`<div><b>${k}</b><span>${v}</span></div>`).join('')}</div>`);
   if(pg.steps) out.push(`<div class="t-steps" style="--n:${pg.steps.length}">${pg.steps.map(([n,t,d])=>`<div><i>${n}</i><b>${t}</b>${d}</div>`).join('')}</div>`);
   if(pg.sw) out.push(`<div class="t-sw" style="--n:${Math.min(pg.sw.length,5)}">${pg.sw.map(([c,n,h])=>`<div><i style="background:${c}"></i>${n}<span>${h}</span></div>`).join('')}</div>`);
+  // flow : a small diagram — steps down a line, each a title and a note; a loop:true page returns to the first step
+  if(pg.flow) out.push(`<ol class="t-flow${pg.flowLoop?' loop':''}">${pg.flow.map(([t,d],i)=>`<li><i>${pad2(i+1)}</i><b>${t}</b><span>${d}</span></li>`).join('')}</ol>`);
   return out.join('');
 }
 /* height (mm) of the text band in the 'top' layout — title in cols 1–2, text in cols 3–6 (≈ 46 characters a line) */
@@ -952,7 +1009,7 @@ function textBand(pg){
   let h = body.reduce((s,b)=>s+Math.ceil(b.length/44)*L, 0) + Math.max(0,body.length-1)*2.4;
   if(pg.pull) h += Math.ceil(pg.pull.length/36)*4.4*1.48 + 2.4;
   if(pg.list) h += pg.list.length*8.2 + 2.4;
-  if(pg.steps) h += 24; if(pg.sw) h += 19;
+  if(pg.steps) h += 24; if(pg.sw) h += 19; if(pg.flow) h += pg.flow.length*11;
   h += 14;                                        // hand-off line to the next sheet
   return Math.max(30, h*1.1) + 6;                 // + row gap
 }
@@ -975,7 +1032,7 @@ function detailHTML(p, idx){
   // the opener lists the story : every sheet's point, in reading order
   const story = `<div class="o-flow">${flow.map(f=>`<div><i>${pad2(f.pg)}</i><b>${f.sec}</b><span>${f.title}</span></div>`).join('')}</div>`;
   const hs = [].concat(S.hero);
-  const HL = artLayout({rows:hs.map(()=>1), i:hs.map(x=>({...x,cap:''}))}, S.dir, span(4), SB.H);
+  const HL = artLayout({rows:hs.map(()=>1), trim:S.trim, ...S.heroArt, i:hs.map(x=>({...x,cap:''}))}, S.dir, span(4), SB.H);
   const ot = sheetTone(T, S.openerBg ? S.openerBg==='dark' : HL.dark);
   const open = `
     <section class="sheet lay-open${ot.cls}" style="${ot.css}">${hd('',0)}
@@ -995,12 +1052,16 @@ function detailHTML(p, idx){
   const body = pages.map((pg,k)=>{
     // side : text in columns 1–2, pictures in 3–7.  top : a text band, pictures across all 7 columns.
     // Unless the page says which, take the one that shows the pictures clearly larger.
-    let lay = pg.lay, L = artLayout(pg.art, S.dir, span(5), SB.H);
+    const art = pg.art && {trim:S.trim, ...pg.art};
+    let lay = pg.lay, L = artLayout(art, S.dir, span(5), SB.H);
+    if(lay==='top' && L) L = artLayout(art, S.dir, SB.W, SB.H-textBand(pg));
     if(!lay && L){
-      const T2 = artLayout(pg.art, S.dir, SB.W, SB.H-textBand(pg)), a = P => P.cells.reduce((s,c)=>s+c.w*c.h,0);
+      const T2 = artLayout(art, S.dir, SB.W, SB.H-textBand(pg)), a = P => P.cells.reduce((s,c)=>s+c.w*c.h,0);
       lay = a(T2) > a(L)*1.3 ? 'top' : 'side'; if(lay==='top') L = T2;
     }
     lay = lay||'side';
+    // a block narrower than its columns sits against the right margin, away from the text (page align to change)
+    const align = pg.align || (lay==='side' ? 'right' : 'left');
     const t = sheetTone(T, pg.bg ? pg.bg==='dark' : !!(L&&L.dark));
     const nf = pages[k+1];
     // every sheet ends by pointing at the next one, so the order reads as an argument
@@ -1010,7 +1071,7 @@ function detailHTML(p, idx){
     const txt = lay==='top' ? `${head}<div class="t-col">${textHTML(pg)}${next}</div>` : head+textHTML(pg)+next;
     return `
     <section class="sheet lay-${lay}${t.cls}" style="${t.css}">${hd(pg.sec,k+1)}
-      <div class="s-body"><div class="s-text">${txt}</div>${artHTML(L, counter, alt, k<1, t.bg)}</div>
+      <div class="s-body"><div class="s-text">${txt}</div>${artHTML(L, counter, alt, k<1, t.bg, align)}</div>
     </section>`;
   }).join('');
   return `
