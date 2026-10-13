@@ -181,26 +181,31 @@ body.detail-open .detail{transform:translateX(0)}
 
 .sheets{display:flex;flex-direction:column;align-items:center;gap:calc(var(--mt)*.7);padding:calc(var(--mt)*.2) 0 var(--mt)}
 
-/* one sheet = 297 × 210 mm. 1mm = 100cqw / 297 — laid out for paper, read top-left → right */
+/* one sheet = 297 × 210 mm. 1mm = 100cqw / 297 — laid out for paper, read top-left → right.
+   Every sheet shares the same frame; a project only changes --bg (its paper or its dark) and --acc. */
 .sheet{
   position:relative;width:var(--sw);aspect-ratio:297/210;flex:none;
-  background:#fff;box-shadow:0 0 0 1px rgba(17,17,17,.07);
-  container-type:inline-size;overflow:hidden;scroll-snap-align:center
+  background:var(--bg,#fff);box-shadow:0 0 0 1px rgba(17,17,17,.07);
+  container-type:inline-size;overflow:hidden;scroll-snap-align:center;
+  --ink:#141414;--sub:rgba(20,20,22,.6);--faint:rgba(20,20,22,.34);--rule:rgba(20,20,22,.17)
 }
+.sheet.dark{--ink:#f1eee8;--sub:rgba(241,238,232,.62);--faint:rgba(241,238,232,.34);--rule:rgba(241,238,232,.2)}
 .sheet > *{--u:calc(100cqw / 297)}
-.sheet{--rule:rgba(17,17,17,.14)}
+.sheet{color:var(--ink)}
 
-/* running header : project · section flow · page */
+/* running header : project · numbered section flow · page */
 .s-hd{
   position:absolute;left:calc(12*var(--u));right:calc(12*var(--u));top:calc(9*var(--u));
   display:grid;grid-template-columns:repeat(7,1fr);column-gap:calc(5*var(--u));align-items:baseline;
-  font-size:calc(2.3*var(--u));line-height:1.3;color:var(--ink);
-  padding-bottom:calc(2*var(--u));border-bottom:1px solid var(--rule)
+  font-size:calc(2.5*var(--u));line-height:1.3;color:var(--ink);
+  padding-bottom:calc(2.2*var(--u));border-bottom:1px solid var(--rule)
 }
-.s-hd .h-proj{grid-column:1/3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-hd .h-proj{grid-column:1/3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.02em}
 .s-hd .h-proj i{font-style:italic;color:var(--sub);margin-right:.6em}
-.s-hd .h-flow{grid-column:3/7;display:flex;gap:1.5em;white-space:nowrap;overflow:hidden;color:#b4b7bd}
-.s-hd .h-flow b{font-weight:400;color:var(--ink)}
+.s-hd .h-flow{grid-column:3/7;display:flex;gap:1.6em;white-space:nowrap;overflow:hidden;color:var(--faint)}
+.s-hd .h-flow i{font-style:normal;margin-right:.35em}
+.s-hd .h-flow b{font-weight:400;color:var(--ink);box-shadow:0 calc(.55*var(--u)) 0 -0.1px var(--acc)}
+.s-hd .h-flow b i{color:var(--acc)}
 .s-hd .h-pg{grid-column:7/8;text-align:right;color:var(--sub);white-space:nowrap}
 
 /* body : 7 columns, text always on the left so every sheet reads in the same order */
@@ -208,43 +213,50 @@ body.detail-open .detail{transform:translateX(0)}
   position:absolute;left:calc(12*var(--u));right:calc(12*var(--u));top:calc(22*var(--u));bottom:calc(12*var(--u));
   display:grid;grid-template-columns:repeat(7,1fr);column-gap:calc(5*var(--u));grid-template-rows:minmax(0,1fr)
 }
-.s-text{grid-column:1/3;display:flex;flex-direction:column;gap:calc(3.4*var(--u));min-height:0;
-  font-family:"Noto Serif KR",serif;font-size:calc(3.1*var(--u));line-height:1.72;color:var(--ink);word-break:keep-all}
+.s-text{grid-column:1/3;display:flex;flex-direction:column;gap:calc(3.6*var(--u));min-height:0;
+  font-family:"Noto Serif KR",serif;font-size:calc(3.3*var(--u));line-height:1.74;color:var(--ink);word-break:keep-all}
 .s-art{grid-column:3/8;position:relative;align-self:start;min-width:0}
 .lay-top .s-body{grid-template-rows:auto minmax(0,1fr);row-gap:calc(6*var(--u))}
 .lay-top .s-text{grid-column:1/8;display:grid;grid-template-columns:repeat(7,1fr);column-gap:calc(5*var(--u));align-items:start}
 .lay-top .s-text > .t-head{grid-column:1/3}
-.lay-top .s-text > .t-col{grid-column:3/8;display:flex;flex-direction:column;gap:calc(2.4*var(--u))}
+.lay-top .s-text > .t-col{grid-column:3/7;display:flex;flex-direction:column;gap:calc(2.4*var(--u))}
 .lay-top .s-art{grid-column:1/8}
 .lay-text .s-text{grid-column:1/8}
 
 .s-text p{margin:0}
-.t-head{display:flex;flex-direction:column;gap:calc(2*var(--u))}
-.t-num{font-family:"Newsreader",serif;font-size:calc(2.5*var(--u));line-height:1;color:var(--sub);letter-spacing:.02em}
-.t-num i{font-style:italic;margin-right:.7em}
-.t-title{font-family:"Noto Serif KR",serif;font-weight:500;font-size:calc(5.4*var(--u));line-height:1.36;letter-spacing:-.01em}
-.t-lede{font-size:calc(3.1*var(--u))}
+.t-head{display:flex;flex-direction:column;gap:calc(2.6*var(--u));padding-bottom:calc(1*var(--u))}
+.t-num{font-family:"Newsreader",serif;font-size:calc(2.8*var(--u));line-height:1;color:var(--sub);letter-spacing:.02em}
+.t-num i{font-style:italic;margin-right:.6em;color:var(--acc)}
+.t-title{margin:0;font-family:"Noto Serif KR",serif;font-weight:500;font-size:calc(6.2*var(--u));line-height:1.34;letter-spacing:-.015em}
+.t-lede{font-size:calc(3.3*var(--u))}
 .t-list{display:flex;flex-direction:column}
-.t-list div{display:grid;grid-template-columns:calc(19*var(--u)) 1fr;column-gap:calc(3*var(--u));padding:calc(1.7*var(--u)) 0;border-top:1px solid var(--rule);font-size:calc(2.8*var(--u));line-height:1.6}
+.t-list div{display:grid;grid-template-columns:calc(20*var(--u)) 1fr;column-gap:calc(3*var(--u));padding:calc(1.7*var(--u)) 0;border-top:1px solid var(--rule);font-size:calc(2.95*var(--u));line-height:1.55}
 .t-list div:last-child{border-bottom:1px solid var(--rule)}
 .t-list b{font-weight:500}
-.t-list span{color:var(--sub);font-size:calc(2.5*var(--u))}
+.t-list span{color:var(--sub)}
 .t-list.stack div{grid-template-columns:1fr}
-.t-pull{font-size:calc(4.2*var(--u));line-height:1.45;font-weight:500}
+.t-pull{font-size:calc(4.4*var(--u));line-height:1.48;font-weight:500;padding-left:calc(3*var(--u));border-left:2px solid var(--acc)}
 .t-sw{display:grid;grid-template-columns:repeat(var(--n,3),1fr);gap:calc(2.4*var(--u))}
-.t-sw div{font-size:calc(2.4*var(--u));line-height:1.4}
-.t-sw i{display:block;height:calc(9*var(--u));margin-bottom:calc(1.2*var(--u));box-shadow:inset 0 0 0 1px rgba(17,17,17,.1)}
+.t-sw div{font-size:calc(2.6*var(--u));line-height:1.4}
+.t-sw i{display:block;height:calc(9*var(--u));margin-bottom:calc(1.2*var(--u));box-shadow:inset 0 0 0 1px var(--rule)}
 .t-sw span{display:block;color:var(--sub);font-family:"Newsreader",serif}
-.t-steps{display:grid;grid-template-columns:repeat(var(--n,3),1fr);column-gap:calc(5*var(--u))}
-.t-steps div{border-top:1px solid var(--ink);padding-top:calc(2*var(--u));font-size:calc(2.8*var(--u));line-height:1.6}
-.t-steps i{display:block;font-family:"Newsreader",serif;font-style:italic;color:var(--sub);font-size:calc(2.5*var(--u));margin-bottom:calc(1*var(--u))}
-.t-steps b{display:block;font-weight:500;font-size:calc(3.4*var(--u));margin-bottom:calc(1*var(--u))}
+.t-steps{display:grid;grid-template-columns:repeat(var(--n,3),1fr);column-gap:calc(4*var(--u))}
+.t-steps div{border-top:1px solid var(--ink);padding-top:calc(2*var(--u));font-size:calc(2.8*var(--u));line-height:1.55}
+.t-steps i{display:block;font-family:"Newsreader",serif;font-style:italic;color:var(--acc);font-size:calc(2.6*var(--u));margin-bottom:calc(1*var(--u))}
+.t-steps b{display:block;font-weight:500;font-size:calc(3.3*var(--u));margin-bottom:calc(.8*var(--u))}
+/* hand-off to the next sheet, pinned to the foot of the text column */
+.t-next{margin-top:auto;padding-top:calc(2.2*var(--u));border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:calc(.8*var(--u));font-size:calc(2.7*var(--u));line-height:1.5;color:var(--sub)}
+.t-next i{font-style:italic;font-family:"Newsreader",serif;color:var(--acc)}
+.t-next span{color:var(--ink)}
 
-/* figures : cropped to the cell, numbered caption printed underneath */
+/* figures : nothing cropped. A photo fills its own rectangle; a flat-background image sits on a
+   plate of its own edge colour (even mat all round). On a sheet of that colour the plate vanishes. */
 .fig{position:absolute;margin:0}
-.fig .ph{position:relative;overflow:hidden;background:#eef0f3}
+.fig .ph{position:relative;overflow:hidden}
+.fig .im{position:absolute;overflow:hidden}
 .fig img{position:absolute;display:block;max-width:none}
-.fig figcaption{margin-top:calc(1.5*var(--u));display:flex;gap:.8em;font-family:"Noto Serif KR",serif;font-size:calc(2.35*var(--u));line-height:1.45;color:var(--sub);word-break:keep-all}
+.fig.plate:not(.blend) .ph{box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}
+.fig figcaption{margin-top:calc(1.6*var(--u));display:flex;gap:.8em;font-family:"Noto Serif KR",serif;font-size:calc(2.6*var(--u));line-height:1.45;color:var(--sub);word-break:keep-all}
 .fig figcaption b{font-weight:400;font-family:"Newsreader",serif;color:var(--ink)}
 
 /* opener */
@@ -256,16 +268,21 @@ body.detail-open .detail{transform:translateX(0)}
 .o-sym{position:relative;flex:none;height:calc(16*var(--u));width:calc(24*var(--u))}
 .o-sym svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .o-sym rect{display:none}
-.o-ko{margin-top:calc(2.2*var(--u));color:var(--sub);font-size:calc(2.6*var(--u))}
-.o-intent{margin-top:calc(9*var(--u));font-weight:500;font-size:calc(5.6*var(--u));line-height:1.45;letter-spacing:-.01em}
-.o-brief{margin-top:auto;padding-top:calc(6*var(--u));display:flex;flex-direction:column}
-.o-brief div{display:grid;grid-template-columns:calc(17*var(--u)) 1fr;column-gap:calc(3*var(--u));padding:calc(2*var(--u)) 0;border-top:1px solid var(--rule);font-size:calc(2.8*var(--u));line-height:1.62}
-.o-brief b{font-weight:400;font-family:"Newsreader",serif;font-style:italic;color:var(--sub);font-size:calc(2.6*var(--u))}
-.o-info{margin-top:calc(5*var(--u));display:grid;grid-template-columns:calc(17*var(--u)) 1fr;column-gap:calc(3*var(--u));font-size:calc(2.35*var(--u));line-height:1.55}
-.o-info .k,.o-info .v{padding:calc(1.2*var(--u)) 0;border-top:1px solid var(--rule)}
+.sheet.dark .sym path.shape{stroke:var(--ink)}
+.o-ko{margin-top:calc(2.2*var(--u));color:var(--sub);font-size:calc(2.8*var(--u))}
+.o-intent{margin-top:calc(6*var(--u));font-weight:500;font-size:calc(5.8*var(--u));line-height:1.42;letter-spacing:-.015em}
+.o-brief{margin-top:auto;padding-top:calc(5*var(--u));display:flex;flex-direction:column}
+.o-brief div{display:grid;grid-template-columns:calc(15*var(--u)) 1fr;column-gap:calc(3*var(--u));padding:calc(1.8*var(--u)) 0;border-top:1px solid var(--rule);font-size:calc(2.9*var(--u));line-height:1.6}
+.o-brief b{font-weight:400;font-family:"Noto Serif KR",serif;color:var(--acc);font-size:calc(2.7*var(--u))}
+.o-info{display:grid;grid-template-columns:calc(15*var(--u)) 1fr;column-gap:calc(3*var(--u));font-size:calc(2.5*var(--u));line-height:1.5;border-top:1px solid var(--rule)}
+.o-info .k,.o-info .v{padding:calc(1.1*var(--u)) 0}
 .o-info .k{font-family:"Newsreader",serif;color:var(--sub)}
-.o-info .toc{display:flex;flex-wrap:wrap;column-gap:1.3em}
-.o-info .toc span i{font-style:normal;font-family:"Newsreader",serif;color:var(--sub);margin-right:.35em}
+/* story : the sheets that follow, each with its one-line point */
+.o-flow{margin-top:calc(4*var(--u));display:flex;flex-direction:column;border-top:1px solid var(--ink)}
+.o-flow div{display:grid;grid-template-columns:calc(6*var(--u)) calc(21*var(--u)) 1fr;column-gap:calc(1.5*var(--u));align-items:baseline;padding:calc(1.15*var(--u)) 0;border-bottom:1px solid var(--rule);font-size:calc(2.6*var(--u));line-height:1.4}
+.o-flow i{font-style:italic;font-family:"Newsreader",serif;color:var(--acc)}
+.o-flow b{font-weight:400;font-family:"Newsreader",serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.o-flow span{font-family:"Noto Serif KR",serif;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* end : next project */
 .d-end{display:flex;justify-content:center;padding:0 var(--m) calc(var(--mt)*2)}
@@ -396,6 +413,9 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
   .o-intent{font-size:19px;margin-top:16px}
   .o-brief{margin-top:14px}
   .o-info{margin-top:16px}
+  .o-flow div{font-size:12px;grid-template-columns:24px 92px 1fr}
+  .t-next{font-size:12px;margin-top:4px}
+  .t-title{margin:0}
   .s-art{height:auto!important;align-self:stretch;display:flex;flex-direction:column;gap:14px}
   .fig{position:static;width:auto!important}
   .fig .ph{height:auto!important}
@@ -818,12 +838,21 @@ const esc = s => String(s).replace(/"/g,'&quot;');
 /* sheet body geometry (mm) — 12mm margins, 7 columns, 5mm gutter */
 const SB = {W:273, H:176, G:5}; SB.C=(SB.W-SB.G*6)/7;
 const span = n => n*SB.C+(n-1)*SB.G;
-const GAP=3, CAP=7.5;                     // gap between images · room for a two-line caption
-// image size after trimming the padding baked into the file
+const GAP=4, CAP=8.5;                     // gap between images · room for a two-line caption
+/* how an image meets the paper (values measured by tools/sheet_images.py)
+   - photo            : bleeds to its own rectangle, nothing added
+   - flat background  : a slide or a product on a seamless backdrop — trimmed, then given an even
+                        mat of its own edge colour so nothing touches the cut. On a sheet of the
+                        same colour the mat disappears and the image sits straight on the paper. */
+const PLATE=.75, MAT=.075, DARK_L=.38;
+const rgb = h => [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const close = (a,b,d=20) => rgb(a).every((v,i)=>Math.abs(v-rgb(b)[i])<d);
 function meta(src, im){
-  const m = SHEET_IMG[src] || {a:1.5, t:[0,0,0,0]};
+  const m = SHEET_IMG[src] || {a:1.5, t:[0,0,0,0], c:'#ffffff', f:0, l:.6};
   const [t,r,b,l] = im.t || m.t;
-  return {t,r,b,l, a: m.a*(1-l-r)/(1-t-b)};
+  const a = m.a*(1-l-r)/(1-t-b);
+  const mat = im.mat ?? (m.f>=PLATE ? MAT : 0), p = mat*Math.min(a,1);   // mat in units of the image height
+  return {t,r,b,l, a:(a+2*p)/(1+2*p), ai:a, p, c:im.bg||m.c, lum:m.l};
 }
 /* justified rows (or columns) at each image's own proportion — nothing is cropped */
 function packArt(items, groups, mode, W, H){
@@ -847,18 +876,41 @@ function packArt(items, groups, mode, W, H){
     c.forEach(it=>{ cells.push({it,x,y,w,h:w/it.a}); y+=w/it.a+(it.cap?CAP:0)+GAP }); x+=w+GAP });
   return {cells, w:x-GAP, h};
 }
-function artHTML(art, dir, counter, alt, eager, W, H, align){
-  if(!art) return '';
+/* lay the images out, and read the sheet's tone from them : mostly dark pictures → a dark sheet */
+function artLayout(art, dir, W, H){
+  if(!art) return null;
   const items = art.i.map(im=>{ const src=im.s.startsWith('/')?im.s:IMG_ROOT+dir+'/'+im.s; return {...im, src, ...meta(src,im)} });
   const mode = art.cols ? 'cols' : 'rows', groups = art.cols || art.rows || [items.length];
-  const L = packArt(items, groups, mode, W, H);
-  const dx = align==='right' ? W-L.w : 0;
-  const mm = v => `calc(${v.toFixed(2)}*var(--u))`;
+  let L = packArt(items, groups, mode, W, H);
+  // the authored arrangement stays unless another split into rows shows the pictures much larger
+  // (e.g. two wide boards side by side leave half the sheet empty — stacked, they fill it)
+  // score = Σ√area : rewards larger pictures, but not one huge picture beside a row of thumbnails
+  const score = P => P.cells.reduce((s,c)=>s+Math.sqrt(c.w*c.h),0), n = items.length;
+  if(n>1 && n<=7 && !art.fixed){
+    let best=L, bestA=score(L)*1.12;
+    for(let mask=0; mask<1<<(n-1); mask++){
+      const g=[]; let run=1; for(let i=0;i<n-1;i++){ if(mask>>i&1){ g.push(run); run=1 } else run++ } g.push(run);
+      if(g.length>4 || g.some(k=>k>4)) continue;
+      const P=packArt(items, g, 'rows', W, H), A=score(P);
+      if(A>bestA){ best=P; bestA=A }
+    }
+    L=best;
+  }
+  let dk=0, all=0; L.cells.forEach(({it,w,h})=>{ all+=w*h; if(it.lum<DARK_L) dk+=w*h });
+  return {...L, W, dark: all>0 && dk/all>=.55};
+}
+function artHTML(L, counter, alt, eager, bg, align){
+  if(!L) return '';
+  const dx = align==='right' ? L.W-L.w : 0;
+  const mm = v => `calc(${v.toFixed(2)}*var(--u))`, pc = v => (v*100).toFixed(3)+'%';
   return `<div class="s-art" style="height:${mm(L.h)}">${L.cells.map(({it,x,y,w,h})=>{
     const num = it.cap ? ++counter.n : 0, sw=1-it.l-it.r, sh=1-it.t-it.b;
-    const img = `left:${(-it.l/sw*100).toFixed(3)}%;top:${(-it.t/sh*100).toFixed(3)}%;width:${(100/sw).toFixed(3)}%;height:${(100/sh).toFixed(3)}%`;
-    return `<figure class="fig" style="left:${mm(x+dx)};top:${mm(y)};width:${mm(w)}">
-      <div class="ph" style="height:${mm(h)};aspect-ratio:${it.a.toFixed(4)}"><img src="${enc(it.src)}" alt="${esc(alt+(it.cap?' — '+it.cap:''))}"${eager?'':' loading="lazy"'} style="${img}"></div>
+    const img = `left:${pc(-it.l/sw)};top:${pc(-it.t/sh)};width:${pc(1/sw)};height:${pc(1/sh)}`;
+    // mat : the picture's inset inside its plate, as a share of the plate's width / height
+    const ix = it.p/(it.ai+2*it.p), iy = it.p/(1+2*it.p);
+    const plate = it.p>0, blend = plate && close(it.c,bg);
+    return `<figure class="fig${plate?' plate':''}${blend?' blend':''}" style="left:${mm(x+dx)};top:${mm(y)};width:${mm(w)}">
+      <div class="ph" style="height:${mm(h)};aspect-ratio:${it.a.toFixed(4)}${plate?`;background:${blend?bg:it.c}`:''}"><div class="im" style="inset:${pc(iy)} ${pc(ix)}"><img src="${enc(it.src)}" alt="${esc(alt+(it.cap?' — '+it.cap:''))}"${eager?'':' loading="lazy"'} style="${img}"></div></div>
       ${it.cap?`<figcaption><b>${pad2(num)}</b><span>${it.cap}</span></figcaption>`:''}</figure>`;
   }).join('')}</div>`;
 }
@@ -871,19 +923,39 @@ function textHTML(pg){
   if(pg.sw) out.push(`<div class="t-sw" style="--n:${Math.min(pg.sw.length,5)}">${pg.sw.map(([c,n,h])=>`<div><i style="background:${c}"></i>${n}<span>${h}</span></div>`).join('')}</div>`);
   return out.join('');
 }
+/* height (mm) of the text band in the 'top' layout — title in cols 1–2, text in cols 3–6 (≈ 46 characters a line) */
+function textBand(pg){
+  const L = 3.3*1.74, body = pg.body||[];
+  let h = body.reduce((s,b)=>s+Math.ceil(b.length/44)*L, 0) + Math.max(0,body.length-1)*2.4;
+  if(pg.pull) h += Math.ceil(pg.pull.length/36)*4.4*1.48 + 2.4;
+  if(pg.list) h += pg.list.length*8.2 + 2.4;
+  if(pg.steps) h += 24; if(pg.sw) h += 19;
+  h += 14;                                        // hand-off line to the next sheet
+  return Math.max(30, h*1.1) + 6;                 // + row gap
+}
+/* one portfolio, fourteen voices : the frame (grid, type, header, captions) never changes —
+   each project only brings its paper, its dark and one accent (SHEETS[id].tone) */
+const TONE = {paper:'#ffffff', dark:'#121212', accent:'#111111', accentOnDark:'#ffffff'};
+function sheetTone(T, dark){
+  const bg = dark ? T.dark : T.paper;
+  return {bg, cls: dark?' dark':'', css:`--bg:${bg};--acc:${dark ? T.accentOnDark : T.accent}`};
+}
 function detailHTML(p, idx){
   const nx = PROJECTS[(idx+1)%COUNT], S = SHEETS[p.id], pages = S.pages, n = pages.length+1;
+  const T = {...TONE, ...S.tone};
   const alt = p.full.join(' '), counter = {n:0};
   // section flow : each section once, with the page it starts on
   const flow=[]; pages.forEach((pg,k)=>{ if(!flow.some(f=>f.sec===pg.sec)) flow.push({sec:pg.sec,pg:k+2,title:pg.title}) });
   const hd = (cur,k)=>`<div class="s-hd"><span class="h-proj"><i>${pad2(idx+1)}</i>${alt}</span>
-    <span class="h-flow">${flow.map(f=>f.sec===cur?`<b>${f.sec}</b>`:`<span>${f.sec}</span>`).join('')}</span>
+    <span class="h-flow">${flow.map(f=>f.sec===cur?`<b><i>${pad2(f.pg)}</i>${f.sec}</b>`:`<span><i>${pad2(f.pg)}</i>${f.sec}</span>`).join('')}</span>
     <span class="h-pg">김태희 · ${pad2(k+1)} / ${pad2(n)}</span></div>`;
-  const toc = flow.map(f=>`<span><i>${pad2(f.pg)}</i>${f.sec}</span>`).join('');
-  const info = [...p.info, ['Pages', `<span class="toc">${toc}</span>`]];
+  // the opener lists the story : every sheet's point, in reading order
+  const story = `<div class="o-flow">${flow.map(f=>`<div><i>${pad2(f.pg)}</i><b>${f.sec}</b><span>${f.title}</span></div>`).join('')}</div>`;
   const hs = [].concat(S.hero);
+  const HL = artLayout({rows:hs.map(()=>1), i:hs.map(x=>({...x,cap:''}))}, S.dir, span(4), SB.H);
+  const ot = sheetTone(T, S.openerBg ? S.openerBg==='dark' : HL.dark);
   const open = `
-    <section class="sheet lay-open">${hd('',0)}
+    <section class="sheet lay-open${ot.cls}" style="${ot.css}">${hd('',0)}
       <div class="s-body">
         <div class="s-text">
           <div class="o-top"><h1 class="o-title">${p.full.map(t=>`<span>${t}</span>`).join('')}</h1>
@@ -891,18 +963,31 @@ function detailHTML(p, idx){
           <div class="o-ko">${p.nameKo} · ${p.field}</div>
           <p class="o-intent">${S.intent}</p>
           <div class="o-brief">${S.brief.map(([k,v])=>`<div><b>${k}</b><span>${v}</span></div>`).join('')}</div>
-          <div class="o-info">${info.map(([k,v])=>`<div class="k">${k}</div><div class="v">${v}</div>`).join('')}</div>
+          <div class="o-info">${p.info.map(([k,v])=>`<div class="k">${k}</div><div class="v">${v}</div>`).join('')}</div>
+          ${story}
         </div>
-        ${artHTML({rows:hs.map(()=>1), i:hs.map(x=>({...x,cap:''}))}, S.dir, {n:0}, alt, true, span(4), SB.H, 'right')}
+        ${artHTML(HL, {n:0}, alt, true, ot.bg, 'right')}
       </div>
     </section>`;
   const body = pages.map((pg,k)=>{
-    const lay = pg.lay||'side';
+    // side : text in columns 1–2, pictures in 3–7.  top : a text band, pictures across all 7 columns.
+    // Unless the page says which, take the one that shows the pictures clearly larger.
+    let lay = pg.lay, L = artLayout(pg.art, S.dir, span(5), SB.H);
+    if(!lay && L){
+      const T2 = artLayout(pg.art, S.dir, SB.W, SB.H-textBand(pg)), a = P => P.cells.reduce((s,c)=>s+c.w*c.h,0);
+      lay = a(T2) > a(L)*1.3 ? 'top' : 'side'; if(lay==='top') L = T2;
+    }
+    lay = lay||'side';
+    const t = sheetTone(T, pg.bg ? pg.bg==='dark' : !!(L&&L.dark));
+    const nf = pages[k+1];
+    // every sheet ends by pointing at the next one, so the order reads as an argument
+    const next = nf ? `<div class="t-next"><i>${pad2(k+3)} ${nf.sec} →</i><span>${nf.title}</span></div>`
+                    : `<div class="t-next"><i>Next project →</i><span>${nx.full.join(' ')}</span></div>`;
     const head = `<div class="t-head"><div class="t-num"><i>${pad2(k+2)}</i>${pg.sec}</div><h2 class="t-title">${pg.title}</h2></div>`;
-    const txt = lay==='top' ? `${head}<div class="t-col">${textHTML(pg)}</div>` : head+textHTML(pg);
+    const txt = lay==='top' ? `${head}<div class="t-col">${textHTML(pg)}${next}</div>` : head+textHTML(pg)+next;
     return `
-    <section class="sheet lay-${lay}">${hd(pg.sec,k+1)}
-      <div class="s-body"><div class="s-text">${txt}</div>${artHTML(pg.art, S.dir, counter, alt, k<1, span(5), SB.H)}</div>
+    <section class="sheet lay-${lay}${t.cls}" style="${t.css}">${hd(pg.sec,k+1)}
+      <div class="s-body"><div class="s-text">${txt}</div>${artHTML(L, counter, alt, k<1, t.bg)}</div>
     </section>`;
   }).join('');
   return `

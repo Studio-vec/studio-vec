@@ -3,6 +3,8 @@
    Each project: an opener (intent → brief) + section sheets.
 
    dir    : image folder under /assets/img/projects/
+   tone   : { paper, dark, accent, accentOnDark } — the project's own colours on the shared frame.
+            A sheet turns dark by itself when most of its pictures are dark (page bg:'dark'|'light' to force).
    intent : one sentence — why this project exists
    brief  : [label, text] rows on the opener (문제 / 해결 / 결과물 …)
    hero   : opener image
@@ -12,12 +14,13 @@
      lay   : 'side' (default, text col 1–2 · images col 3–7) | 'top' (text band above images)
      pull · body[] · list[[k,v]] · steps[[n,title,text]] · sw[[hex,name,note]]
      art   : { g: grid areas ('a b/a c'), c: columns, r: rows, i: images in letter order }
-             image : { s: file, cap, p: object-position, z: zoom, fit: 'contain', bg }
+             image : { s: file, cap, t: trim [t,r,b,l], mat: plate inset (0 = none), bg: plate colour }
    ========================================================= */
 const SHEETS = {
 
 kalido:{
   dir:'p01-kaleido',
+  tone:{dark:'#000410', accent:'#007bff', accentOnDark:'#ff6f00'},
   intent:'색을 구분하기 어려운 사람도 같은 벽을 오를 수 있게.',
   brief:[
     ['문제','클라이밍은 홀드 색으로 코스와 난이도를 나눈다. 어린이·초보자·색약자에게는 이 색 구분이 보이지 않는 장벽이 된다.'],
@@ -68,6 +71,7 @@ kalido:{
 
 voyeur:{
   dir:'p02-voyeur',
+  tone:{dark:'#1c1c1c', accent:'#0000fe', accentOnDark:'#6b6bff'},
   intent:'보는 사람도 불편해지는 전시.',
   brief:[
     ['질문','SNS, 관찰 예능, 브이로그 — 타인의 일상을 지켜보는 일이 일상이 됐다. 그 과잉된 시선의 부작용을 관객이 직접 겪게 할 수 없을까.'],
@@ -106,6 +110,7 @@ voyeur:{
 
 starry:{
   dir:'p03-starry',
+  tone:{dark:'#0b0b16', accent:'#5a4cf0', accentOnDark:'#a79eff'},
   intent:'판단하지 않고, 남이 본 나를 별로 쌓는다.',
   brief:[
     ['문제','“나를 알고 싶지만, 질문 몇 개로 정의되는 건 불편해.” 성격 테스트는 사람을 하나의 유형과 점수로 고정하고, 타인의 시선과 변화는 담지 못한다.'],
@@ -145,6 +150,7 @@ starry:{
 
 flant:{
   dir:'p04-flant',
+  tone:{dark:'#0c0d0b', accent:'#2f7a35', accentOnDark:'#cfe97f'},
   intent:'식물마다 다른 화분을, 3D 프린팅으로.',
   brief:[
     ['대상','식물 애호가, ‘식집사’. 인테리어에 어울리면서 식물의 생장까지 돕는 화분을 원하는 사람들.'],
@@ -194,6 +200,7 @@ flant:{
 
 misfortune:{
   dir:'p05-unfortune',
+  tone:{paper:'#999999', dark:'#151318', accent:'#4a12a8', accentOnDark:'#b98cff'},   // the campaign's own grey : the web slides' grey padding melts into the sheet
   intent:'폭력은 대물림되는가?',
   brief:[
     ['질문','가정폭력은 세대를 건너 전이된다. 그 고리를 끊기 위해 무엇을 말해야 할까.'],
@@ -231,6 +238,7 @@ misfortune:{
 
 yomyom:{
   dir:'p06-yomyom',
+  tone:{dark:'#4c6971', accent:'#4a4cff', accentOnDark:'#ffffff'},
   intent:'업무 메신저 옆에, 부담 없이 농담하는 작은 창 하나.',
   brief:[
     ['문제','회사 톡과 친구 톡이 섞여 답장을 놓치고, 기본 메신저로는 가벼운 농담을 보내기 어렵다. 재택근무 중엔 누군가와 같이 있는 느낌도 없다.'],
@@ -270,6 +278,7 @@ yomyom:{
 
 huihui:{
   dir:'p14-huihui',
+  tone:{paper:'#f6f0e5', dark:'#1f2b48', accent:'#d9405a', accentOnDark:'#c9a24c'},
   intent:'다음 여행지를 고르는 이유를 만드는 서비스.',
   brief:[
     ['문제','여행 코스는 화면에서 끝나고 출발로 이어지지 않는다. 소도시는 이름만으로 갈 이유가 약하고, 기념품은 지역을 담지 못한다.'],
@@ -278,7 +287,7 @@ huihui:{
   ],
   hero:{s:'prod/box-hero.jpg'},
   pages:[
-    {sec:'Concept', title:'객주의 공간 요소를 화면 구조에 대응', lay:'side',
+    {sec:'Concept', title:'객주의 공간 요소를 화면 구조에 대응',
      body:['조선의 여관 ‘객주’를 모티프로 삼았다. 처마와 풍경, 방 열쇠, 처마 아래 열쇠걸이, 방명록, 창호지 문을 서비스의 화면 요소에 하나씩 대응시켰다.'],
      list:[['처마와 풍경','첫 화면 · 오늘의 코스'],['방 열쇠','코스'],['처마 아래 열쇠걸이','갤러리'],['방명록','로그인 · 기록'],['창호지 문','404']],
      art:{rows:[2], i:[
@@ -332,6 +341,7 @@ huihui:{
 
 circa:{
   dir:'p07-circa',
+  tone:{dark:'#141414', accent:'#274bff', accentOnDark:'#d0ff00'},
   intent:'하루에 온전히 집중하고 싶은데, 방해가 너무 많다.',
   brief:[
     ['문제','일정은 흩어져 있고, 알림과 과시성 게시물, 가짜 뉴스가 집중을 끊는다.'],
@@ -365,6 +375,7 @@ circa:{
 
 sipsi:{
   dir:'p08-sipsi',
+  tone:{paper:'#fdfdf8', accent:'#4f9640'},
   intent:'작은 화면에서도 알아보는, 비전공자도 계속 쓸 수 있는 캐릭터.',
   brief:[
     ['문제','청년 식사 지원 봉사단체 십시일밥의 기존 손그림 캐릭터는 SNS 같은 작은 화면에서 식별이 어려웠다.'],
@@ -401,6 +412,7 @@ sipsi:{
 
 puffnote:{
   dir:'p09-puffnote',
+  tone:{paper:'#f3ede3', dark:'#13203a', accent:'#e4532d', accentOnDark:'#ff6a3d'},
   intent:'술은 A면, 안주는 B면.',
   brief:[
     ['문제','젤리는 달고 안주는 기름지다. 그 사이의 짠맛 젤리는 카테고리도, 설득할 시각 언어도 없었다. 음식 사진은 오히려 ‘간식’으로 보이게 했다.'],
@@ -449,6 +461,7 @@ puffnote:{
 
 wkf:{
   dir:'p13-wkf2026',
+  tone:{dark:'#17120e', accent:'#d82d28', accentOnDark:'#ff7a2f'},
   intent:'불과 지능을 하나의 형태로.',
   brief:[
     ['주제','The Promethean Moment — 인간에게 불을 건넨 프로메테우스의 신화를 AI 시대에 빗댄 제27회 세계지식포럼의 주제.'],
@@ -502,6 +515,7 @@ wkf:{
 
 hardcopy:{
   dir:'p10-hardcopy',
+  tone:{dark:'#0e0e0f', accent:'#d52b1e', accentOnDark:'#ff3b2a'},
   intent:'전원도 광원도 없이, 손으로 읽는 출판물.',
   brief:[
     ['설정','전력망이 끊긴 도시. 화면은 꺼졌고, 읽기는 전력에 묶여 있다.'],
@@ -536,6 +550,7 @@ hardcopy:{
 
 gimpick:{
   dir:'p11-gimpick',
+  tone:{paper:'#faf7f2', accent:'#e8392c'},
   intent:'한 줄 말고, 낱개로.',
   brief:[
     ['문제','김밥 한 줄은 혼자 먹기엔 많고, 맛은 하나로 고정된다. 여러 맛을 조금씩 먹고 싶은 도심 소비자에게 맞지 않는 단위다.'],
@@ -577,6 +592,7 @@ gimpick:{
 
 seolred:{
   dir:'p12-seolred',
+  tone:{paper:'#f5eee2', dark:'#1c1c26', accent:'#e8327c', accentOnDark:'#ff4f93'},
   intent:'사과를 적게 파는 대신, 사과를 즐기는 방식을 판다.',
   brief:[
     ['문제','사과는 10~15개 박스 단위로 팔린다. 1~2인 가구는 다 먹기 전에 무르고, 결국 사과를 사지 않게 된다.'],
