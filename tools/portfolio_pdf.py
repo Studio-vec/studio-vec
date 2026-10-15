@@ -52,10 +52,9 @@ def main():
                         f'--print-to-pdf={raw}', f'{base}/covers/?all'], check=True)
         doc = fitz.open(raw)
         # Chrome exits 0 even when the page failed (server down → error page) : keep the old PDF then
-        if doc.page_count < 2 or 'Selected Works' not in doc[0].get_text():
+        if 'Selected Works' not in doc[0].get_text():
             doc.close()
-            sys.exit(f'covers/?all did not render ({doc.page_count} page(s)) — is the site served at {base}? '
-                     f'{OUT.name} left unchanged.')
+            sys.exit(f'covers/?all did not render — is the site served at {base}? {OUT.name} left unchanged.')
         shrink(doc)
         mid = Path(tmp) / 'mid.pdf'
         doc.save(mid, garbage=4, deflate=True)

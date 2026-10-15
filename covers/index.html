@@ -1110,7 +1110,7 @@ function detailHTML(p, idx, all=false){
           <div class="o-ko">${p.nameKo} · ${p.field}</div>
           <p class="o-intent">${S.intent}</p>
           <div class="o-brief">${S.brief.map(([k,v])=>`<div><b>${k}</b><span>${v}</span></div>`).join('')}</div>
-          <div class="o-info">${p.info.map(([k,v])=>`<div class="k">${k}</div><div class="v">${v}</div>`).join('')}</div>
+          <div class="o-info">${kvHTML(p.info)}</div>
           ${story}
         </div>
         ${artHTML(HL, {n:0}, alt, true, ot.bg, 'right')}
@@ -1161,6 +1161,11 @@ async function printSheets(){
 }
 function drawDetailSyms(){ dSyms.forEach(([r,id])=>drawSym(r,id,id,0)) }
 const CONTACT=[['Phone','010-3294-3077'],['E-mail','taehuikim0409@gmail.com']];
+const kvHTML = rows => rows.map(([k,v])=>`<div class="k">${k}</div><div class="v">${v}</div>`).join('');
+// cover and closing sheet share one frame : white paper, the same running head
+const pfSheet = (cls, flow, body) => `<div class="sheets"><section class="sheet pf-cover${cls}" style="--bg:#fff;--acc:#111">
+      <div class="s-hd"><span class="h-proj">Kim Taehui</span><span class="h-flow">${flow}</span><span class="h-pg">2022 — 2026</span></div>${body}
+    </section></div>`;
 /* ?all : every project in one document, for printing the whole portfolio to PDF (assets/portfolio.pdf) */
 function coverHTML(){
   let pg=2;
@@ -1171,22 +1176,17 @@ function coverHTML(){
     ['Experience','매일경제신문사 지식부 디자이너 (2025.07 —)'],
     ['Tools','Illustrator · Photoshop · Figma · After Effects'],
     ...CONTACT];
-  return `<div class="sheets"><section class="sheet pf-cover" style="--bg:#fff;--acc:#111">
-      <div class="s-hd"><span class="h-proj">Kim Taehui</span><span class="h-flow">Selected Works · ${pad2(COUNT)} Projects</span><span class="h-pg">2022 — 2026</span></div>
+  return pfSheet('', `Selected Works · ${pad2(COUNT)} Projects`, `
       <h1 class="c-title">Portfolio</h1>
       <div class="c-name">김태희<i>Kim Taehui</i></div>
-      <div class="c-info">${info.map(([k,v])=>`<div class="k">${k}</div><div class="v">${v}</div>`).join('')}</div>
-      <div class="c-works" style="grid-template-rows:repeat(${Math.ceil(COUNT/2)},auto)">${works}</div>
-    </section></div>`;
+      <div class="c-info">${kvHTML(info)}</div>
+      <div class="c-works" style="grid-template-rows:repeat(${Math.ceil(COUNT/2)},auto)">${works}</div>`);
 }
 function closingHTML(){
-  const info=[['Name','김태희 · Kim Taehui'], ...CONTACT];
-  return `<div class="sheets"><section class="sheet pf-cover pf-end" style="--bg:#fff;--acc:#111">
-      <div class="s-hd"><span class="h-proj">Kim Taehui</span><span class="h-flow">Contact</span><span class="h-pg">2022 — 2026</span></div>
+  return pfSheet(' pf-end', 'Contact', `
       <h1 class="c-title">감사합니다.</h1>
       <p class="c-msg">믿고 맡겨 주시면, 가장 알맞은 결과물로 답하겠습니다.</p>
-      <div class="c-info">${info.map(([k,v])=>`<div class="k">${k}</div><div class="v">${v}</div>`).join('')}</div>
-    </section></div>`;
+      <div class="c-info">${kvHTML([['Name','김태희 · Kim Taehui'], ...CONTACT])}</div>`);
 }
 function fillAll(){
   detail.innerHTML=coverHTML()+PROJECTS.map((p,i)=>detailHTML(p,i,true)).join('')+closingHTML();
