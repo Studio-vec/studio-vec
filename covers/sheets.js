@@ -502,7 +502,7 @@ puffnote:{
      art:{look:'mosaic', rows:[2,1], i:[
        {s:'v2-guide-cards.webp', cap:'페어링 카드'},
        {s:'v2-coasters.webp', cap:'코스터'},
-       {s:'v2-popup.webp', cap:'플래그십 팝업'}]}}
+       {s:'v2-popup-2a.webp', cap:'플래그십 팝업', t:[0,0,0,0]}]}}
   ]
 },
 
