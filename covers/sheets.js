@@ -103,8 +103,9 @@ voyeur:{
 
     {sec:'Print', title:'가려진 채로 손에 쥐는 것들',
      body:['티켓과 리플렛, STAFF·GUEST·PRESS 출입증, 도록과 패키지. 관객이 손에 쥐는 인쇄물마다 같은 가로줄이 글자를 가린다.'],
-     art:{look:'mosaic', rows:[2,2], fill:true, i:[
-       {s:'bh-11.webp', cap:'티켓과 리플렛'},
+     art:{look:'mosaic', rows:[2,3], i:[
+       {s:'cut/bh-11-1.jpg', cap:'티켓', t:[0,0,0,0]},
+       {s:'cut/bh-11-2.jpg', cap:'리플렛', t:[0,0,0,0]},
        {s:'bh-12.jpg', cap:'출입증'},
        {s:'bh-13.jpg', cap:'도록 내지'},
        {s:'bh-14.jpg', cap:'도록 패키지'}]}},
@@ -112,9 +113,11 @@ voyeur:{
     {sec:'Goods', title:'블라인드를 쓴 눈',
      body:['테이프와 비닐백에도 가로줄을 이었다. 마지막은 셔터 선글라스 — 블라인드를 쓴 눈 그 자체다.'],
      list:[['Team','2인 / 기여도 75%'],['Role','그래픽 개발 30% · 모션 100% · 어플리케이션 70%']],
-     art:{look:'mosaic', rows:[2,1], fill:true, fixed:true, i:[
-       {s:'bh-15.jpg', cap:'테이프'},
-       {s:'bh-16.jpg', cap:'비닐백'},
+     art:{look:'mosaic', rows:[4,1], fixed:true, i:[
+       {s:'cut/bh-15-1.jpg', cap:'테이프', t:[0,0,0,0]},
+       {s:'cut/bh-15-2.jpg', cap:'테이프 — 흩어진 조각', t:[0,0,0,0]},
+       {s:'cut/bh-16-1.jpg', cap:'비닐백', t:[0,0,0,0]},
+       {s:'cut/bh-16-2.jpg', cap:'비닐백 정면', t:[0,0,0,0]},
        {s:'bh-18.jpg', cap:'셔터 선글라스'}]}}
   ]
 },
@@ -173,18 +176,15 @@ flant:{
     {sec:'Brand', title:'자연이 설계한 구조를 닮은 디자인',
      body:['FLANT는 모듈형 디자인과 정교한 프린팅으로 어떤 인테리어에도 어울리면서, 구조적·기능적 설계로 식물의 건강한 생장을 돕는다.','이미지 소스는 AI로 만들고 Illustrator로 다듬어, 모바일부터 대형 인쇄물까지 확장 가능한 그래픽 시스템을 구축했다.'],
      list:[['Nature-Engineered','자연을 닮은 구조 설계'],['Modular','지속가능성 · 미감 · 유연성'],['Eco-Conscious','정밀성 · 저폐기 · 미니멀리즘']],
-     art:{look:'mosaic', rows:[2,2,2], fixed:true, i:[
+     art:{look:'mosaic', rows:[1,2], fixed:true, i:[
        {s:'img-02.webp', cap:'키비주얼'},
        {s:'bh-14.jpg', cap:'식물을 다루는 손'},
-       {s:'img-16.webp', cap:'커스텀 화분 앱'},
-       {s:'img-07.jpeg', cap:'뿌리'},
-       {s:'img-09.jpeg', cap:'식물 조직'},
-       {s:'img-08.jpeg', cap:'분갈이'}]}},
+       {s:'img-16.webp', cap:'커스텀 화분 앱'}]}},
 
     {sec:'Logo', title:'쓰이는 크기에 따라 늘고 줄어드는 로고',
      body:['화분 단면을 닮은 L을 중심으로 대표형, 압축형, 심볼 단독형, 최소형까지 다섯 가지 형태를 만들었다. 앱 아이콘부터 건물 현수막까지 같은 규칙으로 쓴다.'],
      lay:'top', art:{look:'grid', cols:[1,2], fill:true, i:[
-       {s:'img-04.jpg', cap:'가변 로고 시스템', t:[0,0,0,0], mat:.001, bg:'#ffffff'},
+       {s:'img-04.jpg', cap:'가변 로고 시스템', t:[.025,0,.085,0], mat:.001, bg:'#ffffff'},
        {s:'img-15.webp', cap:'현수막'},
        {s:'img-17.webp', cap:'카드와 포스터'}]}},
 
@@ -224,7 +224,7 @@ misfortune:{
   pages:[
     {sec:'Key Visual', title:'하나의 질문을 모든 매체의 중심에',
      body:['“폭력은 대물림되는가?” 이 질문을 포스터와 무대 스크린, 현수막에 그대로 세웠다.','짙은 보라 질감의 원과 그것이 기울어진 타원, 흰 파열 형태를 반복 요소로 삼아 매체가 바뀌어도 같은 캠페인으로 읽히게 했다.'],
-     art:{look:'grid', cols:[1,2], i:[
+     art:{look:'mosaic', gap:2, cols:[1,2], i:[
        {s:'img-02.jpg', cap:'메인 포스터'},
        {s:'bh-01.jpg', cap:'컨퍼런스 무대'},
        {s:'bh-03.jpg', cap:'건물 현수막'}]}},
@@ -232,27 +232,27 @@ misfortune:{
     {sec:'Campaign', title:'거리에서 마주치는 질문',
      body:['쇼윈도와 건물 외벽, 스탠드 배너와 대형 전광판까지 같은 형태를 크기만 바꿔 이었다.'],
      list:[['Team','2인 / 기여도 50%']],
-     art:{look:'mosaic', rows:[2,2], fill:true, i:[
+     art:{look:'mosaic', gap:2, rows:[2,2], fill:true, i:[
        {s:'bh-04.jpg', cap:'쇼윈도'},
        {s:'cut/bh-05-2.jpg', cap:'스탠드 배너'},
        {s:'bh-09.jpg', cap:'건물 외벽'},
-       {s:'bh-08.jpg', cap:'옥외 전광판'}]}},
+       {s:'bh-08.jpg', cap:'옥외 전광판', t:[.045,.51,.047,.12]}]}},
 
     {sec:'Editorial', title:'엽서와 설문 책자에 집중한 편집',
      body:['편집 디자인을 주로 맡았다. 설문 책자와 엽서, 리플렛을 같은 그래픽 언어로 정리했다. 원과 타원, 파열 형태가 지면마다 다른 크기로 반복된다.'],
-     art:{look:'mosaic', rows:[2,2], fill:true, i:[
-       {s:'bh-07.jpg', cap:'책자 내지'},
+     bg:'light', art:{look:'mosaic', gap:2, cols:[2,2], fixed:true, i:[
+       {s:'hi/flyers-1.jpg', cap:'책자 내지', t:[0,0,0,0]},
+       {s:'hi/flyers-2.jpg', cap:'설문 책자', t:[0,0,0,0]},
        {s:'cut/bh-02-1.jpg', cap:'엽서'},
-       {s:'bh-12.jpg', cap:'설문 책자'},
-       {s:'cut/bh-02-2.jpg', cap:'엽서를 읽는 장면'}]}},
+       {s:'hi/survey.jpg', cap:'엽서를 읽는 장면', t:[0,0,0,0]}]}},
 
     {sec:'Collateral', title:'우편에서 쇼핑백, 출입증까지',
      body:['컨퍼런스 초대 우편과 쇼핑백, 스태프 출입증으로 같은 언어를 넓혔다. 손에 들고 다니는 물건에서도 질문이 이어지게 했다.'],
-     art:{look:'mosaic', rows:[2,2], fill:true, i:[
-       {s:'cut/bh-10-1.jpg', cap:'초대 우편'},
-       {s:'cut/bh-10-2.jpg', cap:'쇼핑백'},
-       {s:'cut/bh-13-1.jpg', cap:'엽서 세트'},
-       {s:'bh-06.jpg', cap:'출입증'}]}}
+     bg:'light', art:{look:'mosaic', gap:2, cols:[2,2], fixed:true, i:[
+       {s:'hi/mailbox.jpg', cap:'초대 우편', t:[0,0,0,0]},
+       {s:'hi/flyers-4.jpg', cap:'엽서 세트', t:[0,0,0,0]},
+       {s:'hi/paper-bag.jpg', cap:'쇼핑백', t:[0,0,0,0]},
+       {s:'hi/name-tag.jpg', cap:'출입증', t:[0,0,0,0]}]}}
   ]
 },
 
@@ -270,7 +270,7 @@ yomyom:{
     {sec:'Service', title:'카톡은 안 읽씹해도 친칠라 똥은 못 참지!',
      body:['사용자 불편에서 출발했다. 단둘이 쓰는 PC 채팅, 부담 없이 막 보내는 채팅, 누군가와 같이 있는 느낌.','서비스 이름과 픽셀 그래픽은 오래된 윈도우 창 문법에서 가져왔다. 기획부터 Claude Code·Supabase·Vercel을 이용한 개발까지 혼자 진행했다.'],
      list:[['바탕화면 채팅','창 하나로 바로 대화'],['업무일지','대화 중 바로 기록'],['업무 분리','농담과 일을 나눠 보관']],
-     art:{look:'grid', rows:[3], i:[
+     art:{look:'grid', gap:10, rows:[3], i:[
        {s:'img-03.png', cap:'출발점 — 친칠라 똥이 도착했어요', bg:'#ffffff'},
        {s:'img-04.png', cap:'사용자들의 불편', bg:'#ffffff'},
        {s:'img-08.png', cap:'요금제'}]}},
@@ -335,7 +335,7 @@ huihui:{
      body:['코스마다 그 지역의 장면을 손잡이에 새긴 열쇠 18종을 만들었다. 네 가지는 고정하고 손잡이 장면 하나만 바꿔, 열쇠가 늘어도 한 벌로 보이게 했다.'],
      list:[['고정 01','세로 정렬 · 흰 바탕 · 사이드 라이트'],['고정 02','앤티크 실버 · 이음새 장식'],['고정 03','길고 곧은 몸통'],['고정 04','빗살 비트'],['가변','손잡이에 새길 그 지역의 장면']],
      art:{look:'grid', rows:[1,1], fixed:true, i:[
-       {s:'key-yeosu.webp', cap:'여수 — 밤바다와 기타'},
+       {s:'key-secret.webp', cap:'비밀 코스 — 비밀코드로만 열리는 열쇠'},
        {s:'cover-keys.jpg', cap:'코스별 열쇠 18종'}]}},
 
     {sec:'Web', title:'같은 열쇠가 화면마다 다른 역할을 맡는다',

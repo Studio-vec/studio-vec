@@ -982,7 +982,8 @@ function artLayout(art, dir, W, H){
   const look = art.look || (items.length>1 && items.every(it=>!it.p) ? 'mosaic' : 'grid');
   // in a mosaic the pictures touch : no mats, each tile is the picture itself
   if(look==='mosaic') items.forEach(it=>{ it.a=it.ai; it.p=0 });
-  const o = LOOK[look], Hx = look==='mosaic' && items.some(it=>it.cap) ? H-MCAP : H;
+  // gap (mm) : a page can open a mosaic slightly, or close a grid's gutter
+  const o = art.gap!=null ? {...LOOK[look], gap:art.gap} : LOOK[look], Hx = look==='mosaic' && items.some(it=>it.cap) ? H-MCAP : H;
   const mode = art.cols ? 'cols' : 'rows', groups = art.cols || art.rows || [items.length], n = items.length;
   const score = P => P.cells.reduce((s,c)=>s+Math.sqrt(c.w*c.h),0);
   // fill : the same choice, but a split is marked down by how much filling would crop its pictures
