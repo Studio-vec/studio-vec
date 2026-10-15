@@ -344,10 +344,10 @@ huihui:{
      body:['한 화면에 주목점 하나, 클릭 깊이 5 이하를 원칙으로 IA를 3뎁스 안에 정리했다. 기획·디자인·개발을 혼자 맡아 travel-huihui.com으로 국내 17개 코스를 운영 중이다.'],
      list:[['Depth 0','홈 — 오늘의 열쇠 · 코스 카드'],['Depth 1','코스 · 갤러리 · 짐 싸기 · 방명록'],['Depth 2','여행 완료 → 갤러리에 열쇠가 걸린다'],['Depth 3','로그인 — 팁과 여행 완료 때만']],
      art:{look:'grid', rows:[4], i:[
-       {s:'screen-m-home.webp', cap:'홈 — 오늘 떠날 지역'},
-       {s:'screen-m-trip.webp', cap:'코스 — 시간대별 일정'},
-       {s:'screen-m-gallery.webp', cap:'갤러리 — 다녀온 열쇠'},
-       {s:'screen-m-game.webp', cap:'짐 싸기'}]}},
+       {s:'screen-m-home-frame.webp', cap:'홈 — 오늘 떠날 지역', t:[0,0,0,0], mat:0},
+       {s:'screen-m-trip-frame.webp', cap:'코스 — 시간대별 일정', t:[0,0,0,0], mat:0},
+       {s:'screen-m-gallery-frame.webp', cap:'갤러리 — 다녀온 열쇠', t:[0,0,0,0], mat:0},
+       {s:'screen-m-game-frame.webp', cap:'짐 싸기', t:[0,0,0,0], mat:0}]}},
 
     {sec:'Offline', title:'그 지역에 가야만 받을 수 있는 열쇠',
      body:['문제 정의에서 바로 오프라인 확장 가설을 세웠다. 열쇠함은 현장에만 있고, 작은 도시에도 그곳만의 열쇠가 생기며, 모을수록 한 세트가 완성된다.'],
@@ -533,11 +533,12 @@ wkf:{
 
     {sec:'Booklet', title:'표지는 기둥, 내지는 흰 바탕에 붉은 제목',
      body:['국·영문 소책자. 표지는 기둥과 세로 제목으로 채우고, 내지는 흰 바탕에 붉은 제목만 남겼다. 인사말, 포럼 소개, 올해의 주제와 연사 소개가 같은 규칙으로 이어진다.'],
-     art:{look:'mosaic', rows:[1,3], fixed:true, i:[
+     art:{look:'mosaic', rows:[1,4], fixed:true, i:[
        {s:'mock-booklet.jpg', cap:'소책자 실물', t:[0,0,0,0]},
-       {s:'booklet-cover.jpg', cap:'표지 펼침'},
-       {s:'booklet-04.jpg', cap:'내지 — 올해의 주제'},
-       {s:'booklet-06.jpg', cap:'내지 — 연사 소개'}]}},
+       {s:'cut/booklet-cover-front.jpg', cap:'앞표지', t:[0,0,0,0]},
+       {s:'cut/booklet-cover-back.jpg', cap:'뒤표지', t:[0,0,0,0]},
+       {s:'booklet-04.jpg', cap:'내지 — 올해의 주제', t:[0,0,0,0]},
+       {s:'booklet-06.jpg', cap:'내지 — 연사 소개', t:[0,0,0,0]}]}},
 
     {sec:'Leaflet', title:'3단으로 접는 리플렛',
      body:['리플렛은 3단으로 접어 표지, 역대 주요 연사, 숫자로 보는 포럼을 한 장에 담았다. 소책자와 같은 기둥과 붉은 제목을 쓴다.'],
