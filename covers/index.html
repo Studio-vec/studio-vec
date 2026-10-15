@@ -329,6 +329,8 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
 .cv dt{font-family:"Newsreader",serif;font-size:calc(var(--label)*.92);color:var(--sub);white-space:nowrap;line-height:1.5}
 .cv dd{margin:0;font-family:"Noto Serif KR",serif;font-size:calc(var(--label)*.96);line-height:1.5}
 .cv dd small{display:block;font-size:.92em;color:var(--sub)}
+.cv dl + h3{margin-top:calc(var(--label)*2.2)}
+.cv ul{margin:0;padding:0;list-style:none;display:grid;row-gap:calc(var(--label)*.5);font-family:"Noto Serif KR",serif;font-size:calc(var(--label)*.96);line-height:1.5}
 
 /* two-choice CTA — download (primary) stacked above a motion-driven scroll cue */
 .cta-zone{grid-column:1/8;grid-row:2;align-self:stretch;display:flex;flex-direction:column;gap:calc(var(--g)*.7)}
@@ -341,6 +343,7 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
   text-decoration:none;cursor:pointer;transition:border-color .3s var(--ease);
 }
 .cta-download:hover{border-color:var(--ink)}
+@media (max-height:720px){.cta-download{padding-top:clamp(20px,4vh,36px);padding-bottom:clamp(20px,4vh,36px)}}  /* short screens: room for the CV */
 .cta-download::before{content:"";position:absolute;inset:0;background:var(--yellow);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease);z-index:-1}
 .cta-download:hover::before{transform:scaleY(1)}
 .cta-num{font-size:var(--label);color:var(--sub);letter-spacing:.08em}
@@ -390,7 +393,7 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
 
 @media (max-width:760px){
   .cta-zone{grid-column:1/8;grid-row:2}
-  .cta-download{min-height:150px}
+  .cta-download{min-height:120px;padding:18px 20px}
   .cv{row-gap:calc(var(--mt)*.8)}
   .cv-edu,.cv-exp,.cv-awd{grid-column:1/8}
   .cv dd small{display:none}
@@ -506,15 +509,21 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
           <div class="cv-col cv-edu">
             <h3>Education</h3>
             <dl>
-              <dt>2020 — 2026</dt><dd>세종대학교<small>디자인이노베이션학과</small></dd>
-              <dt>2022 — 2023</dt><dd>헤이그 응용과학대학교<small>네덜란드 교환학생 · 앱 UI/UX</small></dd>
+              <dt>2020 — 2026</dt><dd>세종대학교 졸업<small>디자인이노베이션학과 시각디자인전공</small></dd>
+              <dt>2022 — 2023</dt><dd>헤이그 응용과학대학교 (교환학생)<small>네덜란드 · 앱 UI/UX 클라이언트 프로젝트</small></dd>
             </dl>
+            <h3>Exhibition</h3>
+            <ul>
+              <li>SIDO전 — MOV</li>
+              <li>디자인이노베이션 졸업 전시</li>
+              <li>Project X 온라인 전시</li>
+            </ul>
           </div>
           <div class="cv-col cv-exp">
             <h3>Experience</h3>
             <dl>
               <dt>2025.07 —</dt><dd>매일경제신문사 지식부 디자이너<small>세계지식포럼·국민보고대회 키비주얼, 책자, 웹 초청장</small></dd>
-              <dt>2023 — 2024</dt><dd>십시일밥 디자인 부팀장<small>캐릭터 리디자인, 소식지·카드뉴스·홍보물</small></dd>
+              <dt>2023 — 2024</dt><dd>십시일밥 디자인 부팀장<small>비영리단체 · 캐릭터 리디자인, 소식지·카드뉴스·홍보물</small></dd>
               <dt>2022</dt><dd>독립잡지 『투영』 2·3호 디자인팀장<small>텀블벅 펀딩 발간, 편집 디자인</small></dd>
             </dl>
           </div>
@@ -523,9 +532,10 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
             <dl>
               <dt>2025</dt><dd>제59회 대한민국 디자인 전람회 입선</dd>
               <dt>2025</dt><dd>Asia Design Prize Winner</dd>
-              <dt>2025</dt><dd>Graphis New Talent Award 2건</dd>
+              <dt>2025</dt><dd>Graphis New Talent Award 2건<small>Honorable Mention</small></dd>
               <dt>2022</dt><dd>세종대 웰컴 키트 디자인 공모전 우수상</dd>
               <dt>2022</dt><dd>LG 산학 프로젝트 서비스 제안 우수상</dd>
+              <dt>2020</dt><dd>제7회 SW.AI 융합 경시대회 장려상</dd>
             </dl>
           </div>
         </div>
