@@ -1113,7 +1113,7 @@ function detailHTML(p, idx){
     lay = lay||'side';
     // a block narrower than its columns sits against the right margin, away from the text (page align to change)
     const align = pg.align || (lay==='side' ? 'right' : 'left');
-    const t = sheetTone(T, pg.bg ? pg.bg==='dark' : !!(L&&L.dark));
+    const t = sheetTone(pg.paper ? {...T, paper:pg.paper} : T, pg.bg ? pg.bg==='dark' : !!(L&&L.dark));
     const nf = pages[k+1];
     // every sheet ends by pointing at the next one, so the order reads as an argument
     const next = nf ? `<div class="t-next"><i>${pad2(k+3)} ${nf.sec} →</i><span>${nf.title}</span></div>`
