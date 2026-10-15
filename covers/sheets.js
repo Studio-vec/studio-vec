@@ -67,11 +67,11 @@ kalido:{
 
     {sec:'Campaign', title:'Beyond Color, Beyond Limit',
      body:['슬로건을 손글씨 레터링으로 만들어 포스터, 옥외광고, 티셔츠, 제품 태그로 이었다. 페스티벌 빌보드까지 같은 별 그래픽이 반복된다.'],
-     lay:'top', art:{look:'mosaic', cols:[2,2], fill:true, i:[
+     lay:'top', art:{look:'mosaic', rows:[2,2], i:[
        {s:'img-18.jpg', cap:'버스 쉘터 포스터'},
        {s:'img-19.jpg', cap:'BEYOND FESTIVAL 빌보드'},
        {s:'img-07.jpg', cap:'티셔츠'},
-       {s:'img-16.jpg', cap:'제품 태그'}]}}
+       {s:'img-16.jpg', cap:'제품 태그', t:[0,0,0,0]}]}}
   ]
 },
 
