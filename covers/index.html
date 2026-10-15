@@ -473,6 +473,8 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
   .sheets{display:block;padding:0}
   .sheet{width:297mm;height:210mm;box-shadow:none;break-after:page;page-break-after:always}
   .sheet:last-child{break-after:auto;page-break-after:auto}
+  .detail.all .sheet:last-child{break-after:page;page-break-after:always}
+  .detail.all .sheets:nth-last-child(2) .sheet:last-child{break-after:auto;page-break-after:auto}
   .cell figcaption,.cell .hd,.cell::after{display:none}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
@@ -493,7 +495,7 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
         <span class="lbl i-tools">Illustrator · Photoshop · Figma · After Effects</span>
 
         <div class="cta-zone" id="ctaZone">
-          <a class="cta-download" id="ctaDownload" href="#" title="포트폴리오 PDF 다운로드 — 준비중">
+          <a class="cta-download" id="ctaDownload" href="../assets/portfolio.pdf" download="KimTaehui_Portfolio.pdf" title="포트폴리오 PDF 다운로드 (A4 78p · 45MB)">
             <span class="cta-num">01</span>
             <span class="cta-label"><b>다운로드</b><i>Portfolio PDF · <span id="pfVersion">Ver 1.0</span></i></span>
             <svg class="cta-icon" viewBox="0 0 20 20" fill="none"><path d="M10 2.5V13" stroke="currentColor" stroke-width="1"/><path d="M5.2 9L10 13.5L14.8 9" stroke="currentColor" stroke-width="1"/><path d="M3 17H17" stroke="currentColor" stroke-width="1"/></svg>
@@ -553,7 +555,7 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
       </div>
       <div class="foot">
         <button class="backlink" id="introBack">← Intro</button>
-        <a class="dlmini" href="#" id="introDl" title="PDF 다운로드 — 준비중">Portfolio PDF
+        <a class="dlmini" href="../assets/portfolio.pdf" download="KimTaehui_Portfolio.pdf" id="introDl" title="포트폴리오 PDF 다운로드 (A4 78p · 45MB)">Portfolio PDF
           <svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5V13" stroke="currentColor" stroke-width="1"/><path d="M5.2 9L10 13.5L14.8 9" stroke="currentColor" stroke-width="1"/><path d="M3 17H17" stroke="currentColor" stroke-width="1"/></svg>
         </a>
         <button class="navlink right" id="introEnter">Enter Works
@@ -1142,6 +1144,16 @@ async function printSheets(){
   print();
 }
 function drawDetailSyms(){ dSyms.forEach(([r,id])=>drawSym(r,id,id,0)) }
+/* ?all : every project in one document, for printing the whole portfolio to PDF (assets/portfolio.pdf) */
+function fillAll(){
+  detail.innerHTML=PROJECTS.map((p,i)=>detailHTML(p,i)).join('');
+  detail.classList.add('all');
+  detail.querySelectorAll('img').forEach(i=>i.loading='eager');
+  dSyms=[...detail.querySelectorAll('svg[data-sym]')].map(s=>[mkSym(s,false),s.dataset.sym]);
+  requestAnimationFrame(drawDetailSyms);
+  document.body.classList.remove('intro-open'); document.body.classList.add('detail-open','locked');
+  document.title='Kim Taehui — Portfolio';
+}
 function fillDetail(id){
   const idx=PROJECTS.findIndex(p=>p.id===id), p=PROJECTS[idx];
   detail.innerHTML=detailHTML(p,idx);
@@ -1283,8 +1295,7 @@ function closeIntro(){ document.body.classList.remove('intro-open') }
   document.getElementById('ctaScroll').addEventListener('click', ()=>document.body.classList.add('intro-page2'));
   document.getElementById('introBack').addEventListener('click', ()=>document.body.classList.remove('intro-page2'));
   document.getElementById('introEnter').addEventListener('click', closeIntro);
-  document.getElementById('introDl').addEventListener('click', e=>e.preventDefault()); /* PDF export — TODO: replace assets/portfolio.pdf */
-  document.getElementById('ctaDownload').addEventListener('click', e=>e.preventDefault()); /* PDF export — TODO: replace assets/portfolio.pdf */
+  /* the two PDF links point at assets/portfolio.pdf — rebuild with tools/portfolio_pdf.py */
 })();
 
 /* scroll / swipe : intro page1 → page2 → into the cover stage */
@@ -1383,6 +1394,7 @@ function closeIntro(){ document.body.classList.remove('intro-open') }
 /* intro : guides on → paths draw in → guides fade */
 (function intro(){
   readScroll(); cur=target; render(cur);
+  if(new URLSearchParams(location.search).has('all')) return fillAll();
   route(false);
   if(openId || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   document.body.classList.add('show-guides');
