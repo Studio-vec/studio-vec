@@ -379,7 +379,14 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
 .intro .dlmini:hover{color:var(--ink)}
 .intro .dlmini svg{width:13px;height:13px}
 
-.works-list{grid-column:1/8;grid-row:2;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;display:flex;flex-direction:column;justify-content:safe center;min-height:0;padding:clamp(16px,2.5vh,32px) 0}
+.works-list{grid-column:1/8;grid-row:2;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;justify-content:safe center;min-height:0;padding:clamp(16px,2.5vh,32px) 0}
+/* scrollbar: hairline track like the row rules, thin ink thumb */
+.works-list::-webkit-scrollbar{width:9px}
+.works-list::-webkit-scrollbar-track{background:linear-gradient(rgba(17,17,17,.12),rgba(17,17,17,.12)) center/1px 100% no-repeat}
+.works-list::-webkit-scrollbar-thumb{background:var(--ink);background-clip:content-box;border:3px solid transparent;border-radius:0}
+.works-list::-webkit-scrollbar-thumb:hover{background:var(--guide-strong);background-clip:content-box}
+.works-list::-webkit-scrollbar-button{display:none}
+@supports not selector(::-webkit-scrollbar){.works-list{scrollbar-width:thin;scrollbar-color:var(--ink) transparent}}
 #introPage2 .intro-grid{padding-bottom:clamp(52px,8vh,92px)}
 .work-row{display:grid;grid-template-columns:44px 1.5fr 190px 2fr;column-gap:20px;align-items:baseline;padding:calc(var(--mt)*.26) 0;border-top:1px solid rgba(17,17,17,.12);text-decoration:none;color:var(--ink);cursor:pointer;background:none}
 .work-row:hover{color:var(--guide-strong)}
