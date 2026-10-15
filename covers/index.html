@@ -312,7 +312,8 @@ body:not(.intro-open) .intro{transform:translateX(-100%);pointer-events:none}
 .intro-track{position:absolute;inset:0;width:200%;display:flex;transition:transform 1s var(--ease)}
 body.intro-page2 .intro-track{transform:translateX(-50%)}
 .intro-page{width:50%;height:100%;position:relative;flex:none}
-.intro-grid{position:absolute;inset:var(--mt) var(--m);display:grid;grid-template-columns:repeat(7,1fr);column-gap:var(--g);grid-template-rows:auto 1fr auto;height:calc(100% - var(--mt)*2)}
+.intro{--im:max(var(--m),calc((100% - 1125px)/2))}  /* intro content caps at the footer width (1125px) */
+.intro-grid{position:absolute;inset:var(--mt) var(--im);display:grid;grid-template-columns:repeat(7,1fr);column-gap:var(--g);grid-template-rows:auto 1fr auto;height:calc(100% - var(--mt)*2)}
 .intro .lbl{font-size:var(--label);line-height:1.35}
 .i-field{grid-column:1/3;grid-row:1}
 .i-name{grid-column:3/5;grid-row:1;text-align:center}
@@ -361,12 +362,12 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
 .intro .navlink.right:hover svg{transform:translateX(3px)}
 .intro .backlink{all:unset;cursor:pointer;font-size:var(--label);letter-spacing:.06em;color:var(--sub)}
 .intro .backlink:hover{color:var(--ink)}
-.intro .foot{position:absolute;left:var(--m);right:var(--m);bottom:var(--mt);display:flex;justify-content:space-between;align-items:center}
+.intro .foot{position:absolute;left:var(--im);right:var(--im);bottom:var(--mt);display:flex;justify-content:space-between;align-items:center}
 .intro .dlmini{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-size:var(--label);color:var(--sub)}
 .intro .dlmini:hover{color:var(--ink)}
 .intro .dlmini svg{width:13px;height:13px}
 
-.works-list{grid-column:1/8;grid-row:2;overflow:hidden;display:flex;flex-direction:column;justify-content:safe center;min-height:0;padding:clamp(16px,2.5vh,32px) 0}
+.works-list{grid-column:1/8;grid-row:2;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;display:flex;flex-direction:column;justify-content:safe center;min-height:0;padding:clamp(16px,2.5vh,32px) 0}
 #introPage2 .intro-grid{padding-bottom:clamp(52px,8vh,92px)}
 .work-row{display:grid;grid-template-columns:44px 1.5fr 190px 2fr;column-gap:20px;align-items:baseline;padding:calc(var(--mt)*.26) 0;border-top:1px solid rgba(17,17,17,.12);text-decoration:none;color:var(--ink);cursor:pointer;background:none}
 .work-row:hover{color:var(--guide-strong)}
@@ -1245,17 +1246,25 @@ function closeIntro(){ document.body.classList.remove('intro-open') }
   function back(){
     if(document.body.classList.contains('intro-page2')){ document.body.classList.remove('intro-page2'); cooldown() }
   }
+  /* on page 2 the works list scrolls first — the page only turns once every project has been shown */
+  const list=document.getElementById('worksList');
+  const canScroll=dir=>document.body.classList.contains('intro-page2') &&
+    (dir>0 ? list.scrollTop+list.clientHeight<list.scrollHeight-1 : list.scrollTop>0);
+  let listMoved=0;
   intro.addEventListener('wheel', e=>{
-    if(!document.body.classList.contains('intro-open')||busy||Math.abs(e.deltaY)<12) return;
+    if(!document.body.classList.contains('intro-open')) return;
     e.preventDefault();
+    if(canScroll(Math.sign(e.deltaY))){ list.scrollTop+=e.deltaMode===1?e.deltaY*32:e.deltaY; listMoved=Date.now(); return }
+    if(busy||Math.abs(e.deltaY)<12||Date.now()-listMoved<500) return;   /* momentum hitting the list's end doesn't flip the page */
     e.deltaY>0 ? advance() : back();
   }, {passive:false});
-  let touchY=null;
-  intro.addEventListener('touchstart', e=>{ touchY=e.touches[0].clientY }, {passive:true});
+  let touchY=null, touchScroll=false;
+  intro.addEventListener('touchstart', e=>{ touchY=e.touches[0].clientY; touchScroll=false }, {passive:true});
+  intro.addEventListener('touchmove', e=>{ if(touchY!=null && canScroll(Math.sign(touchY-e.touches[0].clientY))) touchScroll=true }, {passive:true});
   intro.addEventListener('touchend', e=>{
     if(touchY==null||busy||!document.body.classList.contains('intro-open')) return;
     const dy=touchY-e.changedTouches[0].clientY; touchY=null;
-    if(Math.abs(dy)<40) return;
+    if(Math.abs(dy)<40||touchScroll) return;
     dy>0 ? advance() : back();
   }, {passive:true});
 })();
