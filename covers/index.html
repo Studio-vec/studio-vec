@@ -417,45 +417,41 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
   .title-band{grid-column:1/8;grid-row:3;margin-right:0;padding-right:0}
   .bot{grid-row:6}
 }
-/* phones : the sheet drops its fixed ratio — text first, then the images two to a row */
+/* phones : compact top bar. The sheet itself never reflows — it stays A4 everywhere */
 @media (max-width:700px){
   .d-bar .b-name{grid-column:2/6;text-align:center}
   .d-bar .b-links{grid-column:6/8}
   .d-bar .b-links .b-print,.d-bar .b-links .b-site,.d-bar .b-links span{display:none}
   .d-bar .b-back{white-space:nowrap}
-  .sheet{aspect-ratio:auto;padding:calc(var(--mt)*.8) 16px 20px}
-  .s-hd{position:static;font-size:11px;margin-bottom:16px;grid-template-columns:1fr auto}
-  .s-hd .h-proj,.s-hd .h-pg{grid-column:auto}
-  .s-hd .h-flow{display:none}
-  .s-body{position:static;display:flex;flex-direction:column;gap:20px}
-  .s-text,.lay-top .s-text,.lay-open .s-text{display:flex;flex-direction:column;gap:12px;font-size:14px}
-  .t-num,.t-list span,.t-sw div,.t-steps i,.fig figcaption,.o-brief b,.o-info,.o-ko{font-size:11px}
-  .t-title{font-size:21px}
-  .t-pull{font-size:17px}
-  .t-list div,.t-steps div,.o-brief div{font-size:13px}
-  .t-list div,.o-brief div,.o-info{grid-template-columns:76px 1fr}
-  .t-steps{grid-template-columns:1fr;row-gap:12px}
-  .t-steps b{font-size:15px}
-  .t-flow li{font-size:13px;grid-template-columns:30px 1fr;column-gap:10px}
-  .t-flow i{width:30px;height:24px;font-size:11px}
-  .t-flow b{font-size:14px}
-  .t-flow li::before{left:15px;top:26px}
-  .t-sw i{height:28px}
-  .o-title{font-size:44px}
-  .o-sym{height:52px;width:76px}
-  .o-intent{font-size:19px;margin-top:16px}
-  .o-brief{margin-top:14px}
-  .o-info{margin-top:16px}
-  .o-flow div{font-size:12px;grid-template-columns:24px 92px 1fr}
-  .t-next{font-size:12px;margin-top:4px}
-  .t-title{margin:0}
-  .s-art{height:auto!important;align-self:stretch;display:flex;flex-direction:column;gap:14px}
-  .fig{position:static;width:auto!important}
-  .fig .ph{height:auto!important}
-  .s-art.mosaic{gap:0}
-  .mcap{position:static;width:auto!important;margin-top:8px;font-size:11px}
-  .fig .tab{font-size:11px;padding:3px 6px 2px 4px}
 }
+/* phone held sideways : sheets fill the width, read by scrolling */
+@media (orientation:landscape) and (max-height:500px){
+  .detail{--sw:calc(100vw - var(--m)*2)}
+}
+/* phone held upright : the whole detail page turns 90° so the A4 sheet runs along the long side.
+   With rotation lock off, turning the phone simply lands in the landscape rule above. */
+@media (orientation:portrait) and (max-width:700px){
+  .detail{
+    --vh:100vh;width:var(--vh);height:100vw;inset:auto;top:0;left:0;
+    transform-origin:0 0;transform:translateX(200vw) rotate(90deg);
+    border-left:0;
+    --sw:calc(var(--vh) - var(--m)*2)
+  }
+  @supports (height:100dvh){.detail{--vh:100dvh}}
+  body.detail-open .detail{transform:translateX(100vw) rotate(90deg)}
+  .detail.swap-out{transform:translateX(0) rotate(90deg)!important}
+  .detail.swap-in{transform:translateX(200vw) rotate(90deg)!important}
+  .d-bar .b-name{grid-column:2/6;text-align:center}
+  body.detail-open .rotate-hint{display:flex}
+}
+.rotate-hint{
+  display:none;position:fixed;left:50%;bottom:calc(var(--mt)*1.2);z-index:30;transform:translateX(-50%);
+  align-items:center;gap:.7em;padding:.75em 1.1em;white-space:nowrap;pointer-events:none;
+  background:var(--ink,#111);color:#fff;font-family:"Noto Serif KR",serif;font-size:13px;line-height:1;
+  opacity:0;animation:rotHint 4.2s .9s both
+}
+.rotate-hint svg{width:18px;height:18px;flex:none}
+@keyframes rotHint{0%{opacity:0}10%{opacity:1}80%{opacity:1}100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){
   .stage,.detail{transition:none}
 }
@@ -594,6 +590,7 @@ body.intro-page2 .intro-track{transform:translateX(-50%)}
 
 <!-- ============ DETAIL ============ -->
 <article class="detail" id="detail" aria-live="polite"></article>
+<div class="rotate-hint" aria-hidden="true"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="5.5" y="1.5" width="7" height="12" rx="1"/><path d="M2 15.5a7.5 7.5 0 0 0 6 1.5M15 12.5a7.5 7.5 0 0 1-1.6 2.6M13.4 15.1l.1-2.4 2.3.5"/></svg>휴대폰을 가로로 돌려서 보세요</div>
 
 <div class="ctag" id="ctag">open →</div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><path id="sampler"/></svg>
@@ -1169,10 +1166,12 @@ detail.addEventListener('wheel', e=>{
   if(detail.scrollTop<=2 && e.deltaY<0){ e.preventDefault(); backToCover() }
 }, {passive:false});
 let dTouchY=null;
-detail.addEventListener('touchstart', e=>{ dTouchY=e.touches[0].clientY }, {passive:true});
+const rotated=matchMedia('(orientation:portrait) and (max-width:700px)');   // detail turned 90° : its "down" is the screen's left
+const touchY=t=>rotated.matches ? -t.clientX : t.clientY;
+detail.addEventListener('touchstart', e=>{ dTouchY=touchY(e.touches[0]) }, {passive:true});
 detail.addEventListener('touchmove', e=>{
   if(dTouchY==null||backCooldown) return;
-  const dy=e.touches[0].clientY-dTouchY;
+  const dy=touchY(e.touches[0])-dTouchY;
   if(detail.scrollTop<=2 && dy>70){ dTouchY=null; backToCover() }
 }, {passive:true});
 
@@ -1189,6 +1188,8 @@ function openDetail(id, animate=true){
     if(!animate) detail.classList.add('no-anim');
     fillDetail(id);
     document.body.classList.add('detail-open','locked');
+    const hint=document.querySelector('.rotate-hint');   // replay the "turn your phone" note on every open
+    hint.style.animation='none'; hint.offsetWidth; hint.style.animation='';
     if(!animate) requestAnimationFrame(()=>detail.classList.remove('no-anim'));
   }
   openId=id;
