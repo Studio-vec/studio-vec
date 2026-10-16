@@ -714,20 +714,20 @@ const PROJECTS = [
     info:[['Team','개인 작업 / 기여도 100%'],['Tools','Illustrator · AI Image Generation']]
   },
   {
-    id:'gimpick', href:'/p11-gimpick/', title:['GIMPICK'], nameKo:'김픽',
+    id:'gimpick', hidden:true, href:'/p11-gimpick/', title:['GIMPICK'], nameKo:'김픽',
     field:'Brand Identity & Packaging', tools:'Illustrator · AI Image Generation',
     team:'개인 작업 / 기여도 100%',
     desc:'김밥을 조각으로 골라 담는 테이크아웃 김밥 브랜드. 자른 단면을 단청 화형 문법으로 읽어 로고와 패턴을 만들었다.',
     info:[['Team','개인 작업 / 기여도 100%'],['Scope','Strategy · Identity · Packaging'],['Tools','Illustrator · AI Image Generation']]
   },
   {
-    id:'seolred', href:'/p12-seolred/', title:['SEOL','RED'], nameKo:'설레드',
+    id:'seolred', hidden:true, href:'/p12-seolred/', title:['SEOL','RED'], nameKo:'설레드',
     field:'Brand Identity & Packaging', tools:'Illustrator · Photoshop · AI Image Generation',
     team:'개인 작업 / 기여도 100%',
     desc:'1~2인 가구를 위한 소용량 사과 브랜드. 사과 1알과 잼, 스푼을 100mm 정사각 상자 하나에 담았다.',
     info:[['Team','개인 작업 / 기여도 100%'],['Scope','Identity · Packaging · Art Direction'],['Tools','Illustrator · Photoshop · AI Image Generation']]
   }
-];
+].filter(p=>!p.hidden);                               // hidden:true = 완성 전까지 PDF·목록에서 제외
 
 /* =========================================================
    SYMBOLS — real project vectors shown in outline mode
