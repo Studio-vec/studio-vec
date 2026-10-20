@@ -1,10 +1,11 @@
 """Embed copyright metadata into site images without re-encoding them.
 
-JPEG gets an EXIF block (Artist / Copyright, only if it has no EXIF yet) and a
-comment segment; PNG gets tEXt chunks. Pixel data is untouched, and files that
-already carry the signature are skipped, so it is safe to re-run after adding
-new images:
+JPEG gets Artist / Copyright in its EXIF block (merged into an existing one,
+other tags kept) and a comment segment; PNG gets tEXt chunks. Pixel data is
+untouched, and whatever is already signed is skipped, so it is safe to re-run
+after adding new images:
 
+    python -m pip install pillow   # once per computer
     python tools/sign_images.py
 
 WebP and GIF are left as they are.
@@ -23,10 +24,13 @@ COMMENT = '%s Unauthorized use or AI training prohibited. [%s]' % (COPYRIGHT, TA
 
 ROOT = Path(__file__).resolve().parent.parent
 MARK = TAG.encode()
+EXIF_MARK = ARTIST.encode()
 
 
-def exif_segment():
+def exif_segment(existing=b''):
     exif = Image.Exif()
+    if existing:
+        exif.load(existing)
     exif[0x013B] = ARTIST       # Artist
     exif[0x8298] = COPYRIGHT    # Copyright
     data = exif.tobytes()
@@ -43,7 +47,7 @@ def com_segment():
 def sign_jpeg(buf):
     if buf[:2] != b'\xff\xd8':
         return None
-    pos, after_app0, after_apps, has_exif = 2, 2, 2, False
+    pos, after_app0, after_apps, exif = 2, 2, 2, None
     while pos + 4 <= len(buf) and buf[pos] == 0xFF:
         marker = buf[pos + 1]
         if not 0xE0 <= marker <= 0xEF:
@@ -52,13 +56,19 @@ def sign_jpeg(buf):
         end = pos + 2 + length
         if marker == 0xE0 and pos == 2:
             after_app0 = end
-        if marker == 0xE1 and buf[pos + 4:pos + 10] == b'Exif\x00\x00':
-            has_exif = True
+        if marker == 0xE1 and buf[pos + 4:pos + 10] == b'Exif\x00\x00' and exif is None:
+            exif = (pos, end)
         pos = after_apps = end
-    out = buf[:after_app0]
-    if not has_exif:
-        out += exif_segment()
-    return out + buf[after_app0:after_apps] + com_segment() + buf[after_apps:]
+    if exif is None:
+        out = buf[:after_app0] + exif_segment() + buf[after_app0:after_apps]
+    elif EXIF_MARK in buf[exif[0]:exif[1]]:
+        out = buf[:after_apps]
+    else:
+        start, end = exif
+        out = buf[:start] + exif_segment(buf[start + 4:end]) + buf[end:after_apps]
+    if MARK not in buf:
+        out += com_segment()
+    return out + buf[after_apps:]
 
 
 def png_chunk(key, value):
@@ -88,12 +98,15 @@ def main():
         if ext not in ('.jpg', '.jpeg', '.png'):
             continue
         buf = path.read_bytes()
-        if MARK in buf:
+        if ext == '.png' and MARK in buf:
             skipped += 1
             continue
         new = sign_jpeg(buf) if ext != '.png' else sign_png(buf)
         if new is None:
             print('not a valid image, left alone:', path.relative_to(ROOT))
+            continue
+        if new == buf:
+            skipped += 1
             continue
         before = pixels(path)
         path.write_bytes(new)
