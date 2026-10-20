@@ -1,0 +1,42 @@
+# Publishes only the site files to GitHub Pages on every push to master.
+# Working folders (FLANT/, _web/, tools/, partials/, assets/img/_originals/ ...) stay
+# in the repo but are not served. A new top-level site file or folder must be added
+# to the list below; new project pages named pNN-* are picked up automatically.
+name: Deploy site
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect site files
+        run: |
+          mkdir _site
+          cp -r index.html 404.html favicon.ico CNAME robots.txt rss.xml sitemap.xml \
+                .nojekyll LICENSE css js covers assets p[0-9][0-9]-*/ _site/
+          rm -rf _site/assets/img/_originals
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
