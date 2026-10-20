@@ -1,3 +1,4 @@
+/*! © 2025-2026 Taehui Kim (김태희) · Studio Vec · https://studiovec.com · All rights reserved. Unauthorized copying prohibited. [SV-TK-7F3A9C] */
 (function () {
   var canvas = document.getElementById('hero-canvas');
   var heroSection = canvas ? canvas.closest('.hero') : null;

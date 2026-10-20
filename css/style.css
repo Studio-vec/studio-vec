@@ -1,5 +1,7 @@
+/*! © 2025-2026 Taehui Kim (김태희) · Studio Vec · https://studiovec.com · All rights reserved. Unauthorized copying prohibited. [SV-TK-7F3A9C] */
 /* ---------- Design tokens ---------- */
 :root {
+  --sv-origin: "studiovec.com · Taehui Kim · SV-TK-7F3A9C";
   --black: #000000;
   --white: #ffffff;
   --off-white: #f7f7f7;
