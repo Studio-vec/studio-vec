@@ -7,6 +7,19 @@ name: Deploy site
 on:
   push:
     branches: [master]
+    # Skip the deploy when a push only touches files that are never served.
+    paths-ignore:
+      - 'FLANT/**'
+      - 'Kalido/**'
+      - 'STARRY/**'
+      - 'SeolRed/**'
+      - 'YomYom/**'
+      - '_web/**'
+      - 'tools/**'
+      - 'partials/**'
+      - '.claude/**'
+      - 'assets/img/_originals/**'
+      - '**/CLAUDE.md'
   workflow_dispatch:
 
 permissions:
@@ -16,7 +29,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -31,7 +44,7 @@ jobs:
         run: |
           mkdir _site
           cp -r index.html 404.html favicon.ico CNAME robots.txt rss.xml sitemap.xml \
-                .nojekyll LICENSE css js covers assets p[0-9][0-9]-*/ _site/
+                LICENSE css js covers assets p[0-9][0-9]-*/ _site/
           rm -rf _site/assets/img/_originals
 
       - uses: actions/configure-pages@v5
