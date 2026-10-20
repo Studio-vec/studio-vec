@@ -405,6 +405,32 @@
     render();
   });
 
+  // Looping videos with data-src load and play only once they come near the viewport.
+  var lazyVideos = document.querySelectorAll('video[data-src]');
+  if ('IntersectionObserver' in window && lazyVideos.length) {
+    var videoObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var video = entry.target;
+            video.src = video.getAttribute('data-src');
+            video.play().catch(function () {});
+            videoObserver.unobserve(video);
+          }
+        });
+      },
+      { rootMargin: '300px 0px' }
+    );
+    lazyVideos.forEach(function (video) {
+      videoObserver.observe(video);
+    });
+  } else {
+    lazyVideos.forEach(function (video) {
+      video.src = video.getAttribute('data-src');
+      video.autoplay = true;
+    });
+  }
+
   var revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {
     var observer = new IntersectionObserver(
