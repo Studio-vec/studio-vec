@@ -2712,11 +2712,12 @@ button {
 }
 
 /* ---------- Project actions (download / guide) ---------- */
+/* Same pair as the home page (.btn-primary + .btn-outline); on the black hero the fill takes the accent. */
 .project-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .project-actions-note {
@@ -2726,12 +2727,15 @@ button {
 }
 
 .btn-download {
-  min-width: 10rem;
   border: 0;
   font-family: inherit;
   cursor: pointer;
-  background: var(--pa-color, #e4007f);
+  background: var(--black);
   color: var(--white);
+}
+
+.btn-download:hover {
+  background: #2b2b2e;
 }
 
 .btn-download.is-soon {
@@ -2739,29 +2743,40 @@ button {
   transform: none;
 }
 
-.btn-download:hover {
-  filter: brightness(1.1);
-}
-
 .btn-detail {
-  min-width: 10rem;
   background: transparent;
-  color: var(--white);
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  color: var(--black);
+  border: 1.5px solid var(--black);
 }
 
 .btn-detail:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+.project-hero .btn-download {
+  background: var(--accent);
+  color: var(--black);
+}
+
+.project-hero .btn-download:hover {
+  background: var(--white);
+}
+
+.project-hero .btn-detail {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.project-hero .btn-detail:hover {
+  background: var(--white);
+  color: var(--black);
   border-color: var(--white);
 }
 
 .project-actions.is-end {
   justify-content: center;
   padding-top: clamp(2.5rem, 6vw, 4rem);
-}
-
-.pm-light .btn-detail {
-  color: var(--black);
-  border-color: var(--black);
 }
 
 .pm-light .project-actions-note {
