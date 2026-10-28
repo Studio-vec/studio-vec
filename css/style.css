@@ -2726,6 +2726,12 @@ button {
   color: rgba(255, 255, 255, 0.5);
 }
 
+.btn-download,
+.btn-detail {
+  padding: 0.6rem 1.6rem;
+  border-radius: 0;
+}
+
 .btn-download {
   border: 0;
   font-family: inherit;
