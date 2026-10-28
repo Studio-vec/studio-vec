@@ -431,6 +431,14 @@
     });
   }
 
+  // 아직 공개 전인 다운로드 버튼(YOMYOM): 누르면 버튼 글자를 안내 문구로 바꿈
+  document.querySelectorAll('[data-soon]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      btn.textContent = btn.getAttribute('data-soon');
+      btn.classList.add('is-soon');
+    });
+  });
+
   var revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {
     var observer = new IntersectionObserver(

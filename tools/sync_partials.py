@@ -25,7 +25,9 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGES = ['index.html'] + sorted(glob.glob('p[0-9][0-9]-*/index.html', root_dir=ROOT))
+# Sub-pages of a project (e.g. p06-yomyom/guide/) get the header/footer but no prev/next nav.
+SUBPAGES = sorted(glob.glob('p[0-9][0-9]-*/*/index.html', root_dir=ROOT))
+PAGES = ['index.html'] + sorted(glob.glob('p[0-9][0-9]-*/index.html', root_dir=ROOT)) + SUBPAGES
 PARTIALS = {
     'header': r'<header class="site-header".*?</header>',
     'footer': r'<footer class="site-footer".*?</footer>',
@@ -100,7 +102,7 @@ def render(page, partials, works):
         src = fh.read()
     # Pages are LF (.gitattributes); reading raw lets --check flag a stray CRLF.
     out = src.replace('\r\n', '\n')
-    if page != 'index.html':
+    if page != 'index.html' and page not in SUBPAGES:
         if not PROJECT_NAV.search(out):
             raise SystemExit('%s: no project-footer-nav found' % page)
         nav = project_nav(works, os.path.dirname(page))

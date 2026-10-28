@@ -2710,3 +2710,176 @@ button {
     display: none;
   }
 }
+
+/* ---------- Project actions (download / guide) ---------- */
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.project-actions-note {
+  flex-basis: 100%;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-download {
+  min-width: 10rem;
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+  background: var(--pa-color, #e4007f);
+  color: var(--white);
+}
+
+.btn-download.is-soon {
+  cursor: default;
+  transform: none;
+}
+
+.btn-download:hover {
+  filter: brightness(1.1);
+}
+
+.btn-detail {
+  min-width: 10rem;
+  background: transparent;
+  color: var(--white);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+}
+
+.btn-detail:hover {
+  border-color: var(--white);
+}
+
+.project-actions.is-end {
+  justify-content: center;
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+}
+
+.pm-light .btn-detail {
+  color: var(--black);
+  border-color: var(--black);
+}
+
+.pm-light .project-actions-note {
+  text-align: center;
+  color: var(--gray-700);
+}
+
+/* ---------- Guide page (p06-yomyom/guide) ---------- */
+.guide {
+  background: var(--off-white);
+  color: var(--black);
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.guide .container {
+  width: min(760px, 100% - 2.5rem);
+}
+
+.guide-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--gray-300);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.guide-toc a:hover {
+  text-decoration: underline;
+}
+
+.guide-sec {
+  padding-block: clamp(2rem, 4vw, 2.75rem);
+  border-bottom: 1px solid var(--gray-300);
+  scroll-margin-top: 5rem;
+}
+
+.guide-sec:last-of-type {
+  border-bottom: 0;
+}
+
+.guide-sec h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+  font-weight: 800;
+  margin-bottom: 1.1rem;
+}
+
+.guide-sec h2 span {
+  font-family: var(--font-en);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gray-500);
+}
+
+.guide-sec h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.guide-sec p,
+.guide-sec li {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--gray-700);
+}
+
+.guide-sec ul,
+.guide-sec ol {
+  padding-left: 1.2rem;
+}
+
+.guide-sec ul {
+  list-style: disc;
+}
+
+.guide-sec ol {
+  list-style: decimal;
+}
+
+.guide-sec li + li {
+  margin-top: 0.3rem;
+}
+
+.guide-sec b {
+  color: var(--black);
+}
+
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.guide-table th,
+.guide-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.65rem 0.75rem 0.65rem 0;
+  border-top: 1px solid var(--gray-300);
+}
+
+.guide-table th {
+  width: 32%;
+  font-weight: 700;
+}
+
+.guide-table td {
+  color: var(--gray-700);
+}
+
+.guide-updated {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--gray-500);
+}
