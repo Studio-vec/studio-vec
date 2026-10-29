@@ -211,8 +211,8 @@ button {
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.95rem 1.9rem;
-  border-radius: var(--radius-md);
+  padding: 0.95rem 2.8rem;
+  border-radius: 4px;
   font-weight: 700;
   font-size: 0.95rem;
   white-space: nowrap;
