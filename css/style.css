@@ -2838,7 +2838,7 @@ button {
   font-family: var(--font-en);
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--gray-500);
+  color: #6b6a66; /* gray-500은 작은 글자 대비 부족 */;
 }
 
 .guide-sec h3 {
@@ -2902,5 +2902,5 @@ button {
 .guide-updated {
   margin-top: 1.5rem;
   font-size: 0.8rem;
-  color: var(--gray-500);
+  color: #6b6a66;
 }
